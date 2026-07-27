@@ -38,6 +38,25 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ═══════════════ CADRE DESKTOP ═══════════════ */
+/* Sur mobile, #app-frame occupe tout l'écran, aucun changement visuel.
+   Sur un écran large (PC, iframe Wix en desktop), l'app se recentre
+   dans une colonne façon téléphone plutôt que de s'étirer en pleine largeur. */
+#app-frame {
+  position: relative;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--white);
+}
+@media (min-width: 560px) {
+  body { background: var(--gray2); }
+  #app-frame {
+    max-width: 480px;
+    margin: 0 auto;
+    box-shadow: 0 0 0 2px var(--black), 0 12px 40px rgba(0,0,0,.25);
+  }
+}
+
 /* ═══════════════ SHELL ═══════════════ */
 .shell {
   display: flex;
@@ -252,12 +271,12 @@ body {
 
 /* ── Info popup ── */
 .info-overlay {
-  display:none; position:fixed; inset:0; z-index:120;
+  display:none; position:absolute; inset:0; z-index:120;
   background:rgba(0,0,0,.45);
 }
 .info-overlay.open { display:block; }
 .info-popup {
-  display:none; position:fixed; z-index:121;
+  display:none; position:absolute; z-index:121;
   bottom:0; left:0; right:0;
   background:var(--white);
   border-top:3px solid var(--black);
@@ -464,14 +483,14 @@ body {
 
 /* ═══════════════ FILTER SHEET (bottom drawer) ═══════════════ */
 .filter-overlay {
-  display:none; position:fixed; inset:0; z-index:90;
+  display:none; position:absolute; inset:0; z-index:90;
   background: rgba(0,0,0,0);
   transition: background .3s;
 }
 .filter-overlay.open { display:block; background: rgba(0,0,0,0.5); }
 
 .filter-sheet {
-  position:fixed; bottom:0; left:0; right:0; z-index:91;
+  position:absolute; bottom:0; left:0; right:0; z-index:91;
   background: var(--white);
   border-top: var(--border);
   transform: translateY(100%);
@@ -552,7 +571,7 @@ body {
 
 /* ═══════════════ DETAIL SHEET (full screen) ═══════════════ */
 .detail-sheet {
-  position:fixed; inset:0; z-index:80;
+  position:absolute; inset:0; z-index:80;
   background: var(--white);
   color: var(--black);
   transform: translateX(100%);
@@ -816,7 +835,7 @@ body {
 
 /* ═══════════════ MODAL ═══════════════ */
 .modal-ov{
-  display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);
+  display:none;position:absolute;inset:0;background:rgba(0,0,0,0.6);
   z-index:100;align-items:flex-end;justify-content:center;
 }
 .modal-ov.open{display:flex;}
@@ -1016,7 +1035,7 @@ body {
 .btn-export.success { background:rgba(0,150,80,.1); color:#009650; }
 /* ═══════════════ ECRAN PIN GESTION ═══════════════ */
 .pin-overlay {
-  display:none; position:fixed; inset:0; z-index:120;
+  display:none; position:absolute; inset:0; z-index:120;
   background:var(--black);
   align-items:center; justify-content:center;
 }
@@ -1083,13 +1102,13 @@ body {
 .pin-save-msg.err { color:var(--red); }
 /* ═══════════════ ABOUT POPUP ═══════════════ */
 .about-overlay {
-  display:none; position:fixed; inset:0; z-index:110;
+  display:none; position:absolute; inset:0; z-index:110;
   background:rgba(0,0,0,.5);
   transition:opacity .25s;
 }
 .about-overlay.open { display:block; }
 .about-popup {
-  display:none; position:fixed; z-index:111;
+  display:none; position:absolute; z-index:111;
   top:50%; left:50%; transform:translate(-50%,-54%);
   width:min(340px, calc(100vw - 32px));
   background:var(--black);
@@ -1148,6 +1167,7 @@ body {
 
 </head>
 <body>
+<div id="app-frame">
 <div class="shell">
 
   <!-- TOP NAV -->
@@ -1353,6 +1373,8 @@ body {
       <button class="btn-cancel" onclick="closeExportSelect()">Annuler</button>
     </div>
   </div>
+</div>
+
 </div>
 
 <script>
