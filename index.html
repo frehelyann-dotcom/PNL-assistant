@@ -194,6 +194,9 @@ body {
 .cc-head {
   display:flex; align-items:stretch; border-bottom:2px solid var(--black);
 }
+.cc-head.r { background:var(--red); }
+.cc-head.b { background:var(--blue); }
+.cc-head.y { background:var(--yellow); }
 .cc-accent { width:8px; flex-shrink:0; }
 .cc-accent.r { background:var(--red); }
 .cc-accent.b { background:var(--blue); }
@@ -204,11 +207,15 @@ body {
   font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:500;
   text-transform:uppercase; letter-spacing:.1em; color:var(--black);
 }
+.cc-head.r .cc-label, .cc-head.b .cc-label { color:var(--white); }
+.cc-head.y .cc-label { color:var(--black); }
 .cc-count {
   font-family:'Bebas Neue',monospace; font-size:18px; color:#ccc;
   padding:0 12px; display:flex; align-items:center;
   border-left:1.5px solid #eee;
 }
+.cc-head.r .cc-count, .cc-head.b .cc-count { color:rgba(255,255,255,.75); border-left-color:rgba(255,255,255,.35); }
+.cc-head.y .cc-count { color:rgba(0,0,0,.55); border-left-color:rgba(0,0,0,.25); }
 
 .cc-chips { display:flex; flex-wrap:wrap; gap:6px; padding:10px 12px; background:var(--white); }
 .cc-chip {
@@ -437,6 +444,8 @@ body {
 .tag.r { background:var(--red); color:var(--white); border-color:var(--red); }
 .tag.b { background:var(--blue); color:var(--white); border-color:var(--blue); }
 .tag.y { background:var(--yellow); color:var(--black); border-color:var(--yellow); }
+.tag-label { opacity:.7; margin-right:3px; }
+.tag-label:after { content:":"; margin-left:1px; }
 
 .pcard-foot {
   margin-top:auto; display:flex; align-items:center; flex-wrap:wrap; gap:4px;
@@ -729,6 +738,7 @@ body {
 .gtab.gr{background:var(--red);color:var(--white);}
 .gtab.gb{background:var(--blue);color:var(--white);}
 .gtab.gy{background:var(--yellow);color:var(--black);}
+.gtab.gk{background:var(--black);color:var(--white);}
 .gbadge{background:rgba(0,0,0,0.15);font-size:8px;padding:1px 5px;}
 
 .gcontent{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
@@ -746,6 +756,18 @@ body {
   background:var(--black);color:var(--white);white-space:nowrap;flex-shrink:0;
 }
 .btn-add:active{background:#333;}
+
+.btn-gexport{
+  display:flex;align-items:center;gap:6px;padding:0 14px;
+  border:none;border-left:var(--bt);
+  font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:500;
+  text-transform:uppercase;letter-spacing:.07em;cursor:pointer;
+  background:var(--blue);color:var(--white);white-space:nowrap;flex-shrink:0;
+  transition:background .15s;
+}
+.btn-gexport:active{background:#12308f;}
+.btn-gexport.loading{color:rgba(255,255,255,.6);pointer-events:none;}
+.btn-gexport.success{background:#009650;}
 
 /* Mobile-optimized list items */
 .glist { width:100%; }
@@ -887,6 +909,23 @@ body {
 .po-texte{font-weight:500;font-size:14px;line-height:1.4;margin-bottom:4px;}
 .po-desc{font-size:12px;color:#888;font-weight:300;line-height:1.4;}
 
+/* Sélection export protocoles */
+.expsel-toolbar { display:flex; gap:8px; margin-bottom:10px; }
+.expsel-toolbar button {
+  flex:1; border:2px solid var(--black); background:var(--white); color:var(--black);
+  font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:500;
+  text-transform:uppercase; letter-spacing:.07em; padding:9px; cursor:pointer;
+}
+.expsel-toolbar button:active { background:var(--gray); }
+.expmode-bar { display:flex; border:2px solid var(--black); margin-bottom:12px; }
+.expmode-bar .rm-btn { padding:10px 6px; }
+.expsel-count {
+  font-family:'IBM Plex Mono',monospace; font-size:10px; color:#888;
+  text-transform:uppercase; letter-spacing:.06em;
+  margin:0 0 10px; text-align:center;
+}
+.btn-save:disabled { background:#ccc; color:#888; cursor:default; }
+
 /* ── Read mode bar ── */
 .read-mode-bar {
   display:flex; border-bottom:var(--bt); flex-shrink:0; height:36px;
@@ -975,6 +1014,73 @@ body {
 .btn-export:active { background:var(--blue); color:var(--white); }
 .btn-export.loading { color:#aaa; pointer-events:none; }
 .btn-export.success { background:rgba(0,150,80,.1); color:#009650; }
+/* ═══════════════ ECRAN PIN GESTION ═══════════════ */
+.pin-overlay {
+  display:none; position:fixed; inset:0; z-index:120;
+  background:var(--black);
+  align-items:center; justify-content:center;
+}
+.pin-overlay.open { display:flex; }
+.pin-box {
+  width:min(300px, calc(100vw - 48px));
+  display:flex; flex-direction:column; align-items:center;
+  gap:14px; padding:8px 0;
+}
+.pin-lock-icon { font-size:30px; color:var(--white); }
+.pin-title {
+  font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:.1em;
+  color:var(--white); text-align:center;
+}
+.pin-sub {
+  font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.1em;
+  text-transform:uppercase; color:#888; text-align:center; margin-top:-10px;
+}
+.pin-input {
+  width:100%; text-align:center;
+  font-family:'IBM Plex Mono',monospace; font-size:32px; letter-spacing:.5em;
+  padding:12px 0 12px 14px; border:2px solid var(--white); background:transparent;
+  color:var(--white); outline:none; border-radius:0; -webkit-appearance:none;
+}
+.pin-input:focus { border-color:var(--yellow); }
+.pin-error {
+  font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--red); min-height:14px; text-align:center;
+}
+.pin-submit {
+  width:100%; border:2px solid var(--white); background:var(--white); color:var(--black);
+  font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:500;
+  text-transform:uppercase; letter-spacing:.1em; padding:12px; cursor:pointer;
+}
+.pin-submit:active { background:var(--yellow); border-color:var(--yellow); }
+.pin-cancel {
+  border:none; background:none; color:#777;
+  font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase;
+  letter-spacing:.08em; cursor:pointer; padding:6px;
+}
+@keyframes pinShake {
+  0%,100% { transform:translateX(0); }
+  20%,60% { transform:translateX(-8px); }
+  40%,80% { transform:translateX(8px); }
+}
+.pin-box.shake { animation:pinShake .35s; }
+
+/* ── Gestion du code PIN (onglet Gestion) ── */
+.pin-manage { padding:16px 14px; display:flex; flex-direction:column; gap:14px; }
+.pin-status {
+  border:2px solid var(--black); padding:12px 14px; display:flex;
+  align-items:center; justify-content:space-between;
+}
+.pin-status-lbl { font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:#888; }
+.pin-status-val { font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:.05em; }
+.btn-lock-now {
+  border:2px solid var(--black); background:var(--white); color:var(--black);
+  font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:500;
+  text-transform:uppercase; letter-spacing:.08em; padding:8px 14px; cursor:pointer;
+}
+.btn-lock-now:active { background:var(--black); color:var(--white); }
+.pin-save-msg { font-family:'IBM Plex Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.06em; min-height:14px; }
+.pin-save-msg.ok { color:#009650; }
+.pin-save-msg.err { color:var(--red); }
 /* ═══════════════ ABOUT POPUP ═══════════════ */
 .about-overlay {
   display:none; position:fixed; inset:0; z-index:110;
@@ -1133,6 +1239,7 @@ body {
       <button class="gtab" id="gtab-po" onclick="switchGTab('po')">◇ Postulats <span class="gbadge" id="gb-po">0</span></button>
       <button class="gtab" id="gtab-b" onclick="switchGTab('b')">◫ Briques <span class="gbadge" id="gb-b">0</span></button>
       <button class="gtab" id="gtab-f" onclick="switchGTab('f')">▦ Critères <span class="gbadge" id="gb-f">0</span></button>
+      <button class="gtab" id="gtab-pin" onclick="switchGTab('pin')">⚿ Code PIN</button>
     </div>
     <div class="gcontent" id="gcontent"></div>
   </div>
@@ -1143,12 +1250,28 @@ body {
       <span class="tabbtn-icon">◈</span>
       Protocoles
     </button>
-    <button class="tabbtn" id="tabbtn-g" onclick="switchView('gestion')">
+    <button class="tabbtn" id="tabbtn-g" onclick="requestGestionAccess()">
       <span class="tabbtn-icon">⊞</span>
       Gestion
     </button>
   </nav>
 
+</div>
+
+<!-- ECRAN PIN GESTION -->
+<div class="pin-overlay" id="pin-overlay">
+  <div class="pin-box" id="pin-box">
+    <div class="pin-lock-icon">⚿</div>
+    <div class="pin-title">ACCÈS GESTION</div>
+    <div class="pin-sub">Code à 4 chiffres</div>
+    <input type="tel" inputmode="numeric" maxlength="4" class="pin-input" id="pin-input"
+      autocomplete="off" placeholder="••••"
+      oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,4); if(this.value.length===4) checkPin();"
+      onkeydown="if(event.key==='Enter') checkPin();">
+    <div class="pin-error" id="pin-error"></div>
+    <button class="pin-submit" onclick="checkPin()">Valider</button>
+    <button class="pin-cancel" onclick="closePinLock()">Annuler</button>
+  </div>
 </div>
 
 <!-- INFO POPUP (sous-critère) -->
@@ -1209,6 +1332,25 @@ body {
     <div class="modal-ft">
       <button class="btn-save" onclick="saveModal()">✓ Enregistrer</button>
       <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EXPORT PROTOCOLES (sélection) -->
+<div class="modal-ov" id="expsel-modal">
+  <div class="modal">
+    <div class="modal-hd">
+      <div class="modal-bar b"></div>
+      <div class="modal-title">
+        <span class="mt-sub">EXPORT WORD</span>
+        <span class="mt-name">Choisir les protocoles</span>
+      </div>
+      <button class="btn-mclose" onclick="closeExportSelect()">✕</button>
+    </div>
+    <div class="modal-body" id="expsel-body"></div>
+    <div class="modal-ft">
+      <button class="btn-save" id="expsel-go" onclick="runProtocolesExport()">⤓ Exporter</button>
+      <button class="btn-cancel" onclick="closeExportSelect()">Annuler</button>
     </div>
   </div>
 </div>
@@ -1345,13 +1487,112 @@ var currentView = 'protocoles';
 // ═══════════════════════════════════════
 // VIEW
 // ═══════════════════════════════════════
-function switchView(v) {
+function _rawSwitchView(v) {
   currentView = v;
   document.querySelectorAll('.view').forEach(function(el){ el.classList.remove('active'); });
   document.getElementById('view-' + v).classList.add('active');
   document.getElementById('tabbtn-p').className = 'tabbtn' + (v === 'protocoles' ? ' act-r' : '');
   document.getElementById('tabbtn-g').className = 'tabbtn' + (v === 'gestion' ? ' act-b' : '');
   if (v === 'gestion') renderGestion();
+}
+
+// ═══════════════════════════════════════
+// ACCES GESTION PAR CODE PIN
+// L'état "déverrouillé" et le code de référence sont enfermés dans cette
+// fermeture : ils ne sont pas accessibles ni modifiables depuis la console
+// du navigateur. Le code est comparé sous forme de hachage SHA-256, jamais
+// stocké ni comparé en clair.
+// ═══════════════════════════════════════
+var switchView, requestGestionAccess, checkPin, closePinLock, lockGestion, savePin;
+
+(function() {
+  var unlocked = false;
+  var PIN_DEFAULT = '0000';
+  var PIN_SALT = 'pnl-app-fr-2026';
+  var PIN_STORAGE_KEY = 'pnl_gestion_pin_hash';
+
+  function hashPin(pin) {
+    var data = new TextEncoder().encode(PIN_SALT + pin);
+    return crypto.subtle.digest('SHA-256', data).then(function(buf) {
+      return Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+    });
+  }
+
+  function getStoredHash() {
+    var stored = null;
+    try { stored = localStorage.getItem(PIN_STORAGE_KEY); } catch(e) {}
+    return stored ? Promise.resolve(stored) : hashPin(PIN_DEFAULT);
+  }
+
+  switchView = function(v) {
+    if (v === 'gestion' && !unlocked) { openPinLock(); return; }
+    _rawSwitchView(v);
+  };
+
+  requestGestionAccess = function() {
+    if (unlocked) { switchView('gestion'); return; }
+    openPinLock();
+  };
+
+  closePinLock = function() {
+    document.getElementById('pin-overlay').classList.remove('open');
+  };
+
+  checkPin = function() {
+    var input = document.getElementById('pin-input');
+    var err   = document.getElementById('pin-error');
+    var box   = document.getElementById('pin-box');
+    var val = input.value;
+    if (val.length !== 4) return;
+    Promise.all([hashPin(val), getStoredHash()]).then(function(r) {
+      if (r[0] === r[1]) {
+        unlocked = true;
+        closePinLock();
+        switchView('gestion');
+      } else {
+        err.textContent = 'Code incorrect';
+        box.classList.remove('shake'); void box.offsetWidth; box.classList.add('shake');
+        input.value = '';
+        input.focus();
+      }
+    });
+  };
+
+  lockGestion = function() {
+    unlocked = false;
+    switchView('protocoles');
+  };
+
+  savePin = function() {
+    var a = document.getElementById('pin-new').value;
+    var b = document.getElementById('pin-confirm').value;
+    var msg = document.getElementById('pin-save-msg');
+    if (a.length !== 4 || b.length !== 4) {
+      msg.className = 'pin-save-msg err'; msg.textContent = 'Le code doit contenir 4 chiffres'; return;
+    }
+    if (a !== b) {
+      msg.className = 'pin-save-msg err'; msg.textContent = 'Les deux codes ne correspondent pas'; return;
+    }
+    hashPin(a).then(function(h) {
+      try {
+        localStorage.setItem(PIN_STORAGE_KEY, h);
+        msg.className = 'pin-save-msg ok'; msg.textContent = 'Nouveau code enregistré';
+        document.getElementById('pin-new').value = '';
+        document.getElementById('pin-confirm').value = '';
+      } catch(e) {
+        msg.className = 'pin-save-msg err'; msg.textContent = 'Erreur : stockage local indisponible';
+      }
+    });
+  };
+})();
+
+function openPinLock() {
+  var input = document.getElementById('pin-input');
+  var err   = document.getElementById('pin-error');
+  input.value = '';
+  err.textContent = '';
+  document.getElementById('pin-overlay').classList.add('open');
+  setTimeout(function(){ input.focus(); }, 50);
 }
 
 // ═══════════════════════════════════════
@@ -1677,7 +1918,8 @@ function renderDetail() {
   Object.keys(crit).forEach(function(k) {
     if (!crit[k]) return;
     var tc = k.toLowerCase().indexOf('niveau') >= 0 ? 'b' : k.toLowerCase().indexOf('index') >= 0 ? 'r' : 'y';
-    tags += '<span class="tag ' + tc + '">' + crit[k] + '</span>';
+    var gLabel = (FILTRES[k] && FILTRES[k].label) ? FILTRES[k].label : k;
+    tags += '<span class="tag ' + tc + '"><span class="tag-label">' + gLabel + '</span>' + crit[k] + '</span>';
   });
 
   // ── Build étape cards (shared between modes) ──────────────
@@ -1887,7 +2129,7 @@ function switchEx(k) {
 // ═══════════════════════════════════════
 function switchGTab(tab) {
   currentGTab = tab;
-  var map = {p:'gr', po:'gb', b:'gy', f:'gr'};
+  var map = {p:'gr', po:'gb', b:'gy', f:'gr', pin:'gk'};
   Object.keys(map).forEach(function(t) {
     var btn = document.getElementById('gtab-' + t);
     if (btn) btn.className = 'gtab' + (t === tab ? ' ' + map[t] : '');
@@ -1896,11 +2138,37 @@ function switchGTab(tab) {
 }
 
 function renderGestion() {
-  if (currentGTab === 'p')  renderGP();
-  if (currentGTab === 'po') renderGPo();
-  if (currentGTab === 'b')  renderGB();
-  if (currentGTab === 'f')  renderGF();
+  if (currentGTab === 'p')   renderGP();
+  if (currentGTab === 'po')  renderGPo();
+  if (currentGTab === 'b')   renderGB();
+  if (currentGTab === 'f')   renderGF();
+  if (currentGTab === 'pin') renderGPin();
 }
+
+function renderGPin() {
+  document.getElementById('gcontent').innerHTML =
+    '<div class="pin-manage">' +
+      '<div class="pin-status">' +
+        '<div class="pin-status-lbl">Code actuel</div>' +
+        '<div class="pin-status-val">••••</div>' +
+      '</div>' +
+      '<div class="frow">' +
+        '<div class="flabel">Nouveau code (4 chiffres)</div>' +
+        '<input type="tel" inputmode="numeric" maxlength="4" class="finput" id="pin-new" autocomplete="off"' +
+          ' oninput="this.value=this.value.replace(/[^0-9]/g,\'\').slice(0,4)">' +
+      '</div>' +
+      '<div class="frow">' +
+        '<div class="flabel">Confirmer le code</div>' +
+        '<input type="tel" inputmode="numeric" maxlength="4" class="finput" id="pin-confirm" autocomplete="off"' +
+          ' oninput="this.value=this.value.replace(/[^0-9]/g,\'\').slice(0,4)">' +
+      '</div>' +
+      '<button class="btn-add" style="width:100%;justify-content:center;padding:12px" onclick="savePin()">Enregistrer le nouveau code</button>' +
+      '<div class="pin-save-msg" id="pin-save-msg"></div>' +
+      '<button class="btn-lock-now" onclick="lockGestion()">🔒 Verrouiller Gestion maintenant</button>' +
+    '</div>';
+}
+
+// (savePin est défini dans la fermeture "ACCES GESTION PAR CODE PIN" plus haut)
 
 function renderGP() {
   document.getElementById('gb-p').textContent = PROTOCOLES.length;
@@ -1921,6 +2189,7 @@ function renderGP() {
   }).join('');
   document.getElementById('gcontent').innerHTML =
     '<div class="gtoolbar"><div class="gsearch"><span style="color:#bbb;font-size:12px">🔍</span><input type="text" placeholder="Rechercher..." oninput="filterGList(this.value)" autocomplete="off"></div>' +
+    '<button class="btn-gexport" id="btn-gexport-p" onclick="openExportSelect()" title="Exporter des protocoles en .rtf"><span class="exp-icon">⤓</span><span class="exp-label">Word</span></button>' +
     '<button class="btn-add" onclick="openMdlP(null)">+ Nouveau</button></div>' +
     '<div class="glist" id="glist-p">' + rows + '</div>';
 }
@@ -1936,6 +2205,7 @@ function renderGPo() {
   }).join('');
   document.getElementById('gcontent').innerHTML =
     '<div class="gtoolbar"><div class="gsearch"><span style="color:#bbb;font-size:12px">🔍</span><input type="text" placeholder="Rechercher..." oninput="filterPoList(this.value)" autocomplete="off"></div>' +
+    '<button class="btn-gexport" id="btn-gexport-po" onclick="exportPostulatsDocx(\'btn-gexport-po\')" title="Exporter les postulats en .rtf"><span class="exp-icon">⤓</span><span class="exp-label">Word</span></button>' +
     '<button class="btn-add" onclick="openMdlPo(null)">+ Nouveau</button></div>' +
     '<div id="po-list">' + rows + '</div>';
 }
@@ -1954,6 +2224,7 @@ function renderGB() {
   }).join('');
   document.getElementById('gcontent').innerHTML =
     '<div class="gtoolbar"><div class="gsearch"><span style="color:#bbb;font-size:12px">🔍</span><input type="text" placeholder="Rechercher..." oninput="filterGList2(this.value)" autocomplete="off"></div>' +
+    '<button class="btn-gexport" id="btn-gexport-b" onclick="exportBriquesDocx(\'btn-gexport-b\')" title="Exporter les briques en .rtf"><span class="exp-icon">⤓</span><span class="exp-label">Word</span></button>' +
     '<button class="btn-add" onclick="openMdlB(null)">+ Nouveau</button></div>' +
     '<div class="glist" id="glist-b">' + rows + '</div>';
 }
@@ -1992,7 +2263,9 @@ function renderGF() {
   var total = FILTRES_ORDER.reduce(function(acc, k){ return acc + (FILTRES[k] ? FILTRES[k].valeurs.length : 0); }, 0);
   document.getElementById('gb-f').textContent = total;
 
-  var html = '';
+  var html = '<div class="gtoolbar"><div class="gsearch" style="border-right:none"><span style="font-family:\'IBM Plex Mono\',monospace;font-size:10px;color:#999;text-transform:uppercase;letter-spacing:.06em">' + total + ' valeurs</span></div>' +
+    '<button class="btn-gexport" id="btn-gexport-f" onclick="exportCriteresDocx(\'btn-gexport-f\')" title="Exporter les critères en .rtf"><span class="exp-icon">⤓</span><span class="exp-label">Word</span></button>' +
+  '</div>';
   FILTRES_ORDER.forEach(function(key, gi) {
     var grp = FILTRES[key];
     if (!grp) return;
@@ -2482,118 +2755,125 @@ function exportDocx() {
   }
 }
 
-function buildRTF(p) {
+function rtfHeader() {
   // RTF color table: 1=black, 2=red(D42B2B), 3=blue(1A3ED4), 4=gray(666666)
-  var crit = p.criteres || {};
-  // levelColor: Fondamentaux=black, Technicien=blue, Praticien/other=red
-  var levelColor = (crit.NiveauPNL === 'Fondamentaux') ? 1
-    : (crit.NiveauPNL === 'Technicien') ? 3 : 2;
-
-  var header = '{\\rtf1\\ansi\\ansicpg1252\\cocoartf2639\n' +
+  return '{\\rtf1\\ansi\\ansicpg1252\\cocoartf2639\n' +
     '{\\fonttbl{\\f0\\fswiss\\fcharset0 Arial;}}\n' +
     '{\\colortbl;\\red10\\green10\\blue10;\\red212\\green43\\blue43;\\red26\\green62\\blue212;\\red102\\green102\\blue102;}\n' +
     '\\paperw11906\\paperh16838\\margl1800\\margr1800\\margt1800\\margb1800\n' +
     '\\f0\\fs22\n';
+}
 
-  // RTF escape: proper Latin-1 hex for accented chars, unicode for others
-  function esc(s) {
-    if (!s) return '';
-    // Map common French accented chars to RTF Latin-1
-    var map = {
-      'à':"\\\'e0",'â':"\\\'e2",'ä':"\\\'e4",
-      'é':"\\\'e9",'è':"\\\'e8",'ê':"\\\'ea",'ë':"\\\'eb",
-      'î':"\\\'ee",'ï':"\\\'ef",
-      'ô':"\\\'f4",'ö':"\\\'f6",'ù':"\\\'f9",'û':"\\\'fb",'ü':"\\\'fc",
-      'ç':"\\\'e7",'œ':"\\\'9c",
-      'À':"\\\'c0",'Â':"\\\'c2",'Ä':"\\\'c4",
-      'É':"\\\'c9",'È':"\\\'c8",'Ê':"\\\'ca",'Ë':"\\\'cb",
-      'Î':"\\\'ce",'Ï':"\\\'cf",
-      'Ô':"\\\'d4",'Ö':"\\\'d6",'Ù':"\\\'d9",'Û':"\\\'db",'Ü':"\\\'dc",
-      'Ç':"\\\'c7",'Œ':"\\\'8c",
-      '\u2019':"\\\'92",'\u2018':"\\\'91",
-      '\u201c':"\\\'93",'\u201d':"\\\'94",
-      '\u00ab':"\\\'ab",'\u00bb':"\\\'bb",
-      '\u00b7':"\\\'b7",'\u2022':"\\\'95",
-      '\u2013':"\\\'96",'\u2014':"\\\'97",
-      '\u00e9':"\\\'e9"
-    };
-    return String(s)
-      .replace(/\\/g, '\\\\')
-      .replace(/\{/g, '\\{')
-      .replace(/\}/g, '\\}')
-      .replace(/\n/g, '\\line ')
-      .replace(/[^\x00-\x7E]/g, function(c) {
-        if (map[c]) return map[c];
-        var code = c.charCodeAt(0);
-        if (code < 256) return "\\'" + code.toString(16).padStart(2,'0');
-        return '\\u' + code + ' ';
-      });
-  }
+// RTF escape: proper Latin-1 hex for accented chars, unicode for others
+function rtfEsc(s) {
+  if (!s) return '';
+  // Map common French accented chars to RTF Latin-1
+  var map = {
+    'à':"\\\'e0",'â':"\\\'e2",'ä':"\\\'e4",
+    'é':"\\\'e9",'è':"\\\'e8",'ê':"\\\'ea",'ë':"\\\'eb",
+    'î':"\\\'ee",'ï':"\\\'ef",
+    'ô':"\\\'f4",'ö':"\\\'f6",'ù':"\\\'f9",'û':"\\\'fb",'ü':"\\\'fc",
+    'ç':"\\\'e7",'œ':"\\\'9c",
+    'À':"\\\'c0",'Â':"\\\'c2",'Ä':"\\\'c4",
+    'É':"\\\'c9",'È':"\\\'c8",'Ê':"\\\'ca",'Ë':"\\\'cb",
+    'Î':"\\\'ce",'Ï':"\\\'cf",
+    'Ô':"\\\'d4",'Ö':"\\\'d6",'Ù':"\\\'d9",'Û':"\\\'db",'Ü':"\\\'dc",
+    'Ç':"\\\'c7",'Œ':"\\\'8c",
+    '\u2019':"\\\'92",'\u2018':"\\\'91",
+    '\u201c':"\\\'93",'\u201d':"\\\'94",
+    '\u00ab':"\\\'ab",'\u00bb':"\\\'bb",
+    '\u00b7':"\\\'b7",'\u2022':"\\\'95",
+    '\u2013':"\\\'96",'\u2014':"\\\'97",
+    '\u00e9':"\\\'e9"
+  };
+  return String(s)
+    .replace(/\\/g, '\\\\')
+    .replace(/\{/g, '\\{')
+    .replace(/\}/g, '\\}')
+    .replace(/\n/g, '\\line ')
+    .replace(/[^\x00-\x7E]/g, function(c) {
+      if (map[c]) return map[c];
+      var code = c.charCodeAt(0);
+      if (code < 256) return "\\'" + code.toString(16).padStart(2,'0');
+      return '\\u' + code + ' ';
+    });
+}
 
-  function title(text, colorIdx, size) {
-    size = size || 48;
-    return '\\pard\\sb200\\sa100\\cf' + colorIdx + '\\b\\fs' + size + ' ' + esc(text) + '\\b0\\fs22\\cf1\\par\n';
-  }
-  function secHead(text, colorIdx) {
-    colorIdx = colorIdx || 4;
-    return '\\pard\\sb220\\sa80\\cf' + colorIdx + '\\b\\caps\\fs20 ' + esc(text) + '\\b0\\caps0\\cf1\\par\n' +
-           '\\pard\\sb0\\sa0{\\cf' + colorIdx + '\\brdrb\\brdrs\\brdrw10\\brsp30 }\\par\n';
-  }
-  function body(text) {
-    if (!text || !String(text).trim()) return '';
-    return String(text).split('\n').map(function(line) {
-      return '\\pard\\sb0\\sa80\\fs22\\cf1 ' + esc(line) + '\\par\n';
-    }).join('');
-  }
-  function bullet(text) {
-    return '\\pard\\li360\\fi-360\\sb40\\sa40\\fs22\\cf1 -  ' + esc(text) + '\\par\n';
-  }
-  function emptyLine() { return '\\pard\\sb120\\sa0\\par\n'; }
+function rtfTitle(text, colorIdx, size) {
+  size = size || 48;
+  return '\\pard\\sb200\\sa100\\cf' + colorIdx + '\\b\\fs' + size + ' ' + rtfEsc(text) + '\\b0\\fs22\\cf1\\par\n';
+}
+function rtfSecHead(text, colorIdx) {
+  colorIdx = colorIdx || 4;
+  return '\\pard\\sb220\\sa80\\cf' + colorIdx + '\\b\\caps\\fs20 ' + rtfEsc(text) + '\\b0\\caps0\\cf1\\par\n' +
+         '\\pard\\sb0\\sa0{\\cf' + colorIdx + '\\brdrb\\brdrs\\brdrw10\\brsp30 }\\par\n';
+}
+function rtfBody(text) {
+  if (!text || !String(text).trim()) return '';
+  return String(text).split('\n').map(function(line) {
+    return '\\pard\\sb0\\sa80\\fs22\\cf1 ' + rtfEsc(line) + '\\par\n';
+  }).join('');
+}
+function rtfBullet(text) {
+  return '\\pard\\li360\\fi-360\\sb40\\sa40\\fs22\\cf1 -  ' + rtfEsc(text) + '\\par\n';
+}
+function rtfEmptyLine() { return '\\pard\\sb120\\sa0\\par\n'; }
 
-  var out = header;
+function buildRTF(p) {
+  var crit = p.criteres || {};
+  // levelColor: Fondamentaux=black, Technicien=blue, Praticien/other=red
+  var levelColor = (crit.NiveauPNL === 'Fondamentaux') ? 1
+    : (crit.NiveauPNL === 'Technicien') ? 3 : 2;
+  return rtfHeader() + buildRTFProtocolBody(p, levelColor) + '}';
+}
+
+// Corps d'un protocole seul, réutilisable pour l'export unitaire et l'export liste complète
+function buildRTFProtocolBody(p, levelColor) {
+  var crit = p.criteres || {};
+  var out = '';
 
   // Title
-  out += title(p.nom, levelColor, 48);
+  out += rtfTitle(p.nom, levelColor, 48);
 
   // Tags critères
   var critParts = [];
   ['NiveauPNL','INDEX','INTENSITE','CONTEXTE'].forEach(function(k){ if (crit[k]) critParts.push(crit[k]); });
-  if (critParts.length) out += '\\pard\\sb0\\sa60\\cf4\\fs18\\caps ' + esc(critParts.join('  /  ')) + '\\caps0\\cf1\\par\n';
+  if (critParts.length) out += '\\pard\\sb0\\sa60\\cf4\\fs18\\caps ' + rtfEsc(critParts.join('  /  ')) + '\\caps0\\cf1\\par\n';
 
   // Meta
   var metaP = [];
-  if (p.duree_estimee) metaP.push(esc(p.duree_estimee));
+  if (p.duree_estimee) metaP.push(rtfEsc(p.duree_estimee));
   if (p.favorite_rank > 0) metaP.push('Favori');
   if (p.views) metaP.push(p.views + ' vues');
   if (metaP.length) out += '\\pard\\sb0\\sa200\\cf4\\fs18 ' + metaP.join('   ') + '\\cf1\\par\n';
 
   // Sections — no yellow (cf3 removed), use black(1), red(2), blue(3), gray(4)
-  if (p.description && p.description.trim()) { out += secHead('DESCRIPTION', 2); out += body(p.description); out += emptyLine(); }
-  if (p.histoire && p.histoire.trim()) { out += secHead('HISTOIRE', 2); out += body(p.histoire); out += emptyLine(); }
-  if (p.postulats && p.postulats.length) { out += secHead('POSTULATS', 2); p.postulats.forEach(function(t){ out += bullet(t); }); out += emptyLine(); }
-  if (p.declencheurs && p.declencheurs.length) { out += secHead('DECLENCHEURS', 2); p.declencheurs.forEach(function(t){ out += bullet(t); }); out += emptyLine(); }
+  if (p.description && p.description.trim()) { out += rtfSecHead('DESCRIPTION', 2); out += rtfBody(p.description); out += rtfEmptyLine(); }
+  if (p.histoire && p.histoire.trim()) { out += rtfSecHead('HISTOIRE', 2); out += rtfBody(p.histoire); out += rtfEmptyLine(); }
+  if (p.postulats && p.postulats.length) { out += rtfSecHead('POSTULATS', 2); p.postulats.forEach(function(t){ out += rtfBullet(t); }); out += rtfEmptyLine(); }
+  if (p.declencheurs && p.declencheurs.length) { out += rtfSecHead('DECLENCHEURS', 2); p.declencheurs.forEach(function(t){ out += rtfBullet(t); }); out += rtfEmptyLine(); }
 
   // Exemples
   var exEntries = [
     ['Quotidien', p.exemple_quotidien],
     ['Professionnel', p.exemple_professionnel],
     ['Sport', p.exemple_sport],
-    ['Sant' + esc('é'), p.exemple_sante]
+    ['Sant' + rtfEsc('é'), p.exemple_sante]
   ].filter(function(e){ return e[1] && e[1].trim(); });
   if (exEntries.length) {
-    out += secHead('EXEMPLES', 2);
+    out += rtfSecHead('EXEMPLES', 2);
     exEntries.forEach(function(e){
       out += '\\pard\\sb120\\sa40\\cf4\\b\\fs18\\caps ' + e[0] + '\\caps0\\b0\\cf1\\par\n';
-      out += body(e[1]);
+      out += rtfBody(e[1]);
     });
-    out += emptyLine();
+    out += rtfEmptyLine();
   }
 
-  if (p.socle && p.socle.trim()) { out += secHead('SOCLE', 2); out += body(p.socle); out += emptyLine(); }
-  if (p.principe && p.principe.trim()) { out += secHead('PRINCIPE', 2); out += body(p.principe); out += emptyLine(); }
-  if (p.utilite && p.utilite.trim()) { out += secHead('UTILITE', 2); out += body(p.utilite); out += emptyLine(); }
-  if (p.vigilance && p.vigilance.trim()) { out += secHead('VIGILANCE', 2); out += body(p.vigilance); out += emptyLine(); }
-  if (p.le_plus && p.le_plus.trim()) { out += secHead('LE PLUS', 2); out += body(p.le_plus); out += emptyLine(); }
+  if (p.socle && p.socle.trim()) { out += rtfSecHead('SOCLE', 2); out += rtfBody(p.socle); out += rtfEmptyLine(); }
+  if (p.principe && p.principe.trim()) { out += rtfSecHead('PRINCIPE', 2); out += rtfBody(p.principe); out += rtfEmptyLine(); }
+  if (p.utilite && p.utilite.trim()) { out += rtfSecHead('UTILITE', 2); out += rtfBody(p.utilite); out += rtfEmptyLine(); }
+  if (p.vigilance && p.vigilance.trim()) { out += rtfSecHead('VIGILANCE', 2); out += rtfBody(p.vigilance); out += rtfEmptyLine(); }
+  if (p.le_plus && p.le_plus.trim()) { out += rtfSecHead('LE PLUS', 2); out += rtfBody(p.le_plus); out += rtfEmptyLine(); }
 
   // Score
   var scoreF = [
@@ -2604,17 +2884,17 @@ function buildRTF(p) {
     ['EFFET', p.score_effet]
   ].filter(function(x){return x[1];});
   if (scoreF.length) {
-    out += secHead('SCORE', 2);
-    scoreF.forEach(function(x){ out += '\\pard\\sb60\\sa60\\fs22\\cf1 {\\b\\cf3 ' + x[0].toUpperCase() + ' :}  ' + esc(x[1]) + '\\par\n'; });
-    out += emptyLine();
+    out += rtfSecHead('SCORE', 2);
+    scoreF.forEach(function(x){ out += '\\pard\\sb60\\sa60\\fs22\\cf1 {\\b\\cf3 ' + x[0].toUpperCase() + ' :}  ' + rtfEsc(x[1]) + '\\par\n'; });
+    out += rtfEmptyLine();
   }
 
   // Durée
-  if (p.duree_estimee) out += '\\pard\\sb80\\sa200\\fs22\\cf1 {\\b\\cf3 DUREE :}  ' + esc(p.duree_estimee) + '\\par\n';
+  if (p.duree_estimee) out += '\\pard\\sb80\\sa200\\fs22\\cf1 {\\b\\cf3 DUREE :}  ' + rtfEsc(p.duree_estimee) + '\\par\n';
 
   // Étapes
   if (p.etapes && p.etapes.length) {
-    out += secHead('PROTOCOLE - ' + p.etapes.length + ' ETAPE' + (p.etapes.length > 1 ? 'S' : ''), 2);
+    out += rtfSecHead('PROTOCOLE - ' + p.etapes.length + ' ETAPE' + (p.etapes.length > 1 ? 'S' : ''), 2);
     p.etapes.forEach(function(e, i) {
       var action = typeof e === 'string' ? e : (e.content || '');
       var instr  = typeof e === 'object' ? (e.instruction || '') : '';
@@ -2623,20 +2903,20 @@ function buildRTF(p) {
       var qvars  = typeof e === 'object' && Array.isArray(e.question_variants) ? e.question_variants.filter(Boolean) : [];
 
       out += '\\pard\\sb160\\sa40\\cf' + levelColor + '\\b\\fs30 ' + (i+1) + '.\\b0\\cf1\\fs22\\par\n';
-      if (action && action.trim()) out += '\\pard\\sb0\\sa60\\cf1 {\\b\\cf3\\caps\\fs18 ACTION  }\\fs22 ' + esc(action) + '\\par\n';
+      if (action && action.trim()) out += '\\pard\\sb0\\sa60\\cf1 {\\b\\cf3\\caps\\fs18 ACTION  }\\fs22 ' + rtfEsc(action) + '\\par\n';
       if (instr && instr.trim()) {
-        out += '\\pard\\sb0\\sa40\\cf1 {\\b\\cf3\\caps\\fs18 INSTRUCTION  }\\fs22 ' + esc(instr) + '\\par\n';
-        ivars.forEach(function(v){ out += '\\pard\\li360\\sa30\\fs20\\cf3\\i -> ' + esc(v) + '\\i0\\cf1\\par\n'; });
+        out += '\\pard\\sb0\\sa40\\cf1 {\\b\\cf3\\caps\\fs18 INSTRUCTION  }\\fs22 ' + rtfEsc(instr) + '\\par\n';
+        ivars.forEach(function(v){ out += '\\pard\\li360\\sa30\\fs20\\cf3\\i -> ' + rtfEsc(v) + '\\i0\\cf1\\par\n'; });
       }
       if (quest && quest.trim()) {
-        out += '\\pard\\sb0\\sa40\\cf1 {\\b\\cf3\\caps\\fs18 QUESTION  }\\fs22\\cf1\\i ' + esc(quest) + '\\i0\\cf1\\par\n';
-        qvars.forEach(function(v){ out += '\\pard\\li360\\sa30\\fs20\\cf3\\i -> ' + esc(v) + '\\i0\\cf1\\par\n'; });
+        out += '\\pard\\sb0\\sa40\\cf1 {\\b\\cf3\\caps\\fs18 QUESTION  }\\fs22\\cf1\\i ' + rtfEsc(quest) + '\\i0\\cf1\\par\n';
+        qvars.forEach(function(v){ out += '\\pard\\li360\\sa30\\fs20\\cf3\\i -> ' + rtfEsc(v) + '\\i0\\cf1\\par\n'; });
       }
     });
-    out += emptyLine();
+    out += rtfEmptyLine();
   }
 
-  if (p.notes && p.notes.trim()) { out += secHead('NOTES', 2); out += body(p.notes); out += emptyLine(); }
+  if (p.notes && p.notes.trim()) { out += rtfSecHead('NOTES', 2); out += rtfBody(p.notes); out += rtfEmptyLine(); }
 
   // Medias
   var mediaLines = [];
@@ -2644,12 +2924,330 @@ function buildRTF(p) {
   if (p.video_url) mediaLines.push(['VIDEO', p.video_url]);
   if (p.podcast_url) mediaLines.push(['PODCAST', p.podcast_url]);
   if (mediaLines.length) {
-    out += secHead('MEDIAS', 2);
-    mediaLines.forEach(function(m){ out += '\\pard\\sb40\\sa40\\cf3\\fs20 ' + m[0] + ' : ' + esc(m[1]) + '\\cf1\\par\n'; });
+    out += rtfSecHead('MEDIAS', 2);
+    mediaLines.forEach(function(m){ out += '\\pard\\sb40\\sa40\\cf3\\fs20 ' + m[0] + ' : ' + rtfEsc(m[1]) + '\\cf1\\par\n'; });
   }
+
+  return out;
+}
+
+// ── Export : liste des protocoles (un seul fichier, saut de page entre chaque) ──
+// selectedIds : tableau d'ids à exporter ; si absent ou vide, exporte tous les protocoles
+function buildRTFProtocolesListe(selectedIds) {
+  var list = (selectedIds && selectedIds.length)
+    ? PROTOCOLES.filter(function(p){ return selectedIds.indexOf(p.id) >= 0; })
+    : PROTOCOLES;
+  var out = rtfHeader();
+  out += rtfTitle('PROTOCOLES PNL', 2, 44);
+  out += '\\pard\\sb0\\sa200\\cf4\\fs18 ' + list.length + ' protocole' + (list.length > 1 ? 's' : '') + '\\cf1\\par\n';
+  out += rtfEmptyLine();
+  list.forEach(function(p, i) {
+    var crit = p.criteres || {};
+    var levelColor = (crit.NiveauPNL === 'Fondamentaux') ? 1 : (crit.NiveauPNL === 'Technicien') ? 3 : 2;
+    out += buildRTFProtocolBody(p, levelColor);
+    if (i < list.length - 1) out += '\\page\n';
+  });
+  out += '}';
+  return out;
+}
+
+// ── Export : postulats ──
+function buildRTFPostulats() {
+  var out = rtfHeader();
+  out += rtfTitle('POSTULATS DE LA PNL', 2, 44);
+  out += '\\pard\\sb0\\sa200\\cf4\\fs18 ' + POSTULATS.length + ' postulat' + (POSTULATS.length > 1 ? 's' : '') + '\\cf1\\par\n';
+  out += rtfEmptyLine();
+  POSTULATS.forEach(function(p, i) {
+    out += '\\pard\\sb160\\sa40\\cf2\\b\\fs22 ' + (i+1) + '. ' + rtfEsc(p.texte) + '\\b0\\cf1\\par\n';
+    if (p.description && p.description.trim()) out += rtfBody(p.description);
+    out += rtfEmptyLine();
+  });
+  out += '}';
+  return out;
+}
+
+// ── Export : briques ──
+function buildRTFBriques() {
+  var out = rtfHeader();
+  out += rtfTitle('BRIQUES PNL', 3, 44);
+  out += '\\pard\\sb0\\sa200\\cf4\\fs18 ' + BRIQUES.length + ' brique' + (BRIQUES.length > 1 ? 's' : '') + '\\cf1\\par\n';
+  out += rtfEmptyLine();
+  BRIQUES.forEach(function(b) {
+    out += '\\pard\\sb120\\sa40\\cf3\\b\\fs22 ' + rtfEsc(b.nom) + '\\b0\\cf1\\par\n';
+    if (b.description && b.description.trim()) out += rtfBody(b.description);
+    out += rtfEmptyLine();
+  });
+  out += '}';
+  return out;
+}
+
+// ── Export : critères (tous les groupes de filtres et leurs valeurs) ──
+function buildRTFCriteres() {
+  var out = rtfHeader();
+  out += rtfTitle('CRITERES', 1, 44);
+  var totalVal = FILTRES_ORDER.reduce(function(acc, k){ return acc + (FILTRES[k] ? FILTRES[k].valeurs.length : 0); }, 0);
+  out += '\\pard\\sb0\\sa200\\cf4\\fs18 ' + FILTRES_ORDER.length + ' groupes, ' + totalVal + ' valeurs\\cf1\\par\n';
+  out += rtfEmptyLine();
+  FILTRES_ORDER.forEach(function(key) {
+    var grp = FILTRES[key]; if (!grp) return;
+    out += rtfSecHead(grp.label, 2);
+    grp.valeurs.forEach(function(v) {
+      out += '\\pard\\sb100\\sa30\\cf3\\b\\fs20 ' + rtfEsc(v.label) + ' (' + rtfEsc(v.code) + ')\\b0\\cf1\\par\n';
+      if (v.description && v.description.trim()) out += rtfBody(v.description);
+    });
+    out += rtfEmptyLine();
+  });
+  out += '}';
+  return out;
+}
+
+// ── Déclencheur de téléchargement, commun à tous les exports ──
+function downloadRTF(content, filename) {
+  var blob = new Blob([content], {type: 'application/rtf'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+}
+
+function flashGExportBtn(btnId) {
+  var btn = document.getElementById(btnId);
+  if (!btn) return;
+  var icon = btn.querySelector('.exp-icon');
+  var label = btn.querySelector('.exp-label');
+  btn.classList.add('success');
+  if (icon) icon.textContent = '✓';
+  if (label) label.textContent = 'OK';
+  setTimeout(function(){
+    btn.classList.remove('success');
+    if (icon) icon.textContent = '⤓';
+    if (label) label.textContent = 'Word';
+  }, 1800);
+}
+
+function exportProtocolesListeDocx(btnId) {
+  try {
+    downloadRTF(buildRTFProtocolesListe(), 'Protocoles_PNL.rtf');
+    flashGExportBtn(btnId);
+  } catch(err) { console.error(err); alert('Erreur : ' + err.message); }
+}
+
+// ── Export : liste des titres seulement (sans le contenu des fiches) ──
+function buildRTFProtocolesTitres(selectedIds) {
+  var list = (selectedIds && selectedIds.length)
+    ? PROTOCOLES.filter(function(p){ return selectedIds.indexOf(p.id) >= 0; })
+    : PROTOCOLES;
+  var out = rtfHeader();
+  out += rtfTitle('LISTE DES PROTOCOLES', 2, 44);
+  out += '\\pard\\sb0\\sa200\\cf4\\fs18 ' + list.length + ' protocole' + (list.length > 1 ? 's' : '') + '\\cf1\\par\n';
+  out += rtfEmptyLine();
+  list.forEach(function(p, i) {
+    out += '\\pard\\sb70\\sa70\\fs24\\cf1 ' + (i+1) + '. ' + rtfEsc(p.nom) + '\\par\n';
+  });
+  out += '}';
+  return out;
+}
+
+// ── Ligne à compléter à la main (préparation papier) ──
+function rtfBlankSpace(lines) {
+  lines = lines || 1;
+  var out = '';
+  for (var i = 0; i < lines; i++) {
+    out += '\\pard\\sb0\\sa180\\fs22\\cf1 ____________________________________________\\par\n';
+  }
+  return out;
+}
+
+// ── Export : modèle vierge de protocole (préparation en amont) ──
+function buildRTFProtocoleVierge() {
+  var out = rtfHeader();
+  out += rtfTitle('MODELE VIERGE - PREPARATION DE PROTOCOLE', 1, 40);
+  out += rtfEmptyLine();
+
+  out += rtfSecHead('NOM DU PROTOCOLE', 2);
+  out += rtfBlankSpace(1);
+
+  out += rtfSecHead('CRITERES', 2);
+  out += '\\pard\\sb60\\sa60\\fs22\\cf1 {\\b\\cf3 NIVEAU PNL :} ____________    {\\b\\cf3 INDEX :} ______    {\\b\\cf3 CONTEXTE :} ______    {\\b\\cf3 INTENSITE :} ______\\par\n';
+  out += rtfEmptyLine();
+
+  out += rtfSecHead('DESCRIPTION', 2);
+  out += rtfBlankSpace(3);
+
+  out += rtfSecHead('HISTOIRE', 2);
+  out += rtfBlankSpace(2);
+
+  out += rtfSecHead('POSTULATS MOBILISES', 2);
+  out += rtfBlankSpace(3);
+
+  out += rtfSecHead('DECLENCHEURS', 2);
+  out += rtfBlankSpace(2);
+
+  out += rtfSecHead('EXEMPLES', 2);
+  ['QUOTIDIEN','PROFESSIONNEL','SPORT','SANTE'].forEach(function(ex){
+    out += '\\pard\\sb120\\sa40\\cf4\\b\\fs18\\caps ' + ex + '\\caps0\\b0\\cf1\\par\n';
+    out += rtfBlankSpace(1);
+  });
+
+  out += rtfSecHead('SOCLE', 2); out += rtfBlankSpace(2);
+  out += rtfSecHead('PRINCIPE', 2); out += rtfBlankSpace(2);
+  out += rtfSecHead('UTILITE', 2); out += rtfBlankSpace(2);
+  out += rtfSecHead('VIGILANCE', 2); out += rtfBlankSpace(2);
+  out += rtfSecHead('LE PLUS', 2); out += rtfBlankSpace(1);
+
+  out += rtfSecHead('SCORE', 2);
+  ['SYMPTOME','CAUSE','OBJECTIF','RESSOURCES','EFFET'].forEach(function(s){
+    out += '\\pard\\sb60\\sa60\\fs22\\cf1 {\\b\\cf3 ' + s + ' :} ____________________________________________\\par\n';
+  });
+  out += rtfEmptyLine();
+
+  out += '\\pard\\sb80\\sa200\\fs22\\cf1 {\\b\\cf3 DUREE ESTIMEE :} ______________\\par\n';
+
+  out += rtfSecHead('ETAPES DU PROTOCOLE', 2);
+  for (var i = 1; i <= 8; i++) {
+    out += '\\pard\\sb160\\sa40\\cf2\\b\\fs30 ' + i + '.\\b0\\cf1\\fs22\\par\n';
+    out += '\\pard\\sb0\\sa60\\cf1 {\\b\\cf3\\caps\\fs18 ACTION  }\\par\n';
+    out += rtfBlankSpace(1);
+    out += '\\pard\\sb0\\sa40\\cf1 {\\b\\cf3\\caps\\fs18 INSTRUCTION  }\\par\n';
+    out += rtfBlankSpace(1);
+    out += '\\pard\\sb0\\sa40\\cf1 {\\b\\cf3\\caps\\fs18 QUESTION  }\\par\n';
+    out += rtfBlankSpace(1);
+  }
+  out += rtfEmptyLine();
+
+  out += rtfSecHead('NOTES', 2);
+  out += rtfBlankSpace(3);
 
   out += '}';
   return out;
+}
+
+// ── Sélection des protocoles avant export ──────────────
+var expselMode = 'complet'; // 'complet' | 'titres' | 'vierge'
+
+function setExpselMode(mode) {
+  expselMode = mode;
+  var bComplet = document.getElementById('expmode-complet');
+  var bTitres  = document.getElementById('expmode-titres');
+  var bVierge  = document.getElementById('expmode-vierge');
+  if (bComplet) bComplet.className = 'rm-btn' + (mode === 'complet' ? ' rm-active-b' : '');
+  if (bTitres)  bTitres.className  = 'rm-btn' + (mode === 'titres'  ? ' rm-active-k' : '');
+  if (bVierge)  bVierge.className  = 'rm-btn' + (mode === 'vierge'  ? ' rm-active-r' : '');
+
+  var listWrap = document.getElementById('expsel-list-wrap');
+  var note     = document.getElementById('expsel-vierge-note');
+  var goBtn    = document.getElementById('expsel-go');
+  if (mode === 'vierge') {
+    if (listWrap) listWrap.style.display = 'none';
+    if (note) note.style.display = 'block';
+    if (goBtn) goBtn.disabled = false;
+  } else {
+    if (listWrap) listWrap.style.display = '';
+    if (note) note.style.display = 'none';
+    updateExpselCount();
+  }
+}
+
+function openExportSelect() {
+  var items = PROTOCOLES.map(function(p) {
+    var crit = p.criteres || {};
+    var sub = [crit.NiveauPNL, (p.etapes && p.etapes.length ? p.etapes.length + ' étapes' : '')]
+      .filter(Boolean).join(' · ');
+    return {code: p.id, label: p.nom, sub: sub};
+  });
+  expselMode = 'complet';
+
+  document.getElementById('expsel-body').innerHTML =
+    '<div class="expmode-bar">' +
+      '<button type="button" class="rm-btn rm-active-b" id="expmode-complet" onclick="setExpselMode(\'complet\')">Fiches complètes</button>' +
+      '<button type="button" class="rm-btn" id="expmode-titres" onclick="setExpselMode(\'titres\')">Titres seulement</button>' +
+      '<button type="button" class="rm-btn" id="expmode-vierge" onclick="setExpselMode(\'vierge\')">Modèle vierge</button>' +
+    '</div>' +
+    '<div id="expsel-vierge-note" style="display:none;font-size:13px;color:#666;font-weight:300;line-height:1.6;padding:10px 2px 4px">' +
+      'Un seul document vierge sera généré, avec toutes les rubriques d\'un protocole et des lignes à compléter à la main pour préparer une séance en amont.' +
+    '</div>' +
+    '<div id="expsel-list-wrap">' +
+      '<div class="expsel-toolbar">' +
+        '<button type="button" onclick="expselSetAll(true)">Tout cocher</button>' +
+        '<button type="button" onclick="expselSetAll(false)">Tout décocher</button>' +
+      '</div>' +
+      '<div class="expsel-count" id="expsel-count"></div>' +
+      '<div class="mcl" id="expsel-list">' +
+        items.map(function(it) {
+          return '<div class="mcl-item sel" onclick="toggleMcl(this);updateExpselCount()" data-code="' + it.code + '">' +
+            '<div class="mcl-cb"></div>' +
+            '<div class="mcl-lbl">' + it.label + (it.sub ? '<div class="mcl-sub">' + it.sub + '</div>' : '') + '</div>' +
+          '</div>';
+        }).join('') +
+      '</div>' +
+    '</div>';
+
+  updateExpselCount();
+  document.getElementById('expsel-modal').classList.add('open');
+}
+
+function closeExportSelect() {
+  document.getElementById('expsel-modal').classList.remove('open');
+}
+
+function expselSetAll(state) {
+  document.querySelectorAll('#expsel-list .mcl-item').forEach(function(item) {
+    item.classList.toggle('sel', state);
+  });
+  updateExpselCount();
+}
+
+function updateExpselCount() {
+  var el = document.getElementById('expsel-list');
+  var total = el ? el.querySelectorAll('.mcl-item').length : 0;
+  var sel = el ? el.querySelectorAll('.mcl-item.sel').length : 0;
+  var countEl = document.getElementById('expsel-count');
+  if (countEl) countEl.textContent = sel + ' / ' + total + ' sélectionné' + (sel > 1 ? 's' : '');
+  var goBtn = document.getElementById('expsel-go');
+  if (goBtn && expselMode !== 'vierge') goBtn.disabled = (sel === 0);
+}
+
+function runProtocolesExport() {
+  try {
+    if (expselMode === 'vierge') {
+      downloadRTF(buildRTFProtocoleVierge(), 'Modele_vierge_protocole_PNL.rtf');
+      closeExportSelect();
+      flashGExportBtn('btn-gexport-p');
+      return;
+    }
+    var codes = getMclValues('expsel-list');
+    if (!codes.length) return;
+    var isFull = (codes.length === PROTOCOLES.length);
+    if (expselMode === 'titres') {
+      var filenameT = isFull ? 'Protocoles_PNL_Titres.rtf' : 'Protocoles_PNL_Titres_selection.rtf';
+      downloadRTF(buildRTFProtocolesTitres(codes), filenameT);
+    } else {
+      var filenameC = isFull ? 'Protocoles_PNL.rtf' : 'Protocoles_PNL_selection.rtf';
+      downloadRTF(buildRTFProtocolesListe(codes), filenameC);
+    }
+    closeExportSelect();
+    flashGExportBtn('btn-gexport-p');
+  } catch(err) { console.error(err); alert('Erreur : ' + err.message); }
+}
+function exportPostulatsDocx(btnId) {
+  try {
+    downloadRTF(buildRTFPostulats(), 'Postulats_PNL.rtf');
+    flashGExportBtn(btnId);
+  } catch(err) { console.error(err); alert('Erreur : ' + err.message); }
+}
+function exportBriquesDocx(btnId) {
+  try {
+    downloadRTF(buildRTFBriques(), 'Briques_PNL.rtf');
+    flashGExportBtn(btnId);
+  } catch(err) { console.error(err); alert('Erreur : ' + err.message); }
+}
+function exportCriteresDocx(btnId) {
+  try {
+    downloadRTF(buildRTFCriteres(), 'Criteres_PNL.rtf');
+    flashGExportBtn(btnId);
+  } catch(err) { console.error(err); alert('Erreur : ' + err.message); }
 }
 
 
@@ -2739,7 +3337,7 @@ function buildCriteriaCards() {
       '</button>';
     }).join('');
     html += '<div class="cc-card">' +
-      '<div class="cc-head">' +
+      '<div class="cc-head ' + col.accentCls + '">' +
         '<div class="cc-accent ' + col.accentCls + '"></div>' +
         '<div class="cc-label">' + grp.label + '</div>' +
         '<div class="cc-count">' + grp.valeurs.length + '</div>' +
