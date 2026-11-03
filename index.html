@@ -4,7 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="PNL Séance">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=59">
+<link rel="manifest" href="manifest.webmanifest?v=59">
+<link rel="icon" type="image/png" href="apple-touch-icon.png?v=59">
 <meta name="theme-color" content="#F7F3EE">
 <meta name="color-scheme" content="light dark">
 <script>
@@ -1506,6 +1510,14 @@ button, input, select, textarea { font-family: var(--font-ui); }
 .topnav { box-shadow: none; }
 .swipe-overview div[style*="line-height"] { font-family: var(--font-txt); font-size: 15px; }
 
+
+/* Installation sur l'écran d'accueil */
+.install-hint { font-size: 13px; line-height: 1.5; text-align: center; }
+.install-hint[hidden] { display: none; }
+.install-hint svg { width: 16px; height: 16px; vertical-align: -3px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.pin-overlay .install-hint { color: #FFFDF9; background: rgba(255,253,249,.08); border: 1px solid rgba(255,253,249,.2); border-radius: 12px; padding: 10px 12px; margin-top: 4px; width: 100%; }
+.about-popup .install-hint { margin-top: 12px; padding: 10px 12px; border-radius: 10px; background: var(--note-bg); color: var(--note-txt); }
+.install-btn { width: 100%; border: none; border-radius: 10px; padding: 10px; font-family: var(--font-ui); font-size: 14px; font-weight: 600; cursor: pointer; background: #EFB222; color: #1B2A44; }
 </style>
 
 </head>
@@ -1517,7 +1529,7 @@ button, input, select, textarea { font-family: var(--font-ui); }
   <nav class="topnav">
     <div class="tnav-logo-wrap" onclick="openAbout()" role="button" style="cursor:pointer">
       <div class="tnav-logo">PNL<span class="dot b"></span><span class="dot y"></span><span class="dot r"></span></div>
-      <div class="tnav-subtitle">Assistant de séance PNL · v55 ⓘ</div>
+      <div class="tnav-subtitle">Assistant de séance PNL · v59 ⓘ</div>
     </div>
     <div class="tnav-actions">
       <button class="tnav-btn" id="nav-search-toggle" onclick="toggleSearch()" style="display:none">🔍</button>
@@ -1549,6 +1561,7 @@ button, input, select, textarea { font-family: var(--font-ui); }
         <button data-t="dark" onclick="choisirTheme(this.dataset.t)">Sombre</button>
       </div>
     </div>
+    <div class="install-hint" id="install-about" hidden></div>
     <div class="about-compte" id="about-compte"></div>
   </div>
 
@@ -1643,6 +1656,7 @@ button, input, select, textarea { font-family: var(--font-ui); }
     <div class="pin-error" id="login-error"></div>
     <button class="pin-submit" id="login-btn" onclick="seConnecter()">Se connecter</button>
     <div class="login-help">Accès sur invitation<br>Mot de passe oublié : contactez Yann Fréhel</div>
+    <div class="install-hint" id="install-login" hidden></div>
   </div>
 </div>
 
@@ -1740,7 +1754,7 @@ button, input, select, textarea { font-family: var(--font-ui); }
 // réseau est faible. La clé ci-dessous est publique par conception : les
 // droits sont appliqués par la base (Row Level Security).
 // ═══════════════════════════════════════
-var APP_VERSION = 'v55';
+var APP_VERSION = 'v59';
 var SB_URL = 'https://tavilnkwkgovcwxrnzfq.supabase.co';
 var SB_KEY = 'sb_publishable_FRipvkrteuUpNGWSS_fE3g_dBAGfaUF';
 var sb = (window.supabase && window.supabase.createClient)
@@ -2063,7 +2077,36 @@ function seDeconnecter() {
   if (sb) sb.auth.signOut({ scope: 'local' }); else { reinitialiserSession(); ouvrirConnexion(); }
 }
 
+// ── Installation sur l'écran d'accueil (iPhone et Android)
+var _invitationInstall = null;
+function estInstallee() {
+  return window.navigator.standalone === true || (window.matchMedia && matchMedia('(display-mode: standalone)').matches);
+}
+function estAppareilIOS() {
+  return /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+var ICONE_PARTAGE = '<svg viewBox="0 0 24 24" aria-label="Partager"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>';
+function majInstallation() {
+  var html = '';
+  if (!estInstallee()) {
+    if (_invitationInstall) html = '<button class="install-btn" onclick="installerAppli()">Installer l’appli sur ce téléphone</button>';
+    else if (estAppareilIOS()) html = 'Pour installer l’appli : touchez ' + ICONE_PARTAGE + ' puis « Sur l’écran d’accueil ».';
+  }
+  ['install-login', 'install-about'].forEach(function(id) {
+    var el = document.getElementById(id); if (!el) return;
+    el.innerHTML = html; el.hidden = !html;
+  });
+}
+function installerAppli() {
+  if (!_invitationInstall) return;
+  _invitationInstall.prompt();
+  _invitationInstall.userChoice.then(function() { _invitationInstall = null; majInstallation(); });
+}
+window.addEventListener('beforeinstallprompt', function(e) { e.preventDefault(); _invitationInstall = e; majInstallation(); });
+window.addEventListener('appinstalled', function() { _invitationInstall = null; majInstallation(); });
+
 function demarrer() {
+  majInstallation();
   if (!sb) {
     // Bibliothèque non chargée (réseau absent) : on tente la copie locale
     var u = null; try { u = JSON.parse(lsGet(DERNIER_USER_KEY) || 'null'); } catch (e) {}
