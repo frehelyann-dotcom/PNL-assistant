@@ -1163,6 +1163,38 @@ body {
 }
 
 #export-icon { font-size:17px; line-height:1; }
+
+/* ═══════════════ v54 : connexion, notes, favoris ═══════════════ */
+.login-input { width:100%; font-family:'IBM Plex Sans',sans-serif; font-size:16px; padding:12px 14px; border:2px solid var(--white); background:transparent; color:var(--white); outline:none; border-radius:0; -webkit-appearance:none; }
+.login-input:focus { border-color:var(--yellow); }
+.login-input::placeholder { color:#777; }
+.login-help { font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.06em; text-transform:uppercase; color:#777; text-align:center; line-height:1.7; }
+.pin-submit:disabled { opacity:.5; pointer-events:none; }
+.net-banner { display:none; padding:6px 14px; background:var(--yellow); color:var(--black); font-family:'IBM Plex Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:.08em; border-bottom:var(--bt); cursor:pointer; }
+.net-banner.show { display:block; }
+.btn-dsh { display:flex; align-items:center; justify-content:center; width:44px; height:100%; flex-shrink:0; border:none; border-left:var(--bt); background:none; cursor:pointer; font-size:18px; color:var(--black); -webkit-tap-highlight-color:transparent; }
+.btn-dsh.on-fav { color:var(--yellow); background:var(--black); }
+.btn-dsh.on-note { background:var(--yellow); }
+.note-box { margin:8px 14px 12px; padding:10px 12px; border-left:3px solid var(--yellow); background:#fffbe6; font-size:13.5px; line-height:1.6; color:#333; white-space:pre-wrap; word-wrap:break-word; }
+.note-lbl { font-family:'IBM Plex Mono',monospace; font-size:8px; font-weight:500; text-transform:uppercase; letter-spacing:.12em; color:#8a7300; margin-bottom:4px; display:flex; justify-content:space-between; align-items:center; gap:8px; white-space:normal; }
+.note-act { border:1px solid #d9c46a; background:var(--white); font-family:'IBM Plex Mono',monospace; font-size:8px; text-transform:uppercase; letter-spacing:.08em; padding:4px 9px; cursor:pointer; color:#555; }
+.note-act:disabled { opacity:.5; }
+.note-add { display:block; margin:6px 14px 12px; border:1.5px dashed #c9b44a; background:transparent; color:#8a7300; font-family:'IBM Plex Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:.08em; padding:7px 10px; cursor:pointer; text-align:left; }
+.note-edit { white-space:normal; }
+.note-edit textarea { width:100%; min-height:90px; font-family:'IBM Plex Sans',sans-serif; font-size:15px; padding:8px; border:1.5px solid #c9b44a; background:var(--white); resize:vertical; outline:none; border-radius:0; }
+.note-rgpd { font-size:10.5px; color:#8a7a3a; margin-top:4px; font-style:italic; }
+.note-btns { display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
+.et-titre { font-family:'IBM Plex Sans',sans-serif; font-size:13px; font-weight:500; color:var(--black); padding-left:10px; align-self:center; }
+.swipe-titre { padding:0 20px 8px; font-size:16px; font-weight:500; line-height:1.4; }
+.tag.draft { background:var(--black); color:var(--white); border-color:var(--black); }
+.gstatus.brouillon { background:var(--black); color:var(--white); }
+.compte-box { padding:16px 14px; display:flex; flex-direction:column; gap:12px; }
+.compte-ligne { border:2px solid var(--black); padding:12px 14px; }
+.compte-lbl { font-family:'IBM Plex Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:.1em; color:#888; }
+.compte-val { font-size:15px; margin-top:3px; word-break:break-all; }
+.about-compte { margin-top:14px; padding-top:12px; border-top:1px solid #eee; font-family:'IBM Plex Mono',monospace; font-size:10px; color:#888; display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.about-compte button { border:1.5px solid var(--black); background:var(--white); font-family:'IBM Plex Mono',monospace; font-size:9px; text-transform:uppercase; padding:5px 9px; cursor:pointer; flex-shrink:0; }
+.load-st { padding:40px 20px; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:#999; }
 </style>
 
 </head>
@@ -1174,12 +1206,13 @@ body {
   <nav class="topnav">
     <div class="tnav-logo-wrap" onclick="openAbout()" role="button" style="cursor:pointer">
       <div class="tnav-logo">PNL<span class="dot r"></span><span class="dot b"></span><span class="dot y"></span></div>
-      <div class="tnav-subtitle">Assistant de séance PNL ⓘ</div>
+      <div class="tnav-subtitle">Assistant de séance PNL · v54 ⓘ</div>
     </div>
     <div class="tnav-actions">
       <button class="tnav-btn" id="nav-search-toggle" onclick="toggleSearch()" style="display:none">🔍</button>
     </div>
   </nav>
+  <div class="net-banner" id="net-banner" onclick="rechargerManuellement()"></div>
 
   <!-- ABOUT POPUP -->
   <div class="about-overlay" id="about-overlay" onclick="closeAbout()"></div>
@@ -1197,6 +1230,7 @@ body {
       <div class="about-line"><span class="about-pip b"></span>J'utilise toujours les mêmes protocoles et j'aimerais changer.</div>
     </div>
     <div class="about-cta">Utilisez les critères pour trouver le bon protocole.</div>
+    <div class="about-compte" id="about-compte"></div>
   </div>
 
   <!-- VUE PROTOCOLES -->
@@ -1259,7 +1293,7 @@ body {
       <button class="gtab" id="gtab-po" onclick="switchGTab('po')">◇ Postulats <span class="gbadge" id="gb-po">0</span></button>
       <button class="gtab" id="gtab-b" onclick="switchGTab('b')">◫ Briques <span class="gbadge" id="gb-b">0</span></button>
       <button class="gtab" id="gtab-f" onclick="switchGTab('f')">▦ Critères <span class="gbadge" id="gb-f">0</span></button>
-      <button class="gtab" id="gtab-pin" onclick="switchGTab('pin')">⚿ Code PIN</button>
+      <button class="gtab" id="gtab-pin" onclick="switchGTab('pin')">⚿ Compte</button>
     </div>
     <div class="gcontent" id="gcontent"></div>
   </div>
@@ -1278,19 +1312,18 @@ body {
 
 </div>
 
-<!-- ECRAN PIN GESTION -->
-<div class="pin-overlay" id="pin-overlay">
-  <div class="pin-box" id="pin-box">
+<!-- ECRAN DE CONNEXION (v54) -->
+<div class="pin-overlay" id="login-overlay">
+  <div class="pin-box" id="login-box">
     <div class="pin-lock-icon">⚿</div>
-    <div class="pin-title">ACCÈS GESTION</div>
-    <div class="pin-sub">Code à 4 chiffres</div>
-    <input type="tel" inputmode="numeric" maxlength="4" class="pin-input" id="pin-input"
-      autocomplete="off" placeholder="••••"
-      oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,4); if(this.value.length===4) checkPin();"
-      onkeydown="if(event.key==='Enter') checkPin();">
-    <div class="pin-error" id="pin-error"></div>
-    <button class="pin-submit" onclick="checkPin()">Valider</button>
-    <button class="pin-cancel" onclick="closePinLock()">Annuler</button>
+    <div class="pin-title">CONNEXION</div>
+    <div class="pin-sub">Assistant de séance PNL</div>
+    <input type="email" class="login-input" id="login-email" placeholder="Email" autocomplete="username" autocapitalize="off" spellcheck="false">
+    <input type="password" class="login-input" id="login-pass" placeholder="Mot de passe" autocomplete="current-password"
+      onkeydown="if(event.key==='Enter') seConnecter();">
+    <div class="pin-error" id="login-error"></div>
+    <button class="pin-submit" id="login-btn" onclick="seConnecter()">Se connecter</button>
+    <div class="login-help">Accès sur invitation<br>Mot de passe oublié : contactez Yann Fréhel</div>
   </div>
 </div>
 
@@ -1324,6 +1357,8 @@ body {
       <div class="dsh-nom" id="dsh-nom">Protocole</div>
       <div class="dsh-meta" id="dsh-meta"></div>
     </div>
+    <button class="btn-dsh" id="btn-fav" onclick="basculerFavori()" title="Favori">☆</button>
+    <button class="btn-dsh" id="btn-note" onclick="basculerModeNote()" title="Mode note">✎</button>
     <button class="btn-export" id="btn-export" onclick="exportDocx()" title="Télécharger en .docx">
       <span id="export-icon">⤓</span>
       <span id="export-label">Word</span>
@@ -1377,119 +1412,505 @@ body {
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
 // ═══════════════════════════════════════
-// DATA
+// v54 : CONFIGURATION ET DONNEES (Supabase)
+// Les fiches ne sont plus écrites dans ce fichier : elles sont lues dans
+// la base Supabase, avec une copie locale pour travailler en séance si le
+// réseau est faible. La clé ci-dessous est publique par conception : les
+// droits sont appliqués par la base (Row Level Security).
 // ═══════════════════════════════════════
-var PROTOCOLES = [
-  {id:"697cb82ea9ab7db0ad2f7f90",nom:"POSITIONS PERCEPTUELLES",description:"Avoir un point de vue différent sur une situation relationnelle avec une autre personne passée et future.",socle:"Changer de perception en changeant de position. On ne cherche pas à changer la situation tout de suite, on va d'abord changer la manière de la regarder.",principe:"Permet de confronter, dans un conflit, la perception de soi même, la compréhension de la perception de l'autre et la perception de l'interaction entre soi et l'autre.",utilite:"Résoudre un conflit en comprenant mieux ce qui se joue pour moi, pour l'autre et dans la relation.",vigilance:"La personne doit être capable de se dissocier d'elle-même pour s'associer à une autre position. Si elle n'arrive pas à faire ce travail, l'exercice perd toute son efficacité.\n\nUne attention particulière devrait être portée aux personnes ayant des troubles psychotiques.",le_plus:"La 4ème position",histoire:"En 1976, Virginia Satir et Bandler et Grinder publient Changing with Families.\nEn 1987, Judith Delozier et John Grinder présentent les positions perceptuelles.\nLa 4e position est proposée par Robert Dilts.",duree_estimee:"20-30 min",score_symptome:"PI gênant à l'idée de rencontrer une personne",score_cause:"Un conflit entre soi et une autre personne",score_objectif:"Permettre à une personne de prendre du recul sur une situation conflictuelle",score_ressources:"Être capable de s'associer et se dissocier en changeant de position",score_effet:"Rencontrer une personne après un conflit avec un PI détendu",exemple_quotidien:"Je me dispute souvent avec mon conjoint au sujet de nos travaux du weekend et moi je veux me reposer, on ne se comprend pas et ça m'énerve.",exemple_professionnel:"Je dois faire l'entretien annuel avec un membre de mon équipe et je sens que ça va être compliqué parce que je n'ai pas confiance en lui.",exemple_sport:"Je dois faire un match avec l'équipe et je ne m'entends pas avec le capitaine.",exemple_sante:"J'ai une maladie chronique, je me fais suivre par mon médecin, mais ça m'énerve j'ai l'impression de la subir.",declencheurs:["Conflit avec une autre personne"],criteres:{INDEX:"PI",CONTEXTE:"MONO",INTENSITE:"GENANT",NiveauPNL:"Praticien"},image_url:"https://base44.app/api/apps/6908db7184072118da00f278/files/public/6908db7184072118da00f278/92056931e_imagepositionsperception.png",video_url:"",views:9,favorite_rank:3,etapes:[{content:"Reformulation du problème pour avoir les bases de travail du protocole",questionnement:"si j'ai bien compris..."},{content:"Installer le cadre et l'intention : rassurer, désamorcer les peurs, installer une posture d'exploration.",questionnement:""},{content:"Présentation : ce que je te propose est un exercice de prise de recul.",questionnement:""},{content:"Nommer les parties : dans cet exercice, on va travailler avec 3 points de vue.",questionnement:""},{content:"P1 — ton point de vue : nommer avec ton nom",questionnement:""},{content:"P2 — le point de vue de l'autre : nommer avec le nom de la personne",questionnement:""},{content:"P3 — un point de vue neutre, comme si on regarde la scène de l'extérieur : META",questionnement:""},{content:"Donner du sens au protocole",questionnement:""},{content:"Expliquer le déroulé : je vais te proposer de te déplacer dans l'espace.",questionnement:""},{content:"Installer l'espace : proposer au client de placer les 3 espaces.",questionnement:""},{content:"Vérifier l'écologie",questionnement:"Est-ce que tu te sens d'accord pour explorer ces différents points de vue maintenant ?"},{content:"Se placer en P1 : vous entendez ce que vous avez dit, vous voyez et entendez ce que l'autre a dit",questionnement:""},{content:"Que se passe-t-il pour vous ? Explorer l'index",questionnement:""},{content:"Quelle valeur, idée, bénéfice étiez-vous en train de défendre ?",questionnement:""},{content:"Se placer en P2 : associer à l'autre. Explorer l'index",questionnement:""},{content:"Quelle valeur, idée, bénéfice étiez-vous en train de défendre ?",questionnement:""},{content:"Se placer en P3 : associer à un observateur extérieur",questionnement:""},{content:"Que pouvez-vous dire sur ce que vous voyez et entendez ?",questionnement:""},{content:"Que faudrait-il changer pour que cette situation se passe au mieux ?",questionnement:""},{content:"Qu'est-ce que la personne a appris de nouveau ?",questionnement:""},{content:"Que va-t-elle mettre en place pour le futur ?",questionnement:""},{content:"Revisiter P1 et P2, en imaginant les modifications",questionnement:""},{content:"P3 : valider que c'est bon",questionnement:""},{content:"Pont vers le futur",questionnement:"Avez-vous la sensation d'être mieux préparé pour la prochaine rencontre ?"}],notes:""},
-  {id:"6908dcadee90b8d15e61837a",nom:"Ancrage de Ressource",description:"Technique d'ancrage simple permettant d'accéder rapidement à un état ressource dans un contexte spécifique.",socle:"L'utilisation de nos propres ressources internes.",principe:"La répétition crée l'automatisme.",utilite:"Accéder rapidement à un état ressource en situation.",vigilance:"Vérifier l'intensité de l'état ressource avant d'ancrer.",le_plus:"Discret et utilisable en autonomie.",histoire:"Effet Pavlov appliqué à la PNL.",duree_estimee:"10-15 min",score_symptome:"Émotion limitante dans un contexte précis",score_cause:"Situation déclenchante récurrente",score_objectif:"Assouplir l'état émotionnel",score_ressources:"Ressource interne disponible",score_effet:"Accès immédiat à l'état ressource",exemple_quotidien:"Prise de parole en public stressante",exemple_professionnel:"Animer une réunion difficile",exemple_sport:"Avant une compétition",exemple_sante:"Gestion de la douleur chronique",declencheurs:["Situation récurrente avec une émotion limitante"],criteres:{INDEX:"EI",CONTEXTE:"MONO",INTENSITE:"GENANT",NiveauPNL:"Fondamentaux"},image_url:"https://base44.app/api/apps/6908db7184072118da00f278/files/public/6908db7184072118da00f278/573c59cc5_imageancrage.png",video_url:"https://www.youtube.com/watch?v=rwy7U58YBrM",views:26,favorite_rank:1,etapes:[{content:"Identifier l'état ressource désiré",questionnement:"À quel état voulez-vous arriver ?"},{content:"Faire revivre intensément l'expérience ressource",questionnement:""},{content:"Ancrer au pic de l'expérience avec un stimulus unique",questionnement:""},{content:"Tester l'ancre",questionnement:""},{content:"Futuriser dans le contexte d'application",questionnement:""}],notes:"Idéal pour les situations de stress ponctuel."},
-  {id:"6908dcadee90b8d15e618380",nom:"Désactivation d'Ancre",description:"Technique rapide pour neutraliser une réaction émotionnelle automatique déclenchée par un stimulus spécifique.",socle:"L'utilisation de nos propres ressources.",principe:"Si on peut se fabriquer nos propres ressources, on peut se les désinstaller.",utilite:"",vigilance:"",le_plus:"",histoire:"",duree_estimee:"15-20 min",score_symptome:"EI gênant, désagréable et inutile",score_cause:"Une situation déclenchant un état émotionnel gênant",score_objectif:"Remplacer par un EI confortable",score_ressources:"Activer un autre EI confortable à la place",score_effet:"Une situation confortable",exemple_quotidien:"",exemple_professionnel:"",exemple_sport:"",exemple_sante:"",declencheurs:["Situation récurrente avec une émotion bloquante"],criteres:{INTENSITE:"GENANT",CONTEXTE:"MONO",NiveauPNL:"Technicien"},image_url:"",video_url:"",views:3,favorite_rank:2,etapes:[{content:"Identifier le déclencheur spécifique et la réponse",questionnement:""},{content:"Calibrer l'intensité de la réponse émotionnelle",questionnement:""},{content:"Créer un ancrage de ressource puissant",questionnement:""},{content:"Activer simultanément l'ancre négative et positive",questionnement:""},{content:"Répéter jusqu'à neutralisation complète",questionnement:""},{content:"Tester la réponse au déclencheur original",questionnement:""}],notes:"Efficace pour les réactions de stress ou d'anxiété liées à des déclencheurs précis."},
-  {id:"6908dcadee90b8d15e618377",nom:"Dissociation Simple",description:"Technique permettant de prendre du recul par rapport à une expérience émotionnelle difficile en se plaçant en position d'observateur externe.",socle:"",principe:"",utilite:"",vigilance:"",le_plus:"",histoire:"",duree_estimee:"15-20 min",score_symptome:"",score_cause:"",score_objectif:"Réduire l'impact émotionnel d'un événement isolé",score_ressources:"",score_effet:"",exemple_quotidien:"",exemple_professionnel:"",exemple_sport:"",exemple_sante:"",declencheurs:[],criteres:{},image_url:"",video_url:"",views:0,favorite_rank:0,etapes:[{content:"Identifier l'événement déclencheur spécifique",questionnement:""},{content:"Inviter le client à se voir dans la situation depuis l'extérieur",questionnement:""},{content:"Guider vers une double dissociation",questionnement:""},{content:"Ancrer la nouvelle perspective",questionnement:""},{content:"Tester l'intégration",questionnement:""}],notes:"Convient aux phobies simples et aux souvenirs désagréables ponctuels."},
-  {id:"6908dcadee90b8d15e618378",nom:"Recadrage en Six Points",description:"Protocole systématique permettant de transformer la signification d'un comportement en identifiant son intention positive et en générant de nouvelles options.",socle:"",principe:"",utilite:"",vigilance:"",le_plus:"",histoire:"",duree_estimee:"30-40 min",score_symptome:"",score_cause:"",score_objectif:"Transformer un pattern comportemental récurrent",score_ressources:"",score_effet:"",exemple_quotidien:"",exemple_professionnel:"",exemple_sport:"",exemple_sante:"",declencheurs:[],criteres:{},image_url:"",video_url:"",views:0,favorite_rank:0,etapes:[{content:"Identifier le comportement ou la réponse à changer",questionnement:""},{content:"Établir une communication avec la part responsable",questionnement:""},{content:"Séparer l'intention positive du comportement",questionnement:""},{content:"Générer de nouvelles options pour satisfaire l'intention",questionnement:""},{content:"Obtenir l'accord de la part pour utiliser les nouvelles options",questionnement:""},{content:"Vérifier l'écologie et intégrer",questionnement:""}],notes:"Efficace pour les habitudes installées dans un contexte spécifique."},
-  {id:"6908dcadee90b8d15e61837b",nom:"Swish",description:"Technique de changement rapide qui remplace une image problématique par une image ressource de façon subliminale et répétitive.",socle:"",principe:"",utilite:"",vigilance:"",le_plus:"",histoire:"",duree_estimee:"20-25 min",score_symptome:"",score_cause:"",score_objectif:"Remplacer un pattern de réponse automatique",score_ressources:"",score_effet:"",exemple_quotidien:"",exemple_professionnel:"",exemple_sport:"",exemple_sante:"",declencheurs:[],criteres:{},image_url:"",video_url:"",views:0,favorite_rank:0,etapes:[{content:"Identifier l'image déclencheur du comportement non désiré",questionnement:""},{content:"Créer une image de soi avec la ressource souhaitée",questionnement:""},{content:"Réaliser le swish (remplacement rapide et répété)",questionnement:""},{content:"Vérifier le changement de sensation",questionnement:""},{content:"Tester dans différentes variations du contexte",questionnement:""}],notes:"Très efficace pour les envies compulsives et les réactions automatiques."},
-  {id:"6908dcadee90b8d15e61837d",nom:"Détermination de l'Objectif",description:"Protocole permettant de modifier l'impact émotionnel d'événements passés en apportant des ressources dans le souvenir.",socle:"",principe:"",utilite:"",vigilance:"",le_plus:"",histoire:"",duree_estimee:"40-50 min",score_symptome:"",score_cause:"",score_objectif:"Transformer une série d'expériences passées similaires",score_ressources:"",score_effet:"",exemple_quotidien:"",exemple_professionnel:"",exemple_sport:"",exemple_sante:"",declencheurs:[],criteres:{},image_url:"",video_url:"",views:0,favorite_rank:0,etapes:[{content:"Identifier le pattern de situations problématiques",questionnement:""},{content:"Remonter dans l'histoire jusqu'au premier événement similaire",questionnement:""},{content:"Identifier les ressources qui auraient fait la différence",questionnement:""},{content:"Ancrer les ressources",questionnement:""},{content:"Retourner dans chaque événement avec les ressources",questionnement:""},{content:"Progresser chronologiquement jusqu'au présent",questionnement:""},{content:"Projeter les nouvelles ressources dans le futur",questionnement:""}],notes:"Puissant pour les patterns émotionnels récurrents liés à l'histoire personnelle."},
-  {id:"697c938485b93be4b1eda0a3",nom:"SCORE",description:"",socle:"",principe:"",utilite:"",vigilance:"",le_plus:"",histoire:"",duree_estimee:"",score_symptome:"",score_cause:"",score_objectif:"",score_ressources:"",score_effet:"",exemple_quotidien:"",exemple_professionnel:"",exemple_sport:"",exemple_sante:"",declencheurs:[],criteres:{},image_url:"",video_url:"",views:0,favorite_rank:0,etapes:[],notes:""},
-  {id:"697c93b100c5bb378a13da38",nom:"Négociation entre Parties",description:"",socle:"",principe:"",utilite:"",vigilance:"",le_plus:"",histoire:"",duree_estimee:"",score_symptome:"",score_cause:"",score_objectif:"",score_ressources:"",score_effet:"",exemple_quotidien:"",exemple_professionnel:"",exemple_sport:"",exemple_sante:"",declencheurs:[],criteres:{},image_url:"",video_url:"",views:0,favorite_rank:0,etapes:[],notes:""},
-  {id:"697c93c72bf32d0a08bf3191",nom:"Dissociation Double",description:"",socle:"",principe:"",utilite:"",vigilance:"",le_plus:"",histoire:"",duree_estimee:"",score_symptome:"",score_cause:"",score_objectif:"",score_ressources:"",score_effet:"",exemple_quotidien:"",exemple_professionnel:"",exemple_sport:"",exemple_sante:"",declencheurs:[],criteres:{},image_url:"",video_url:"",views:0,favorite_rank:0,etapes:[],notes:""},
-  {id:"697c962161653e954ec913de",nom:"Les Sous Modalités",description:"",socle:"",principe:"",utilite:"",vigilance:"",le_plus:"",histoire:"",duree_estimee:"",score_symptome:"",score_cause:"",score_objectif:"",score_ressources:"",score_effet:"",exemple_quotidien:"",exemple_professionnel:"",exemple_sport:"",exemple_sante:"",declencheurs:[],criteres:{},image_url:"",video_url:"",views:0,favorite_rank:0,etapes:[],notes:""},
-  {id:"697c964b8208a8840ec02701",nom:"Générateur de Comportements Nouveaux",description:"",socle:"",principe:"",utilite:"",vigilance:"",le_plus:"",histoire:"",duree_estimee:"",score_symptome:"",score_cause:"",score_objectif:"",score_ressources:"",score_effet:"",exemple_quotidien:"",exemple_professionnel:"",exemple_sport:"",exemple_sante:"",declencheurs:[],criteres:{},image_url:"",video_url:"",views:0,favorite_rank:0,etapes:[],notes:""},
-  {id:"697c9683ef1e706f67e194f4",nom:"Les Méta-Programmes",description:"",socle:"",principe:"",utilite:"",vigilance:"",le_plus:"",histoire:"",duree_estimee:"",score_symptome:"",score_cause:"",score_objectif:"",score_ressources:"",score_effet:"",exemple_quotidien:"",exemple_professionnel:"",exemple_sport:"",exemple_sante:"",declencheurs:[],criteres:{},image_url:"",video_url:"",views:0,favorite_rank:0,etapes:[],notes:""},
-  {id:"697c96a5db82ed53ba40e1f6",nom:"Stratégie Walt Disney",description:"",socle:"",principe:"",utilite:"",vigilance:"",le_plus:"",histoire:"",duree_estimee:"",score_symptome:"",score_cause:"",score_objectif:"",score_ressources:"",score_effet:"",exemple_quotidien:"",exemple_professionnel:"",exemple_sport:"",exemple_sante:"",declencheurs:[],criteres:{},image_url:"",video_url:"",views:0,favorite_rank:0,etapes:[],notes:""},
-  {id:"697c96bb9d94c8d92ce380c9",nom:"La Marelle des Croyances",description:"",socle:"",principe:"",utilite:"",vigilance:"",le_plus:"",histoire:"",duree_estimee:"",score_symptome:"",score_cause:"",score_objectif:"",score_ressources:"",score_effet:"",exemple_quotidien:"",exemple_professionnel:"",exemple_sport:"",exemple_sante:"",declencheurs:[],criteres:{},image_url:"",video_url:"",views:1,favorite_rank:0,etapes:[],notes:""},
-  {id:"697c96d484dc17c506b204ab",nom:"Alignement des Niveaux Logiques",description:"",socle:"",principe:"",utilite:"",vigilance:"",le_plus:"",histoire:"",duree_estimee:"",score_symptome:"",score_cause:"",score_objectif:"",score_ressources:"",score_effet:"",exemple_quotidien:"",exemple_professionnel:"",exemple_sport:"",exemple_sante:"",declencheurs:[],criteres:{},image_url:"",video_url:"",views:0,favorite_rank:0,etapes:[],notes:""}
-];
+var APP_VERSION = 'v54';
+var SB_URL = 'https://tavilnkwkgovcwxrnzfq.supabase.co';
+var SB_KEY = 'sb_publishable_FRipvkrteuUpNGWSS_fE3g_dBAGfaUF';
+var sb = (window.supabase && window.supabase.createClient)
+  ? window.supabase.createClient(SB_URL, SB_KEY)
+  : null;
 
-var POSTULATS = [
-  {id:"p1",texte:"La carte n'est pas le territoire",description:"Chacun perçoit le monde à travers ses filtres personnels, cette perception est subjective et différente de la réalité objective."},
-  {id:"p2",texte:"Une personne a toutes les ressources pour atteindre ses objectifs",description:"Chacun possède en lui les moyens d'atteindre ses objectifs."},
-  {id:"p3",texte:"Le corps et l'esprit sont liés et s'influencent l'un l'autre",description:"Ce que nous pensons influence notre physiologie et inversement."},
-  {id:"p4",texte:"Tout est communication",description:"On ne peut pas ne pas communiquer."},
-  {id:"p5",texte:"Si un objectif est possible pour un être humain, il est possible pour soi",description:"Tous les êtres humains partagent des ressources et des capacités communes."},
-  {id:"p6",texte:"L'identité est différente des comportements, des ressentis et des idées",description:"Nos comportements ne définissent pas ce que nous sommes."},
-  {id:"p7",texte:"Chacun fait le meilleur choix au moment où il le fait",description:"Si une meilleure option avait été disponible, elle aurait été choisie."},
-  {id:"p8",texte:"La flexibilité est la clef du succès",description:"Plus on a de choix de comportements, plus on a de chances de réussir."},
-  {id:"p9",texte:"J'ai du pouvoir sur moi et non sur les autres",description:"Le garant de l'application éthique de la PNL."},
-  {id:"p10",texte:"Tout est feedback",description:"Il n'y a pas d'erreur ni d'échec — seulement des opportunités d'apprentissage."},
-  {id:"p11",texte:"La qualité de la communication est dans la réponse qu'on obtient",description:"Si l'autre ne comprend pas, c'est à nous d'adapter notre communication."},
-  {id:"p12",texte:"Tout comportement, même gênant, a une fonction positive",description:"Derrière chaque action, il y a une intention positive."},
-  {id:"p13",texte:"Le cadre utilisé détermine le sens accordé à une situation",description:"Changer de cadre, c'est changer de sens : recadrage."},
-  {id:"p14",texte:"Plus on a de choix, plus on a de chance de réussir",description:""},
-  {id:"p15",texte:"Les êtres humains sont toujours plus complexes que les théories qui les décrivent",description:"Méfions-nous des étiquettes et des théories."},
-  {id:"p16",texte:"Rencontrer l'autre dans son modèle du monde",description:"Comprendre le modèle de l'autre pour le décoder."},
-  {id:"p17",texte:"Le niveau inconscient de la communication est le plus important",description:"C'est le niveau inconscient qui détermine la tournure que prend la relation."},
-  {id:"p18",texte:"Avoir du choix, c'est avoir au moins trois choix",description:""},
-  {id:"p19",texte:"Le sens de la communication est dans la réponse que l'on obtient",description:""}
-];
+var PROTOCOLES = [];
+var POSTULATS = [];
+var BRIQUES = [];
+var FILTRES = {};
+var FILTRES_ORDER = [];
+var VALEURS_PAR_ID = {};
 
-var BRIQUES = [
-  {id:"b1",nom:"Ancre",description:"Technique d'ancrage stimulus-réponse"},
-  {id:"b2",nom:"Association",description:"S'immerger dans une expérience"},
-  {id:"b3",nom:"Dissociation",description:"Observer une expérience de l'extérieur"},
-  {id:"b4",nom:"Synchronisation",description:""},{id:"b5",nom:"Calibration",description:""},
-  {id:"b6",nom:"Comme si",description:""},{id:"b7",nom:"Contact",description:""},
-  {id:"b8",nom:"Déplacement",description:""},{id:"b9",nom:"Etat Désiré",description:""},
-  {id:"b10",nom:"Etat Présent",description:""},{id:"b11",nom:"Etat Séparateur",description:""},
-  {id:"b12",nom:"Geste",description:""},{id:"b13",nom:"Guidage dynamique et détail",description:""},
-  {id:"b14",nom:"Guidage spatial",description:""},{id:"b15",nom:"Méta modèle",description:""},
-  {id:"b16",nom:"Mot",description:""},{id:"b17",nom:"Pont vers le futur",description:""},
-  {id:"b18",nom:"Position de perception",description:""},{id:"b19",nom:"Questions Ouvertes",description:""},
-  {id:"b20",nom:"Reformulation",description:""},{id:"b21",nom:"Sous modalités",description:""},
-  {id:"b22",nom:"VAKOG",description:""},{id:"b23",nom:"Niveaux logiques de Dilts",description:""},
-  {id:"b24",nom:"Opérateurs Modaux",description:""},{id:"b25",nom:"PARTIES",description:""},
-  {id:"b26",nom:"Ancrage spatial",description:""},{id:"b27",nom:"Etat Coach",description:""},
-  {id:"b28",nom:"Espace Ressources",description:""},{id:"b29",nom:"Position basse",description:""},
-  {id:"b30",nom:"Position haute",description:""},{id:"b31",nom:"Position méta",description:""},
-  {id:"b32",nom:"Postulats",description:""},{id:"b33",nom:"Questions fermées",description:""},
-  {id:"b34",nom:"Recadrage",description:""},{id:"b35",nom:"SCORE",description:""},
-  {id:"b36",nom:"Silence",description:""},{id:"b37",nom:"TOTE",description:""},
-  {id:"b38",nom:"Image mentale",description:""},{id:"b39",nom:"Index de conscience",description:""},
-  {id:"b40",nom:"Méta programme",description:""},{id:"b41",nom:"Mouvements oculaires",description:""},
-  {id:"b42",nom:"PCVAREM",description:""},{id:"b43",nom:"Guidage conversationnel",description:""},
-  {id:"b44",nom:"Guidage lent et Milton",description:""},{id:"b45",nom:"Ligne du temps",description:""},
-  {id:"b46",nom:"Feed Back",description:""},{id:"b47",nom:"Etat Coach 2",description:""}
-];
+var USER = null;            // {id, email}
+var IS_ADMIN = false;
+var MES_NOTES = [];         // notes privées de l'utilisateur
+var MES_FAVORIS = [];       // favoris personnels
+var DERNIERES_DONNEES = null;
+var HORS_LIGNE = false;
+var DONNEES_PRETES = false;
+var CACHE_PREFIX = 'pnl_cache_v54:';
+var DERNIER_USER_KEY = 'pnl_dernier_user';
+var VUES_KEY = 'pnl_vues';
 
-var FILTRES = {
-  NiveauPNL: {label:'Niveau PNL', valeurs:[
-    {id:'niv1',code:'Fondamentaux',label:'Fondamentaux',description:"Premier niveau de formation PNL. Introduction aux concepts fondamentaux : postulats, calibration, synchronisation, ancrage simple. Idéal pour accompagner des situations du quotidien."},
-    {id:'niv2',code:'Technicien',label:'Technicien',description:"Niveau intermédiaire. Maîtrise des techniques d'ancrage, dissociation, recadrage et travail sur les sous-modalités. Permet d'intervenir sur des problématiques plus ciblées."},
-    {id:'niv3',code:'Praticien',label:'Praticien',description:"Niveau praticien certifié. Utilisation complète des protocoles PNL, travail sur les croyances, les niveaux logiques et les parties. Accompagnement structuré et approfondi."},
-    {id:'niv4',code:'Maître Praticien',label:'Maître Praticien',description:"Niveau expert. Intervention sur des systèmes complexes, intégration avancée des outils PNL, supervision et transmission. Travail en profondeur sur l'identité et les valeurs."}
-  ]},
-  INDEX: {label:'Index', valeurs:[
-    {id:'idx1',code:'EI',label:'EI — État Interne',description:"L'état interne désigne le ressenti émotionnel vécu de l'intérieur : émotions, sensations physiques, humeur. C'est l'expérience subjective dans le corps."},
-    {id:'idx2',code:'PI',label:'PI — Pensée Interne',description:"La pensée interne désigne le dialogue intérieur, les images mentales, les représentations cognitives. Ce que la personne se dit et se montre en elle-même."},
-    {id:'idx3',code:'CE',label:'CE — Comportement Externe',description:"Le comportement externe désigne les actions observables, les gestes, la posture, la voix — tout ce qui est perceptible de l'extérieur par un observateur."}
-  ]},
-  INTENSITE: {label:'Intensité', valeurs:[
-    {id:'int1',code:'Neutre',label:'Neutre',description:"Aucun impact émotionnel particulier. La personne aborde la situation sans charge affective notable."},
-    {id:'int2',code:'GENANT',label:'Gênant',description:"Inconfort modéré, gêne perceptible mais gérable. La personne est consciente du problème sans être envahie."},
-    {id:'int3',code:'Moyen',label:'Moyen',description:"Impact émotionnel modéré. La situation affecte le quotidien de façon régulière et demande une attention soutenue."},
-    {id:'int4',code:'Forte',label:'Forte',description:"Impact émotionnel fort. La situation génère une souffrance significative et perturbe le fonctionnement habituel."},
-    {id:'int5',code:'Intense',label:'Intense',description:"Impact émotionnel très fort. La personne est fortement affectée. Nécessite une attention particulière et un cadre sécurisant."}
-  ]},
-  CONTEXTE: {label:'Contexte', valeurs:[
-    {id:'ctx1',code:'MONO',label:'Mono-contexte',description:"Le problème est lié à un seul contexte précis et identifiable : une situation, un lieu, une personne. L'intervention est ciblée."},
-    {id:'ctx2',code:'MULTI',label:'Multi-contexte',description:"Le problème se manifeste dans plusieurs contextes différents. L'intervention doit adresser un pattern plus profond."}
-  ]},
-  ORIENTATION: {label:'Orientation', valeurs:[
-    {id:'or1',code:'PROBLEME',label:'Problème',description:"Le protocole part de l'état présent problématique pour comprendre ce qui se passe. L'analyse du symptôme, de la cause et du contexte est centrale."},
-    {id:'or2',code:'SOLUTION',label:'Solution',description:"Le protocole est orienté vers l'état désiré et les ressources à mobiliser. On travaille vers un futur souhaité plutôt que depuis un passé douloureux."}
-  ]},
-  TYPE: {label:'Type', valeurs:[
-    {id:'ty1',code:'CHANGEMENT',label:'Changement',description:"Le protocole vise un changement notable de comportement, d'état ou de croyance. Une rupture avec un pattern existant est attendue."},
-    {id:'ty2',code:'AMELIORATION',label:'Amélioration',description:"Le protocole vise à affiner, renforcer ou optimiser quelque chose qui fonctionne déjà. Il s'agit d'un ajustement progressif plutôt que d'une rupture."}
-  ]},
-  NIV_LOGIQUE: {label:'Niveaux logiques', valeurs:[
-    {id:'nl1',code:'VISION',label:'Vision · Mission',description:"Niveau le plus élevé. Pourquoi suis-je là ? Quelle est ma raison d'être ? Le protocole agit sur le sens profond et la direction de vie."},
-    {id:'nl2',code:'IDENTITE',label:'Identité',description:"Qui suis-je ? Le protocole touche à la définition de soi, aux croyances fondamentales sur soi-même. Travail profond et transformateur."},
-    {id:'nl3',code:'VALEURS',label:'Valeurs · Croyances',description:"Ce qui est important pour moi et ce que je crois être vrai. Le protocole agit sur les convictions et les priorités qui guident les choix."},
-    {id:'nl4',code:'CAPACITES',label:'Capacités · Ressources',description:"Ce que je suis capable de faire. Le protocole développe ou libère des ressources internes : compétences, états, stratégies."},
-    {id:'nl5',code:'COMPETENCES',label:'Compétences',description:"Comment je fais les choses. Le protocole travaille sur les comportements spécifiques, les stratégies et les séquences d'action."},
-    {id:'nl6',code:'ENVIRONNEMENT',label:'Environnement',description:"Où et quand ? Le protocole agit sur le contexte extérieur, les déclencheurs situationnels et l'adaptation au milieu."}
-  ]}
-};
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+// Délai maximal d'une requête : au-delà, l'appli bascule sur la copie locale
+// au lieu d'attendre indéfiniment un réseau faible
+function T() { return (window.AbortSignal && AbortSignal.timeout) ? AbortSignal.timeout(15000) : undefined; }
+function byOrdre(a, b) { return (a.ordre || 0) - (b.ordre || 0); }
+function nz(v) { return v == null ? '' : v; }
+function trouverProtocole(id) {
+  for (var i = 0; i < PROTOCOLES.length; i++) if (PROTOCOLES[i].id === id) return PROTOCOLES[i];
+  return null;
+}
+
+// ── Stockage local (copie de travail, compteur de consultations) ──
+function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+function lsDel(k) { try { localStorage.removeItem(k); } catch (e) {} }
+function lireVues() { try { return JSON.parse(lsGet(VUES_KEY) || '{}'); } catch (e) { return {}; } }
+function cacheCle() { return CACHE_PREFIX + (USER ? USER.id : 'anonyme'); }
+function lireCache() { try { var s = lsGet(cacheCle()); return s ? JSON.parse(s) : null; } catch (e) { return null; } }
+function ecrireCache(d) { if (d) lsSet(cacheCle(), JSON.stringify(d)); }
+
+// ── Lignes de la base → objets utilisés par l'affichage ──
+function appliquerDonnees(d) {
+  FILTRES = {}; FILTRES_ORDER = []; VALEURS_PAR_ID = {};
+  (d.groupes || []).slice().sort(byOrdre).forEach(function(g) {
+    FILTRES[g.code] = { label: g.label, multiple: !!g.multiple, ordre: g.ordre, valeurs: [] };
+    FILTRES_ORDER.push(g.code);
+  });
+  (d.valeurs || []).slice().sort(byOrdre).forEach(function(v) {
+    VALEURS_PAR_ID[v.id] = v;
+    if (FILTRES[v.groupe_code]) {
+      FILTRES[v.groupe_code].valeurs.push({ id: v.id, code: v.code, label: v.label, description: nz(v.description), ordre: v.ordre });
+    }
+  });
+  POSTULATS = (d.postulats || []).slice().sort(byOrdre).map(function(p) {
+    return { id: p.id, texte: p.texte, description: nz(p.description), ordre: p.ordre };
+  });
+  BRIQUES = (d.briques || []).slice().sort(byOrdre).map(function(b) {
+    return { id: b.id, nom: b.nom, description: nz(b.description), ordre: b.ordre };
+  });
+  var poParId = {}; POSTULATS.forEach(function(p) { poParId[p.id] = p; });
+  var brParId = {}; BRIQUES.forEach(function(b) { brParId[b.id] = b; });
+  var vues = lireVues();
+
+  PROTOCOLES = (d.protocoles || []).slice().sort(byOrdre).map(function(r) {
+    var parGroupe = {};
+    (r.protocole_criteres || []).forEach(function(l) {
+      var v = VALEURS_PAR_ID[l.valeur_id]; if (!v) return;
+      (parGroupe[v.groupe_code] = parGroupe[v.groupe_code] || []).push(v);
+    });
+    var crit = {};
+    FILTRES_ORDER.forEach(function(k) {
+      if (parGroupe[k]) crit[k] = parGroupe[k].sort(byOrdre).map(function(v) { return v.code; }).join(',');
+    });
+    var poIds = (r.protocole_postulats || []).map(function(l) { return l.postulat_id; }).filter(function(id) { return poParId[id]; });
+    var brIds = (r.protocole_briques || []).map(function(l) { return l.brique_id; }).filter(function(id) { return brParId[id]; });
+    var etapes = (r.etapes || []).slice().sort(byOrdre).map(function(e) {
+      var iv = [], qv = [], va = e.variantes;
+      if (Array.isArray(va)) iv = va;
+      else if (va && typeof va === 'object') { iv = va.instruction || []; qv = va.question || []; }
+      return {
+        _id: e.id, titre: nz(e.titre), content: nz(e.action),
+        instruction: nz(e.instruction), instruction_variants: iv,
+        questionnement: nz(e.question), question_variants: qv
+      };
+    });
+    return {
+      id: r.id, nom: r.nom,
+      description: nz(r.description), histoire: nz(r.histoire), socle: nz(r.socle),
+      principe: nz(r.principe), utilite: nz(r.utilite), vigilance: nz(r.vigilance),
+      le_plus: nz(r.le_plus), duree_estimee: nz(r.duree_estimee),
+      score_symptome: nz(r.score_symptome), score_cause: nz(r.score_cause),
+      score_objectif: nz(r.score_objectif), score_ressources: nz(r.score_ressources),
+      score_effet: nz(r.score_effet),
+      exemple_quotidien: nz(r.exemple_quotidien), exemple_professionnel: nz(r.exemple_professionnel),
+      exemple_sport: nz(r.exemple_sport), exemple_sante: nz(r.exemple_sante),
+      declencheurs: r.declencheurs || [], criteres: crit,
+      postulats: poIds.map(function(id) { return poParId[id].texte; }), _postulat_ids: poIds,
+      briques: brIds.map(function(id) { return brParId[id].nom; }), _brique_ids: brIds,
+      etapes: etapes, notes: nz(r.note_admin),
+      image_url: nz(r.image_url), video_url: nz(r.video_url), podcast_url: nz(r.podcast_url),
+      rang_favori_defaut: r.rang_favori_defaut || 0, favorite_rank: 0,
+      publie: r.publie !== false, views: vues[r.id] || 0
+    };
+  });
+  MES_NOTES = (d.notes || []).slice();
+  MES_FAVORIS = (d.favoris || []).slice();
+  IS_ADMIN = d.role === 'admin';
+  appliquerFavoris();
+}
+
+// Favoris personnels s'ils existent, sinon favoris proposés par défaut
+function appliquerFavoris() {
+  var perso = {};
+  MES_FAVORIS.forEach(function(f) { perso[f.protocole_id] = f.rang || 1; });
+  var aDesPerso = MES_FAVORIS.length > 0;
+  PROTOCOLES.forEach(function(p) {
+    p.favorite_rank = aDesPerso ? (perso[p.id] || 0) : (p.rang_favori_defaut || 0);
+  });
+}
+
+// ── Lecture serveur ──
+function chargerDepuisServeur() {
+  var requetes = [
+    sb.from('criteres_groupes').select('*').abortSignal(T()),
+    sb.from('criteres_valeurs').select('*').abortSignal(T()),
+    sb.from('postulats').select('*').abortSignal(T()),
+    sb.from('briques').select('*').abortSignal(T()),
+    sb.from('protocoles').select('*, protocole_criteres(valeur_id), protocole_postulats(postulat_id), protocole_briques(brique_id), etapes(*)').abortSignal(T()),
+    sb.from('notes').select('*').eq('user_id', USER.id).abortSignal(T()),
+    sb.from('favoris').select('*').eq('user_id', USER.id).abortSignal(T()),
+    sb.from('profils').select('role').eq('user_id', USER.id).abortSignal(T()).maybeSingle()
+  ];
+  return Promise.all(requetes).then(function(r) {
+    for (var i = 0; i < r.length; i++) if (r[i].error) throw r[i].error;
+    return {
+      groupes: r[0].data, valeurs: r[1].data, postulats: r[2].data, briques: r[3].data,
+      protocoles: r[4].data, notes: r[5].data, favoris: r[6].data,
+      role: r[7].data ? r[7].data.role : 'utilisateur',
+      charge_le: new Date().toISOString()
+    };
+  });
+}
+
+function messageErreur(err) {
+  var n = err && err.name, m = (err && err.message) || '';
+  if (n === 'TimeoutError' || n === 'AbortError' || /abort|timeout|fetch|network/i.test(m)) return 'réseau trop lent ou absent';
+  return m || 'erreur réseau';
+}
+function estErreurSession(err) {
+  return !!err && (err.code === 'PGRST301' || err.status === 401 || /jwt/i.test(err.message || ''));
+}
+
+function rechargerDonnees() {
+  if (!sb || !USER) return Promise.resolve();
+  return chargerDepuisServeur().then(function(d) {
+    HORS_LIGNE = false;
+    DERNIERES_DONNEES = d;
+    ecrireCache(d);
+    appliquerDonnees(d);
+    DONNEES_PRETES = true;
+    rafraichirAffichage();
+  }).catch(function(err) {
+    if (estErreurSession(err)) { sb.auth.signOut({ scope: 'local' }); return; }
+    HORS_LIGNE = true;
+    majBandeau();
+  });
+}
+
+function rechargerManuellement() {
+  var b = document.getElementById('net-banner');
+  if (b) { b.textContent = 'Chargement…'; b.classList.add('show'); }
+  rechargerDonnees().then(function() { if (currentView === 'gestion') renderGestion(); });
+}
+
+// ── Affichage après chargement ──
+function rafraichirAffichage() {
+  var tg = document.getElementById('tabbtn-g');
+  if (tg) tg.style.display = IS_ADMIN ? '' : 'none';
+  if (!IS_ADMIN && currentView === 'gestion') _rawSwitchView('protocoles');
+  buildFilters();
+  buildCriteriaCards();
+  renderProtocols();
+  if (selectedId) {
+    if (trouverProtocole(selectedId)) renderDetail(true); else closeDetail();
+  }
+  if (currentView === 'gestion') renderGestion();
+  majBandeau();
+  majAboutCompte();
+}
+
+function afficherChargement() {
+  var grid = document.getElementById('pgrid');
+  if (grid) grid.innerHTML = '<div class="load-st">Chargement des fiches…</div>';
+  var cc = document.getElementById('criteria-cards');
+  if (cc) cc.innerHTML = '<div class="load-st">Chargement des fiches…</div>';
+}
+
+function majBandeau() {
+  var b = document.getElementById('net-banner'); if (!b) return;
+  if (!HORS_LIGNE) { b.classList.remove('show'); b.textContent = ''; return; }
+  if (DONNEES_PRETES && DERNIERES_DONNEES) {
+    var d = new Date(DERNIERES_DONNEES.charge_le);
+    b.textContent = 'Hors ligne : copie locale du ' + d.toLocaleDateString('fr-FR') + ' à ' +
+      d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) + ' · toucher pour réessayer';
+  } else {
+    b.textContent = 'Chargement impossible : vérifiez la connexion · toucher pour réessayer';
+  }
+  b.classList.add('show');
+}
+
+function majAboutCompte() {
+  var el = document.getElementById('about-compte'); if (!el) return;
+  el.innerHTML = USER
+    ? '<span>' + esc(USER.email) + ' · ' + APP_VERSION + '</span><button onclick="seDeconnecter()">Déconnexion</button>'
+    : '<span>' + APP_VERSION + '</span>';
+}
+
+// ── Connexion ──
+function ouvrirConnexion() {
+  document.getElementById('login-overlay').classList.add('open');
+  document.getElementById('login-error').textContent = '';
+  setTimeout(function() { var el = document.getElementById('login-email'); if (el) el.focus(); }, 50);
+}
+function fermerConnexion() { document.getElementById('login-overlay').classList.remove('open'); }
+
+function traduireErreurAuth(e) {
+  var m = String((e && e.message) || '').toLowerCase();
+  if (m.indexOf('invalid login') >= 0 || m.indexOf('invalid credentials') >= 0) return 'Email ou mot de passe incorrect';
+  if (m.indexOf('not confirmed') >= 0) return 'Compte non confirmé';
+  if (m.indexOf('fetch') >= 0 || m.indexOf('network') >= 0) return 'Connexion impossible : vérifiez le réseau';
+  if (m.indexOf('rate') >= 0) return 'Trop de tentatives : patientez quelques minutes';
+  return 'Connexion refusée';
+}
+
+function seConnecter() {
+  var email = document.getElementById('login-email').value.trim();
+  var pass = document.getElementById('login-pass').value;
+  var err = document.getElementById('login-error');
+  var btn = document.getElementById('login-btn');
+  var box = document.getElementById('login-box');
+  if (!email || !pass) { err.textContent = 'Email et mot de passe requis'; return; }
+  if (!sb) { err.textContent = 'Connexion impossible : vérifiez le réseau'; return; }
+  btn.disabled = true; err.textContent = '';
+  sb.auth.signInWithPassword({ email: email, password: pass }).then(function(res) {
+    btn.disabled = false;
+    if (res.error) {
+      err.textContent = traduireErreurAuth(res.error);
+      box.classList.remove('shake'); void box.offsetWidth; box.classList.add('shake');
+      return;
+    }
+    document.getElementById('login-pass').value = '';
+    fermerConnexion();
+    ouvrirSession(res.data.user);
+  }).catch(function(e) {
+    btn.disabled = false;
+    err.textContent = traduireErreurAuth(e);
+  });
+}
+
+function ouvrirSession(user) {
+  USER = { id: user.id, email: user.email };
+  lsSet(DERNIER_USER_KEY, JSON.stringify(USER));
+  var c = lireCache();
+  if (c) {
+    DERNIERES_DONNEES = c;
+    appliquerDonnees(c);
+    DONNEES_PRETES = true;
+    rafraichirAffichage();
+  } else {
+    afficherChargement();
+  }
+  return rechargerDonnees();
+}
+
+function reinitialiserSession() {
+  USER = null; IS_ADMIN = false; DERNIERES_DONNEES = null; DONNEES_PRETES = false; HORS_LIGNE = false;
+  PROTOCOLES = []; POSTULATS = []; BRIQUES = []; FILTRES = {}; FILTRES_ORDER = [];
+  MES_NOTES = []; MES_FAVORIS = [];
+  if (selectedId) closeDetail();
+  closeModal();
+  _rawSwitchView('protocoles');
+  rafraichirAffichage();
+}
+
+function seDeconnecter() {
+  if (!confirm('Se déconnecter ? La copie locale des fiches et de vos notes sera effacée de cet appareil.')) return;
+  lsDel(cacheCle());
+  lsDel(DERNIER_USER_KEY);
+  closeAbout();
+  if (sb) sb.auth.signOut({ scope: 'local' }); else { reinitialiserSession(); ouvrirConnexion(); }
+}
+
+function demarrer() {
+  if (!sb) {
+    // Bibliothèque non chargée (réseau absent) : on tente la copie locale
+    var u = null; try { u = JSON.parse(lsGet(DERNIER_USER_KEY) || 'null'); } catch (e) {}
+    if (u) {
+      USER = u; var c = lireCache();
+      if (c) { DERNIERES_DONNEES = c; appliquerDonnees(c); DONNEES_PRETES = true; }
+    }
+    HORS_LIGNE = true;
+    rafraichirAffichage();
+    return;
+  }
+  sb.auth.onAuthStateChange(function(evt) {
+    if (evt === 'SIGNED_OUT') { reinitialiserSession(); ouvrirConnexion(); }
+  });
+  sb.auth.getSession().then(function(res) {
+    var s = res && res.data && res.data.session;
+    if (s && s.user) ouvrirSession(s.user); else ouvrirConnexion();
+  }).catch(function() { ouvrirConnexion(); });
+}
+
+// ── Écritures (administrateurs) ──
+var _ecritureEnCours = false;
+function executerEcriture(op, apresSucces, btn) {
+  _ecritureEnCours = true;
+  var texteBtn = btn ? btn.textContent : '';
+  if (btn) { btn.disabled = true; btn.textContent = 'Enregistrement…'; }
+  return Promise.resolve(op).then(function(res) {
+    if (res && res.error) throw res.error;
+    if (apresSucces) apresSucces(res);
+    return rechargerDonnees();
+  }).catch(function(err) {
+    alert('Enregistrement impossible : ' + messageErreur(err));
+    return rechargerDonnees();
+  }).then(function() {
+    _ecritureEnCours = false;
+    if (btn) { btn.disabled = false; btn.textContent = texteBtn; }
+  });
+}
+
+// ── Notes privées ──
+var MODE_NOTE = false;
+var NOTE_EDITION = null;   // clé "protocole|étape|note"
+var _slideCourant = 0;
+
+function notesFiche(pid) {
+  return MES_NOTES.filter(function(n) { return n.protocole_id === pid && !n.etape_id; });
+}
+function noteEtape(pid, eid) {
+  for (var i = 0; i < MES_NOTES.length; i++) {
+    var n = MES_NOTES[i];
+    if (n.protocole_id === pid && n.etape_id === eid) return n;
+  }
+  return null;
+}
+function rendreNote(pid, eid, note, titre) {
+  var cle = pid + '|' + (eid || '') + '|' + (note ? note.id : '');
+  if (NOTE_EDITION === cle) {
+    return '<div class="note-box note-edit"><div class="note-lbl"><span>✎ ' + titre + '</span></div>' +
+      '<textarea id="note-txt" maxlength="5000" placeholder="Votre observation sur ce protocole : variante, formulation, point d’attention">' +
+      esc(note ? note.texte : '') + '</textarea>' +
+      '<div class="note-rgpd">Note privée, visible par vous seul. N’y inscrivez aucune information sur les personnes accompagnées.</div>' +
+      '<div class="note-btns">' +
+        '<button class="note-act" data-cle="' + esc(cle) + '" onclick="noteEnregistrer(this)">Enregistrer</button>' +
+        '<button class="note-act" onclick="noteAnnuler()">Annuler</button>' +
+        (note ? '<button class="note-act" data-cle="' + esc(cle) + '" onclick="noteSupprimer(this)">Supprimer</button>' : '') +
+      '</div></div>';
+  }
+  if (note) {
+    return '<div class="note-box"><div class="note-lbl"><span>✎ ' + titre + '</span>' +
+      (MODE_NOTE ? '<button class="note-act" data-cle="' + esc(cle) + '" onclick="noteEditer(this)">Modifier</button>' : '') +
+      '</div>' + esc(note.texte) + '</div>';
+  }
+  if (MODE_NOTE) return '<button class="note-add" data-cle="' + esc(cle) + '" onclick="noteEditer(this)">+ ' + titre + '</button>';
+  return '';
+}
+function blocNotesFiche(p) {
+  var principale = null, autres = [];
+  notesFiche(p.id).forEach(function(n) {
+    if (!n.etape_supprimee && !principale) principale = n; else autres.push(n);
+  });
+  var html = rendreNote(p.id, '', principale, 'Ma note sur ce protocole');
+  autres.forEach(function(n) {
+    html += rendreNote(p.id, '', n, n.etape_supprimee ? 'Ma note (étape supprimée)' : 'Ma note');
+  });
+  return html;
+}
+function blocNote(pid, eid) {
+  if (!eid) return '';
+  return rendreNote(pid, eid, noteEtape(pid, eid), 'Ma note sur cette étape');
+}
+function memoriserNotes() {
+  if (DERNIERES_DONNEES) { DERNIERES_DONNEES.notes = MES_NOTES.slice(); ecrireCache(DERNIERES_DONNEES); }
+}
+function noteEditer(btn) {
+  NOTE_EDITION = btn.dataset.cle;
+  renderDetail(true);
+  setTimeout(function() { var t = document.getElementById('note-txt'); if (t) t.focus(); }, 30);
+}
+function noteAnnuler() { NOTE_EDITION = null; renderDetail(true); }
+function noteEnregistrer(btn) {
+  var parts = btn.dataset.cle.split('|');
+  var pid = parts[0], eid = parts[1] || null, nid = parts[2] || null;
+  var t = document.getElementById('note-txt');
+  var texte = t ? t.value.trim() : '';
+  if (!texte) { if (nid) return noteSupprimer(btn, true); return noteAnnuler(); }
+  btn.disabled = true;
+  var op = nid
+    ? sb.from('notes').update({ texte: texte }).eq('id', nid).select().abortSignal(T()).single()
+    : sb.from('notes').insert({ protocole_id: pid, etape_id: eid, texte: texte }).select().abortSignal(T()).single();
+  op.then(function(res) {
+    if (res.error) throw res.error;
+    MES_NOTES = MES_NOTES.filter(function(n) { return n.id !== res.data.id; });
+    MES_NOTES.push(res.data);
+    memoriserNotes();
+    NOTE_EDITION = null;
+    renderDetail(true);
+  }).catch(function(err) {
+    btn.disabled = false;
+    alert('Note non enregistrée : ' + messageErreur(err) + '. Votre texte reste dans le champ.');
+  });
+}
+function noteSupprimer(btn, sansConfirmer) {
+  var nid = btn.dataset.cle.split('|')[2];
+  if (!nid) return;
+  if (!sansConfirmer && !confirm('Supprimer cette note ?')) return;
+  sb.from('notes').delete().eq('id', nid).abortSignal(T()).then(function(res) {
+    if (res.error) throw res.error;
+    MES_NOTES = MES_NOTES.filter(function(n) { return n.id !== nid; });
+    memoriserNotes();
+    NOTE_EDITION = null;
+    renderDetail(true);
+  }).catch(function(err) {
+    alert('Suppression impossible : ' + messageErreur(err));
+  });
+}
+function basculerModeNote() {
+  MODE_NOTE = !MODE_NOTE;
+  NOTE_EDITION = null;
+  renderDetail(true);
+}
+
+// ── Favoris personnels ──
+function basculerFavori() {
+  var p = trouverProtocole(selectedId);
+  if (!p || !USER || !sb) return;
+  var chaine = Promise.resolve();
+  if (!MES_FAVORIS.length) {
+    // Premier usage : on part des favoris proposés par défaut
+    var depart = PROTOCOLES.filter(function(x) { return x.rang_favori_defaut > 0; })
+      .map(function(x) { return { user_id: USER.id, protocole_id: x.id, rang: x.rang_favori_defaut }; });
+    if (depart.length) {
+      chaine = sb.from('favoris').insert(depart).select().abortSignal(T()).then(function(r) {
+        if (r.error) throw r.error;
+        MES_FAVORIS = r.data || [];
+      });
+    }
+  }
+  chaine.then(function() {
+    var existant = null;
+    MES_FAVORIS.forEach(function(f) { if (f.protocole_id === p.id) existant = f; });
+    if (existant) {
+      return sb.from('favoris').delete().eq('user_id', USER.id).eq('protocole_id', p.id).abortSignal(T()).then(function(r) {
+        if (r.error) throw r.error;
+        MES_FAVORIS = MES_FAVORIS.filter(function(f) { return f !== existant; });
+      });
+    }
+    var rang = MES_FAVORIS.reduce(function(m, f) { return Math.max(m, f.rang || 0); }, 0) + 1;
+    return sb.from('favoris').insert({ user_id: USER.id, protocole_id: p.id, rang: rang }).select().abortSignal(T()).single().then(function(r) {
+      if (r.error) throw r.error;
+      MES_FAVORIS.push(r.data);
+    });
+  }).then(function() {
+    if (DERNIERES_DONNEES) { DERNIERES_DONNEES.favoris = MES_FAVORIS.slice(); ecrireCache(DERNIERES_DONNEES); }
+    appliquerFavoris();
+    renderProtocols();
+    renderDetail(true);
+  }).catch(function(err) {
+    var m = (err && err.message) || '';
+    alert(/16/.test(m) ? 'Maximum 16 favoris atteint.' : 'Favori non enregistré : ' + messageErreur(err));
+  });
+}
+
+function majBoutonsDetail(p) {
+  var bf = document.getElementById('btn-fav');
+  if (bf) { bf.textContent = p.favorite_rank > 0 ? '★' : '☆'; bf.classList.toggle('on-fav', p.favorite_rank > 0); }
+  var bn = document.getElementById('btn-note');
+  if (bn) bn.classList.toggle('on-note', MODE_NOTE);
+}
 
 // ═══════════════════════════════════════
 // STATE
@@ -1519,103 +1940,15 @@ function _rawSwitchView(v) {
 }
 
 // ═══════════════════════════════════════
-// ACCES GESTION PAR CODE PIN
-// L'état "déverrouillé" et le code de référence sont enfermés dans cette
-// fermeture : ils ne sont pas accessibles ni modifiables depuis la console
-// du navigateur. Le code est comparé sous forme de hachage SHA-256, jamais
-// stocké ni comparé en clair.
+// ACCES GESTION (v54) : réservé aux comptes administrateurs.
+// Le contrôle réel est fait par la base : sans le rôle admin,
+// aucune écriture n'est acceptée, quel que soit le code de la page.
 // ═══════════════════════════════════════
-var switchView, requestGestionAccess, checkPin, closePinLock, lockGestion, savePin;
-
-(function() {
-  var unlocked = false;
-  var PIN_DEFAULT = '0000';
-  var PIN_SALT = 'pnl-app-fr-2026';
-  var PIN_STORAGE_KEY = 'pnl_gestion_pin_hash';
-
-  function hashPin(pin) {
-    var data = new TextEncoder().encode(PIN_SALT + pin);
-    return crypto.subtle.digest('SHA-256', data).then(function(buf) {
-      return Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
-    });
-  }
-
-  function getStoredHash() {
-    var stored = null;
-    try { stored = localStorage.getItem(PIN_STORAGE_KEY); } catch(e) {}
-    return stored ? Promise.resolve(stored) : hashPin(PIN_DEFAULT);
-  }
-
-  switchView = function(v) {
-    if (v === 'gestion' && !unlocked) { openPinLock(); return; }
-    _rawSwitchView(v);
-  };
-
-  requestGestionAccess = function() {
-    if (unlocked) { switchView('gestion'); return; }
-    openPinLock();
-  };
-
-  closePinLock = function() {
-    document.getElementById('pin-overlay').classList.remove('open');
-  };
-
-  checkPin = function() {
-    var input = document.getElementById('pin-input');
-    var err   = document.getElementById('pin-error');
-    var box   = document.getElementById('pin-box');
-    var val = input.value;
-    if (val.length !== 4) return;
-    Promise.all([hashPin(val), getStoredHash()]).then(function(r) {
-      if (r[0] === r[1]) {
-        unlocked = true;
-        closePinLock();
-        switchView('gestion');
-      } else {
-        err.textContent = 'Code incorrect';
-        box.classList.remove('shake'); void box.offsetWidth; box.classList.add('shake');
-        input.value = '';
-        input.focus();
-      }
-    });
-  };
-
-  lockGestion = function() {
-    unlocked = false;
-    switchView('protocoles');
-  };
-
-  savePin = function() {
-    var a = document.getElementById('pin-new').value;
-    var b = document.getElementById('pin-confirm').value;
-    var msg = document.getElementById('pin-save-msg');
-    if (a.length !== 4 || b.length !== 4) {
-      msg.className = 'pin-save-msg err'; msg.textContent = 'Le code doit contenir 4 chiffres'; return;
-    }
-    if (a !== b) {
-      msg.className = 'pin-save-msg err'; msg.textContent = 'Les deux codes ne correspondent pas'; return;
-    }
-    hashPin(a).then(function(h) {
-      try {
-        localStorage.setItem(PIN_STORAGE_KEY, h);
-        msg.className = 'pin-save-msg ok'; msg.textContent = 'Nouveau code enregistré';
-        document.getElementById('pin-new').value = '';
-        document.getElementById('pin-confirm').value = '';
-      } catch(e) {
-        msg.className = 'pin-save-msg err'; msg.textContent = 'Erreur : stockage local indisponible';
-      }
-    });
-  };
-})();
-
-function openPinLock() {
-  var input = document.getElementById('pin-input');
-  var err   = document.getElementById('pin-error');
-  input.value = '';
-  err.textContent = '';
-  document.getElementById('pin-overlay').classList.add('open');
-  setTimeout(function(){ input.focus(); }, 50);
+function switchView(v) {
+  if (v === 'gestion' && !IS_ADMIN) return;
+  _rawSwitchView(v);
 }
+function requestGestionAccess() { switchView('gestion'); }
 
 // ═══════════════════════════════════════
 // FILTER SHEET
@@ -1835,6 +2168,7 @@ function renderProtocols() {
       var tc = k.toLowerCase().indexOf('niveau') >= 0 ? 'b' : k.toLowerCase().indexOf('index') >= 0 ? 'r' : 'y';
       tags += '<span class="tag ' + tc + '">' + crit[k] + '</span>';
     });
+    if (p.publie === false) tags = '<span class="tag draft">Brouillon</span>' + tags;
     var desc = p.description ? stripH(p.description) : '<em style="color:#ccc">En cours de rédaction</em>';
     var foot = '';
     if (p.duree_estimee) foot += p.duree_estimee;
@@ -1862,11 +2196,16 @@ function swipeGo(idx) {
   if (!slides.length) return;
   idx = Math.max(0, Math.min(idx, slides.length - 1));
   slides.forEach(function(s, i) { s.classList.toggle('active', i === idx); });
+  _slideCourant = idx;
 }
 
 // ═══════════════════════════════════════
 function openDetail(id) {
   selectedId = id;
+  NOTE_EDITION = null;
+  var vues = lireVues(); vues[id] = (vues[id] || 0) + 1;
+  lsSet(VUES_KEY, JSON.stringify(vues));
+  var pv = trouverProtocole(id); if (pv) pv.views = vues[id];
   activeEx = 'Quotidien';
   readMode = 'seance';
   syncReadModeBtns();
@@ -1895,9 +2234,12 @@ function syncReadModeBtns() {
 function closeDetail() {
   document.getElementById('detail-sheet').classList.remove('open');
   selectedId = null;
+  NOTE_EDITION = null;
 }
 
-function renderDetail() {
+function renderDetail(garderPosition) {
+  var _body = document.getElementById('dsh-body');
+  var _pos = garderPosition && _body ? { slide: _slideCourant, scroll: _body.scrollTop } : null;
   var p = null;
   for (var i=0;i<PROTOCOLES.length;i++) { if (PROTOCOLES[i].id === selectedId) { p = PROTOCOLES[i]; break; } }
   if (!p) return;
@@ -1910,6 +2252,7 @@ function renderDetail() {
   if (p.favorite_rank > 0) meta += '★ Favori  ';
   if (p.views) meta += '👁 ' + p.views;
   document.getElementById('dsh-meta').textContent = meta;
+  majBoutonsDetail(p);
 
   // Helper: render a simple text card
   function dc(title, content, accent) {
@@ -1961,7 +2304,7 @@ function renderDetail() {
       var question    = typeof e === 'object' ? (e.questionnement || '') : '';
       var q_vars      = typeof e === 'object' && Array.isArray(e.question_variants) ? e.question_variants.filter(Boolean) : [];
       var numCls      = clr(Math.floor(i / 4));
-      var card = '<div class="et-card"><div class="et-header"><div class="et-num ' + numCls + '">' + (i + 1) + '</div></div>';
+      var card = '<div class="et-card"><div class="et-header"><div class="et-num ' + numCls + '">' + (i + 1) + '</div>' + (e && e.titre ? '<div class="et-titre">' + e.titre + '</div>' : '') + '</div>';
       if (action && action.trim())       card += '<div class="et-section"><div class="et-section-label action"><span class="et-pip"></span>Action</div><div class="et-section-text">' + action + '</div></div>';
       if (instruction && instruction.trim()) {
         var ivar = instr_vars.length ? '<div style="padding:0 14px 8px">' + instr_vars.map(function(v){ return '<div style="font-size:12.5px;color:var(--blue);font-style:italic;opacity:.75;margin-top:4px;padding-left:10px;border-left:2px solid rgba(26,62,212,.2)">→ ' + v + '</div>'; }).join('') + '</div>' : '';
@@ -1971,6 +2314,7 @@ function renderDetail() {
         var qvar = q_vars.length ? '<div style="padding:0 14px 8px">' + q_vars.map(function(v){ return '<div style="font-size:12.5px;color:var(--red);font-style:italic;opacity:.7;margin-top:4px;padding-left:10px;border-left:2px solid rgba(212,43,43,.2)">→ ❝ ' + v + '</div>'; }).join('') + '</div>' : '';
         card += '<div class="et-section"><div class="et-section-label question"><span class="et-pip"></span>Question</div><div class="et-section-text q-text">❝ ' + question + '</div>' + qvar + '</div>';
       }
+      card += blocNote(p.id, e && e._id);
       card += '</div>';
       cards.push(card);
     });
@@ -2005,6 +2349,7 @@ function renderDetail() {
         '</div>' +
         '<div style="padding:10px 16px 14px;font-size:13.5px;line-height:1.7;color:#333;font-weight:300">' + p.vigilance + '</div>';
     }
+    overviewContent += blocNotesFiche(p);
     slides.push({type:'overview', content: overviewContent});
 
     // One slide per step
@@ -2038,6 +2383,7 @@ function renderDetail() {
       var numColors   = {r:'var(--red)', b:'var(--blue)', y:'var(--yellow)'};
       var numColor    = numColors[numCls];
       inner += '<div class="swipe-step-num" style="color:' + numColor + '">' + (s.index + 1) + ' <span style="font-family:IBM Plex Mono,monospace;font-size:11px;font-weight:400;color:#bbb">/ ' + s.total + '</span></div>';
+      if (e && e.titre) inner += '<div class="swipe-titre">' + e.titre + '</div>';
       if (action && action.trim()) {
         inner += '<div class="swipe-section"><div class="swipe-sec-lbl action">Action</div><div class="swipe-sec-txt">' + action + '</div></div>';
       }
@@ -2061,6 +2407,7 @@ function renderDetail() {
           : '';
         inner += '<div class="swipe-section"><div class="swipe-sec-lbl question">Question</div><div class="swipe-sec-txt q-txt">❝ ' + question + '</div></div>' + qvarHtml;
       }
+      inner += blocNote(p.id, e && e._id);
       var isLast = si === totalSlides - 1;
       return '<div class="swipe-slide" data-si="' + si + '">' +
         inner +
@@ -2077,13 +2424,14 @@ function renderDetail() {
     // Inject swipe container directly, bypass parts system
     document.getElementById('dsh-body').innerHTML =
       '<div class="swipe-wrap" id="swipe-wrap">' + slidesHtml + '</div>';
-    swipeGo(0);
+    swipeGo(_pos ? _pos.slide : 0);
     return; // Skip normal parts assembly
   }
 
   // ══ MODE RAPIDE ══════════════════════════════════════════════
   if (readMode === 'rapide') {
     if (tags) parts.push('<div class="dc-tags">' + tags + '</div>');
+    parts.push(blocNotesFiche(p));
     parts.push(dc('Description', p.description, 'k'));
     if (p.declencheurs && p.declencheurs.length) parts.push(dcBullets('Déclencheurs', p.declencheurs, 'k'));
     parts.push(buildScoreCard());
@@ -2095,6 +2443,7 @@ function renderDetail() {
   // ══ MODE COMPLET : tout ════════════════════════════════════
   else {
     if (tags) parts.push('<div class="dc-tags">' + tags + '</div>');
+    parts.push(blocNotesFiche(p));
     parts.push(dc('Description', p.description, 'k'));
     parts.push(dc('Histoire', p.histoire, 'y'));
     if (p.postulats && p.postulats.length) parts.push(dcBullets('Postulats', p.postulats, 'b'));
@@ -2128,6 +2477,7 @@ function renderDetail() {
   }
 
   document.getElementById('dsh-body').innerHTML = parts.filter(Boolean).join('');
+  if (_pos) document.getElementById('dsh-body').scrollTop = _pos.scroll;
 }
 
 function switchEx(k) {
@@ -2164,33 +2514,25 @@ function renderGestion() {
   if (currentGTab === 'po')  renderGPo();
   if (currentGTab === 'b')   renderGB();
   if (currentGTab === 'f')   renderGF();
-  if (currentGTab === 'pin') renderGPin();
+  if (currentGTab === 'pin') renderGCompte();
 }
 
-function renderGPin() {
+function renderGCompte() {
+  var d = DERNIERES_DONNEES;
+  function ligne(l, v) { return '<div class="compte-ligne"><div class="compte-lbl">' + l + '</div><div class="compte-val">' + v + '</div></div>'; }
   document.getElementById('gcontent').innerHTML =
-    '<div class="pin-manage">' +
-      '<div class="pin-status">' +
-        '<div class="pin-status-lbl">Code actuel</div>' +
-        '<div class="pin-status-val">••••</div>' +
-      '</div>' +
-      '<div class="frow">' +
-        '<div class="flabel">Nouveau code (4 chiffres)</div>' +
-        '<input type="tel" inputmode="numeric" maxlength="4" class="finput" id="pin-new" autocomplete="off"' +
-          ' oninput="this.value=this.value.replace(/[^0-9]/g,\'\').slice(0,4)">' +
-      '</div>' +
-      '<div class="frow">' +
-        '<div class="flabel">Confirmer le code</div>' +
-        '<input type="tel" inputmode="numeric" maxlength="4" class="finput" id="pin-confirm" autocomplete="off"' +
-          ' oninput="this.value=this.value.replace(/[^0-9]/g,\'\').slice(0,4)">' +
-      '</div>' +
-      '<button class="btn-add" style="width:100%;justify-content:center;padding:12px" onclick="savePin()">Enregistrer le nouveau code</button>' +
-      '<div class="pin-save-msg" id="pin-save-msg"></div>' +
-      '<button class="btn-lock-now" onclick="lockGestion()">🔒 Verrouiller Gestion maintenant</button>' +
+    '<div class="compte-box">' +
+      ligne('Compte', esc(USER ? USER.email : '')) +
+      ligne('Rôle', IS_ADMIN ? 'Administrateur' : 'Utilisateur') +
+      ligne('Données', HORS_LIGNE ? 'Copie locale (hors ligne)' : 'Synchronisées avec la base') +
+      ligne('Dernier chargement', d ? new Date(d.charge_le).toLocaleString('fr-FR') : '—') +
+      ligne('Version de l’appli', APP_VERSION) +
+      '<button class="btn-add" style="width:100%;justify-content:center;padding:12px" onclick="rechargerManuellement()">↻ Recharger les données</button>' +
+      '<button class="btn-lock-now" onclick="seDeconnecter()">Se déconnecter</button>' +
     '</div>';
 }
 
-// (savePin est défini dans la fermeture "ACCES GESTION PAR CODE PIN" plus haut)
+// (connexion et déconnexion : voir la couche données v54)
 
 function renderGP() {
   document.getElementById('gb-p').textContent = PROTOCOLES.length;
@@ -2198,6 +2540,7 @@ function renderGP() {
     var c = cardColor(p);
     var niv = (p.criteres && (p.criteres.NiveauPNL||p.criteres.niveaupnl)) || '';
     var s = getStatus(p);
+    var brouillon = p.publie === false ? '<span class="gstatus brouillon">brouillon</span> ' : '';
     var nb = (p.etapes && p.etapes.length) || 0;
     return '<div class="glist-item" onclick="openMdlP(\'' + p.id + '\')">' +
       '<div class="gli-dot ' + c + '"></div>' +
@@ -2205,7 +2548,7 @@ function renderGP() {
         '<div class="gli-nom">' + p.nom + '</div>' +
         '<div class="gli-sub">' + (niv || '—') + (nb ? ' · ' + nb + ' étapes' : '') + '</div>' +
       '</div>' +
-      '<div class="gli-meta"><span class="gstatus ' + s + '">' + s + '</span></div>' +
+      '<div class="gli-meta">' + brouillon + '<span class="gstatus ' + s + '">' + s + '</span></div>' +
       '<div class="gli-chevron">›</div>' +
     '</div>';
   }).join('');
@@ -2274,7 +2617,7 @@ function filterGList2(q) {
 // GESTION FILTRES
 // ═══════════════════════════════════════
 // On garde un tableau ordonné des clés pour gérer l'ordre des groupes
-var FILTRES_ORDER = Object.keys(FILTRES);
+// FILTRES_ORDER est alimenté par appliquerDonnees() (v54)
 
 function renderGF() {
   var palette = [
@@ -2338,32 +2681,36 @@ function renderGF() {
 }
 
 function moveGroup(key, dir) {
-  var idx = FILTRES_ORDER.indexOf(key);
-  var newIdx = idx + dir;
-  if (newIdx < 0 || newIdx >= FILTRES_ORDER.length) return;
-  FILTRES_ORDER.splice(idx, 1);
-  FILTRES_ORDER.splice(newIdx, 0, key);
-  renderGF();
-  buildFilters();
+  if (!IS_ADMIN || _ecritureEnCours) return;
+  var ordre = FILTRES_ORDER.slice();
+  var idx = ordre.indexOf(key), n = idx + dir;
+  if (n < 0 || n >= ordre.length) return;
+  ordre.splice(idx, 1); ordre.splice(n, 0, key);
+  var lignes = ordre.map(function(k, i) {
+    return { code: k, label: FILTRES[k].label, multiple: FILTRES[k].multiple, ordre: i };
+  });
+  FILTRES_ORDER = ordre; renderGF(); buildFilters();
+  executerEcriture(sb.from('criteres_groupes').upsert(lignes));
 }
 
 function moveValeur(key, id, dir) {
-  var vals = FILTRES[key].valeurs;
-  var idx = vals.findIndex(function(v){ return v.id === id; });
-  var newIdx = idx + dir;
-  if (newIdx < 0 || newIdx >= vals.length) return;
-  var tmp = vals[idx];
-  vals[idx] = vals[newIdx];
-  vals[newIdx] = tmp;
-  renderGF();
-  buildFilters();
+  if (!IS_ADMIN || _ecritureEnCours) return;
+  var vals = FILTRES[key].valeurs.slice();
+  var idx = -1; vals.forEach(function(v, i) { if (v.id === id) idx = i; });
+  var n = idx + dir;
+  if (idx < 0 || n < 0 || n >= vals.length) return;
+  var tmp = vals[idx]; vals[idx] = vals[n]; vals[n] = tmp;
+  FILTRES[key].valeurs = vals; renderGF(); buildFilters();
+  var lignes = vals.map(function(v, i) {
+    return { id: v.id, groupe_code: key, code: v.code, label: v.label, description: v.description || null, ordre: i };
+  });
+  executerEcriture(sb.from('criteres_valeurs').upsert(lignes));
 }
 
 function delValeur(key, id) {
-  if (!confirm('Supprimer cette valeur ?')) return;
-  FILTRES[key].valeurs = FILTRES[key].valeurs.filter(function(v){ return v.id !== id; });
-  renderGF();
-  buildFilters();
+  if (!IS_ADMIN || _ecritureEnCours) return;
+  if (!confirm('Supprimer cette valeur ? Elle sera retirée de toutes les fiches qui l’utilisent.')) return;
+  executerEcriture(sb.from('criteres_valeurs').delete().eq('id', id));
 }
 
 function openMdlValeur(key, id) {
@@ -2468,6 +2815,8 @@ function populateEtapes(etapes) {
   _etapes = (etapes || []).map(function(e) {
     if (typeof e === 'string') return {content:e, instruction:'', instruction_variants:[], questionnement:'', question_variants:[]};
     return {
+      _id:                   e._id || null,
+      titre:                 e.titre || '',
       content:               e.content||'',
       instruction:           e.instruction||'',
       instruction_variants:  Array.isArray(e.instruction_variants) ? e.instruction_variants : [],
@@ -2503,6 +2852,11 @@ function renderEtapesWrap() {
       '<div style="display:flex;align-items:center;justify-content:space-between">' +
         '<div style="font-family:Bebas Neue,sans-serif;font-size:20px;color:' + numColor + ';line-height:1">Étape ' + (i+1) + '</div>' +
         '<button onclick="removeEtape(' + i + ')" style="border:1px solid #ccc;background:var(--white);width:26px;height:26px;cursor:pointer;font-size:12px;color:#aaa">✕</button>' +
+      '</div>' +
+      // Titre
+      '<div style="display:flex;flex-direction:column;gap:3px">' +
+        '<div style="font-family:IBM Plex Mono,monospace;font-size:8px;font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:#888">Titre</div>' +
+        '<input class="finput" placeholder="Titre de l\'étape (facultatif)" value="' + (e.titre||'').replace(/"/g,'&quot;') + '" oninput="_etapes[' + i + '].titre=this.value">' +
       '</div>' +
       // Action
       '<div style="display:flex;flex-direction:column;gap:3px">' +
@@ -2543,112 +2897,98 @@ function addEtape() { _etapes.push({content:'', instruction:'', instruction_vari
 function removeEtape(i) { _etapes.splice(i, 1); renderEtapesWrap(); }
 
 function openMdlP(id) {
-  var p = null;
-  if (id) { for (var i=0;i<PROTOCOLES.length;i++) { if (PROTOCOLES[i].id===id) { p=PROTOCOLES[i]; break; } } }
+  var p = id ? trouverProtocole(id) : null;
   var c = p ? (p.criteres || {}) : {};
-  var ins = ['','Neutre','Gênant','Moyen','Forte','Intense'];
-  var ctx = ['','MONO','MULTI'];
 
-  // Index multi-select
-  var idxSel = (c.INDEX||'').split(',').map(function(s){return s.trim();}).filter(Boolean);
-  var idxItems = [{code:'EI',label:'EI',sub:'État Interne'},{code:'PI',label:'PI',sub:'Pensée Interne'},{code:'CE',label:'CE',sub:'Comportement Externe'}];
+  // Critères : construits depuis le référentiel de la base
+  var critHtml = FILTRES_ORDER.map(function(k) {
+    var g = FILTRES[k]; if (!g) return '';
+    var sel = String(c[k] || '').split(',').map(function(s) { return s.trim(); }).filter(Boolean);
+    if (g.multiple) {
+      return fmcl('f-crit-' + k, g.label + ' (choix multiple)',
+        g.valeurs.map(function(v) { return { code: v.code, label: v.label }; }), sel);
+    }
+    return fld(g.label, 'f-crit-' + k, sel[0] || '', 'select', [''].concat(g.valeurs.map(function(v) { return v.code; })));
+  }).join('');
 
-  // Niveaux logiques multi-select
-  var nlSel = p && p.niveaux_logiques ? p.niveaux_logiques : [];
-  var nlItems = (FILTRES.NIV_LOGIQUE ? FILTRES.NIV_LOGIQUE.valeurs : []).map(function(v){ return {code:v.code, label:v.label}; });
-
-  // Postulats multi-select
-  var poSel = p && p.postulats ? p.postulats : [];
-  var poItems = POSTULATS.map(function(po){ return {code:po.texte, label:po.texte}; });
-
-  // Briques multi-select
-  var brSel = p && p.briques ? p.briques : [];
-  var brItems = BRIQUES.map(function(b){ return {code:b.nom, label:b.nom, sub:b.description||''}; });
+  var poItems = POSTULATS.map(function(po) { return { code: po.id, label: po.texte }; });
+  var poSel = p ? (p._postulat_ids || []) : [];
+  var brItems = BRIQUES.map(function(b) { return { code: b.id, label: b.nom, sub: b.description || '' }; });
+  var brSel = p ? (p._brique_ids || []) : [];
 
   var body =
-    // ── Identité & critères ──
     fsep('Identité') +
-    fld('Nom','f-nom', p ? p.nom : '') +
-    fld('Niveau PNL','f-niv', c.NiveauPNL||'', 'select', ['','Fondamentaux','Technicien','Praticien','Maître Praticien']) +
-    fmcl('f-idx', 'Index (choix multiple)', idxItems, idxSel) +
-    fld2(fld('Intensité','f-int', c.INTENSITE||'', 'select', ins), fld('Contexte','f-ctx', c.CONTEXTE||'', 'select', ctx)) +
-    fmcl('f-nl', 'Niveaux logiques (choix multiple)', nlItems, nlSel) +
+    fld('Nom', 'f-nom', p ? p.nom : '') +
+    '<div class="frow"><div class="flabel">Publication</div>' +
+    '<label style="display:flex;align-items:center;gap:10px;padding:8px 0;cursor:pointer">' +
+    '<input type="checkbox" id="f-publie" style="width:20px;height:20px;accent-color:var(--blue)" ' + (p && p.publie ? 'checked' : '') + '>' +
+    '<span style="font-size:14px;font-weight:300">Visible par les utilisateurs</span></label></div>' +
     '<div class="frow"><div class="flabel">Favori</div>' +
     '<label style="display:flex;align-items:center;gap:10px;padding:8px 0;cursor:pointer">' +
-    '<input type="checkbox" id="f-fav" style="width:20px;height:20px;accent-color:var(--yellow)" ' + (p && p.favorite_rank > 0 ? 'checked' : '') + '>' +
-    '<span style="font-size:14px;font-weight:300">Marquer comme favori</span></label></div>' +
+    '<input type="checkbox" id="f-fav" style="width:20px;height:20px;accent-color:var(--yellow)" ' + (p && p.rang_favori_defaut > 0 ? 'checked' : '') + '>' +
+    '<span style="font-size:14px;font-weight:300">Favori proposé par défaut</span></label></div>' +
 
-    // ── 1. Description ──
+    fsep('Critères', 'b') +
+    critHtml +
+
     fsep('Description') +
-    fld('Description','f-desc', p ? p.description : '', 'textarea') +
+    fld('Description', 'f-desc', p ? p.description : '', 'textarea') +
 
-    // ── 2. Histoire ──
     fsep('Histoire', 'y') +
-    fld('Histoire','f-histoire', p ? p.histoire : '', 'textarea') +
+    fld('Histoire', 'f-histoire', p ? p.histoire : '', 'textarea') +
 
-    // ── 3. Postulats ──
     fsep('Postulats', 'b') +
     fmcl('f-postulats', 'Postulats liés (choix multiple)', poItems, poSel) +
 
-    // ── 4. Déclencheurs ──
     fsep('Déclencheurs') +
     '<div class="frow"><div class="flabel">Déclencheurs</div>' +
     '<div class="dynlist" id="dynlist-wrap"></div>' +
     '<button class="btn-dynadd" onclick="addDynLine()">+ Ajouter un déclencheur</button></div>' +
 
-    // ── 5. Exemples ──
     fsep('Exemples d\'application', 'y') +
-    fld('Quotidien','f-eq', p ? p.exemple_quotidien : '', 'textarea') +
-    fld('Professionnel','f-ep', p ? p.exemple_professionnel : '', 'textarea') +
-    fld('Sport','f-es', p ? p.exemple_sport : '', 'textarea') +
-    fld('Santé','f-esa', p ? p.exemple_sante : '', 'textarea') +
+    fld('Quotidien', 'f-eq', p ? p.exemple_quotidien : '', 'textarea') +
+    fld('Professionnel', 'f-ep', p ? p.exemple_professionnel : '', 'textarea') +
+    fld('Sport', 'f-es', p ? p.exemple_sport : '', 'textarea') +
+    fld('Santé', 'f-esa', p ? p.exemple_sante : '', 'textarea') +
 
-    // ── 6-8. Socle, Principe, Utilité ──
     fsep('Contenu', 'b') +
-    fld('Socle','f-socle', p ? p.socle : '', 'textarea') +
-    fld('Principe','f-principe', p ? p.principe : '', 'textarea') +
-    fld('Utilité','f-utilite', p ? p.utilite : '', 'textarea') +
+    fld('Socle', 'f-socle', p ? p.socle : '', 'textarea') +
+    fld('Principe', 'f-principe', p ? p.principe : '', 'textarea') +
+    fld('Utilité', 'f-utilite', p ? p.utilite : '', 'textarea') +
 
-    // ── 9-10. Vigilance, Le plus ──
     fsep('Vigilance & Le plus', 'r') +
-    fld('Vigilance','f-vigilance', p ? p.vigilance : '', 'textarea') +
-    fld('Le plus','f-leplus', p ? p.le_plus : '') +
+    fld('Vigilance', 'f-vigilance', p ? p.vigilance : '', 'textarea') +
+    fld('Le plus', 'f-leplus', p ? p.le_plus : '') +
 
-    // ── 11. Score ──
     fsep('Score', 'r') +
-    fld('Symptôme','f-sym', p ? p.score_symptome : '') +
-    fld('Cause','f-cau', p ? p.score_cause : '') +
-    fld('Objectif','f-obj', p ? p.score_objectif : '') +
-    fld('Ressources','f-res', p ? p.score_ressources : '') +
-    fld('Effet','f-eff', p ? p.score_effet : '') +
+    fld('Symptôme', 'f-sym', p ? p.score_symptome : '') +
+    fld('Cause', 'f-cau', p ? p.score_cause : '') +
+    fld('Objectif', 'f-obj', p ? p.score_objectif : '') +
+    fld('Ressources', 'f-res', p ? p.score_ressources : '') +
+    fld('Effet', 'f-eff', p ? p.score_effet : '') +
 
-    // ── 12. Briques ──
     fsep('Briques', 'b') +
     fmcl('f-briques', 'Briques utilisées (choix multiple)', brItems, brSel) +
 
-    // ── 13. Durée ──
     fsep('Durée') +
-    fld('Durée estimée','f-dur', p ? p.duree_estimee : '') +
+    fld('Durée estimée', 'f-dur', p ? p.duree_estimee : '') +
 
-    // ── 14. Étapes ──
     fsep('Étapes du protocole') +
     '<div id="etapes-wrap"></div>' +
     '<button onclick="addEtape()" style="width:100%;border:2px dashed var(--black);background:var(--white);padding:10px;font-family:IBM Plex Mono,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;margin-top:4px">+ Ajouter une étape</button>' +
 
-    // ── 15. Notes ──
-    fsep('Notes & Recommandations') +
-    fld('Notes & Recommandations','f-notes', p ? p.notes : '', 'textarea') +
+    fsep('Note administrateur') +
+    fld('Note visible par tous les utilisateurs', 'f-notes', p ? p.notes : '', 'textarea') +
 
-    // ── 16. Médias ──
     fsep('Médias', 'y') +
-    fld('URL Image / Dessin','f-img', p ? p.image_url : '') +
-    fld('URL Vidéo','f-vid', p ? p.video_url : '') +
-    fld('URL Podcast','f-pod', p ? (p.podcast_url||'') : '');
+    fld('URL Image / Dessin', 'f-img', p ? p.image_url : '') +
+    fld('URL Vidéo', 'f-vid', p ? p.video_url : '') +
+    fld('URL Podcast', 'f-pod', p ? (p.podcast_url || '') : '');
 
   openModal('r', p ? 'Éditer protocole' : 'Nouveau protocole', p ? p.nom : '', body, {type:'p', id:id});
   setTimeout(function(){
     populateEtapes(p ? p.etapes : []);
-    initDynList(p ? (p.declencheurs||[]) : []);
+    initDynList(p ? (p.declencheurs || []) : []);
   }, 0);
 }
 
@@ -2669,72 +3009,98 @@ function openMdlB(id) {
 }
 
 function saveModal() {
-  if (!modalCtx) return;
-  var type = modalCtx.type, id = modalCtx.id;
+  if (!modalCtx || _ecritureEnCours) return;
+  if (!IS_ADMIN || !sb) { alert('Modification réservée aux administrateurs.'); return; }
+  var type = modalCtx.type, id = modalCtx.id, op = null;
+  var btn = document.querySelector('#modal .btn-save');
+
   if (type === 'p') {
-    var existing = null;
-    if (id) { for (var i=0;i<PROTOCOLES.length;i++) { if (PROTOCOLES[i].id===id) { existing=PROTOCOLES[i]; break; } } }
+    if (!fval('f-nom')) { alert('Le nom du protocole est obligatoire.'); return; }
+    var criteres = [];
+    FILTRES_ORDER.forEach(function(k) {
+      var g = FILTRES[k]; if (!g) return;
+      var codes = g.multiple ? getMclValues('f-crit-' + k) : [fval('f-crit-' + k)];
+      codes.forEach(function(code) {
+        g.valeurs.forEach(function(v) { if (v.code === code) criteres.push(v.id); });
+      });
+    });
+    var existant = id ? trouverProtocole(id) : null;
+    var rangDefaut = 0;
     var cbFav = document.getElementById('f-fav');
     if (cbFav && cbFav.checked) {
-      var nbFavs = PROTOCOLES.filter(function(x){ return x.id !== id && x.favorite_rank > 0; }).length;
-      if (nbFavs >= 16) { alert('Maximum 16 favoris atteint.'); return; }
+      var autres = PROTOCOLES.filter(function(x) { return x.id !== id && x.rang_favori_defaut > 0; });
+      if (autres.length >= 16) { alert('Maximum 16 favoris par défaut atteint.'); return; }
+      rangDefaut = existant && existant.rang_favori_defaut > 0
+        ? existant.rang_favori_defaut
+        : autres.reduce(function(m, x) { return Math.max(m, x.rang_favori_defaut); }, 0) + 1;
     }
-    var data = {
-      id: id || ('px' + Date.now()),
-      nom:fval('f-nom'), description:fval('f-desc'), duree_estimee:fval('f-dur'),
-      histoire:fval('f-histoire'),
-      postulats: getMclValues('f-postulats'),
+    function propre(a) { return (a || []).map(function(s) { return String(s).trim(); }).filter(Boolean); }
+    var payload = {
+      id: id || null,
+      nom: fval('f-nom'), description: fval('f-desc'), histoire: fval('f-histoire'),
+      socle: fval('f-socle'), principe: fval('f-principe'), utilite: fval('f-utilite'),
+      vigilance: fval('f-vigilance'), le_plus: fval('f-leplus'), duree_estimee: fval('f-dur'),
+      score_symptome: fval('f-sym'), score_cause: fval('f-cau'), score_objectif: fval('f-obj'),
+      score_ressources: fval('f-res'), score_effet: fval('f-eff'),
+      exemple_quotidien: fval('f-eq'), exemple_professionnel: fval('f-ep'),
+      exemple_sport: fval('f-es'), exemple_sante: fval('f-esa'),
+      image_url: fval('f-img'), video_url: fval('f-vid'), podcast_url: fval('f-pod'),
+      note_admin: fval('f-notes'),
       declencheurs: getDynValues(),
-      niveaux_logiques: getMclValues('f-nl'),
-      exemple_quotidien:fval('f-eq'), exemple_professionnel:fval('f-ep'),
-      exemple_sport:fval('f-es'), exemple_sante:fval('f-esa'),
-      socle:fval('f-socle'), principe:fval('f-principe'), utilite:fval('f-utilite'),
-      vigilance:fval('f-vigilance'), le_plus:fval('f-leplus'),
-      score_symptome:fval('f-sym'), score_cause:fval('f-cau'),
-      score_objectif:fval('f-obj'), score_ressources:fval('f-res'), score_effet:fval('f-eff'),
+      criteres: criteres,
+      postulats: getMclValues('f-postulats'),
       briques: getMclValues('f-briques'),
-      image_url:fval('f-img'), video_url:fval('f-vid'), podcast_url:fval('f-pod'),
-      favorite_rank:(function(){ var cb=document.getElementById('f-fav'); return (cb&&cb.checked)?1:0; })(),
-      criteres:{NiveauPNL:fval('f-niv'), INDEX:getMclValues('f-idx').join(','), INTENSITE:fval('f-int'), CONTEXTE:fval('f-ctx')},
-      views: existing ? (existing.views||0) : 0,
-      etapes: _etapes.filter(function(e){ return e.content.trim(); }).map(function(e){ return {content:e.content, instruction:e.instruction||'', instruction_variants:e.instruction_variants||[], questionnement:e.questionnement||'', question_variants:e.question_variants||[]}; }),
-      notes: fval('f-notes')
+      rang_favori_defaut: rangDefaut,
+      publie: !!(document.getElementById('f-publie') || {}).checked,
+      etapes: _etapes.filter(function(e) {
+        return [e.titre, e.content, e.instruction, e.questionnement].some(function(x) { return x && String(x).trim(); });
+      }).map(function(e) {
+        return {
+          id: e._id || null, titre: e.titre || '', action: e.content || '',
+          instruction: e.instruction || '', question: e.questionnement || '',
+          variantes: { instruction: propre(e.instruction_variants), question: propre(e.question_variants) }
+        };
+      })
     };
-    if (id) { for (var j=0;j<PROTOCOLES.length;j++) { if (PROTOCOLES[j].id===id) { PROTOCOLES[j]=data; break; } } }
-    else PROTOCOLES.push(data);
-    renderProtocols();
+    op = sb.rpc('enregistrer_protocole', { p: payload }).abortSignal(T());
   }
+
   if (type === 'po') {
-    var data2 = {id:id||('pox'+Date.now()), texte:fval('f-texte'), description:fval('f-desc')};
-    if (id) { for (var k=0;k<POSTULATS.length;k++) { if (POSTULATS[k].id===id) { POSTULATS[k]=data2; break; } } }
-    else POSTULATS.push(data2);
+    var texte = fval('f-texte');
+    if (!texte) { alert('Le texte du postulat est obligatoire.'); return; }
+    var po = null; POSTULATS.forEach(function(x) { if (x.id === id) po = x; });
+    op = sb.from('postulats').upsert({
+      id: id || ('po' + Date.now()), texte: texte, description: fval('f-desc') || null,
+      ordre: po ? po.ordre : POSTULATS.length
+    });
   }
+
   if (type === 'b') {
-    var data3 = {id:id||('bx'+Date.now()), nom:fval('f-nom'), description:fval('f-desc')};
-    if (id) { for (var l=0;l<BRIQUES.length;l++) { if (BRIQUES[l].id===id) { BRIQUES[l]=data3; break; } } }
-    else BRIQUES.push(data3);
+    var nom = fval('f-nom');
+    if (!nom) { alert('Le nom de la brique est obligatoire.'); return; }
+    var br = null; BRIQUES.forEach(function(x) { if (x.id === id) br = x; });
+    op = sb.from('briques').upsert({
+      id: id || ('b' + Date.now()), nom: nom, description: fval('f-desc') || null,
+      ordre: br ? br.ordre : BRIQUES.length
+    });
   }
+
   if (type === 'valeur') {
     var ck = modalCtx.critereKey;
-    var vid = modalCtx.id;
-    var vdata = {
-      id: vid || ('v' + Date.now()),
-      code:  fval('f-code'),
-      label: fval('f-label'),
-      description: fval('f-desc')
-    };
-    if (vid) {
-      for (var m=0; m<FILTRES[ck].valeurs.length; m++) {
-        if (FILTRES[ck].valeurs[m].id === vid) { FILTRES[ck].valeurs[m] = vdata; break; }
-      }
-    } else {
-      FILTRES[ck].valeurs.push(vdata);
-    }
-    buildFilters();
+    var code = fval('f-code');
+    if (!code) { alert('Le code est obligatoire.'); return; }
+    var vex = null; FILTRES[ck].valeurs.forEach(function(v) { if (v.id === id) vex = v; });
+    op = sb.from('criteres_valeurs').upsert({
+      id: id || ('v' + Date.now()), groupe_code: ck, code: code,
+      label: fval('f-label') || code, description: fval('f-desc') || null,
+      ordre: vex ? vex.ordre : FILTRES[ck].valeurs.length
+    });
   }
-  closeModal();
-  renderGestion();
+
+  if (!op) return;
+  executerEcriture(op, function() { closeModal(); }, btn);
 }
+
 
 
 // ═══════════════════════════════════════
@@ -3470,6 +3836,7 @@ var viewMode = 'grid';
 buildCriteriaCards();
 showHomepage();
 renderProtocols();
+demarrer();
 </script>
 </body>
 </html>
