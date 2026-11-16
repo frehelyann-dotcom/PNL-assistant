@@ -6,9 +6,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="PNL Séance">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=60">
-<link rel="manifest" href="manifest.webmanifest?v=60">
-<link rel="icon" type="image/png" href="apple-touch-icon.png?v=60">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=63">
+<link rel="manifest" href="manifest.webmanifest?v=63">
+<link rel="icon" type="image/png" href="apple-touch-icon.png?v=63">
 <meta name="theme-color" content="#F7F3EE">
 <meta name="color-scheme" content="light dark">
 <script>
@@ -1558,6 +1558,102 @@ button, input, select, textarea { font-family: var(--font-ui); }
 .sante-avenir li .lvl { margin-top: 2px; }
 .btn-sante { width: 100%; border: none; border-radius: 12px; padding: 13px; background: var(--blue); color: var(--on-blue); font-size: 14px; font-weight: 500; cursor: pointer; }
 .btn-sante:disabled { background: var(--line-2); color: var(--text-3); cursor: default; }
+
+/* ═══════════════ v61 : catalogue santé, protocole joué, SCORE ═══════════════ */
+.s-tabs { display: flex; gap: 4px; padding: 4px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; flex-shrink: 0; }
+.s-tabs button { flex: 1; border: none; border-radius: 9px; background: transparent; color: var(--text-2); font-size: 13px; font-weight: 500; padding: 9px 4px; cursor: pointer; }
+.s-tabs button.on { background: var(--blue); color: var(--on-blue); }
+.s-search { display: flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--line-2); border-radius: 12px; padding: 0 12px; height: 42px; flex-shrink: 0; }
+.s-search input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; color: var(--black); font-size: 15px; }
+.s-search input::placeholder { color: var(--text-3); }
+.s-chips { display: flex; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; flex-shrink: 0; }
+.s-chip { flex-shrink: 0; background: var(--paper); border: 1px solid var(--line-2); border-radius: 999px; color: var(--black); font-size: 13px; padding: 6px 12px; cursor: pointer; white-space: nowrap; }
+.s-chip.on { background: var(--blue); border-color: var(--blue); color: var(--on-blue); }
+.s-count { font-size: 12px; color: var(--text-3); }
+.s-card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; cursor: pointer; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; text-align: left; width: 100%; color: var(--black); }
+.s-card:active { background: var(--surface-2); }
+.s-card-hd { display: flex; align-items: baseline; gap: 8px; }
+.s-id { font-size: 12px; font-weight: 600; color: var(--blue-txt); flex-shrink: 0; }
+.s-titre { font-size: 15px; font-weight: 600; line-height: 1.3; color: var(--black); }
+.s-lbl { font-size: 11px; font-weight: 500; color: var(--text-3); margin-top: 2px; }
+.s-txt { font-family: var(--font-txt); font-size: 14px; line-height: 1.45; color: var(--text-2); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.s-foot { font-size: 11px; color: var(--text-3); }
+.s-inactif { opacity: .55; }
+.s-vide { padding: 30px 16px; text-align: center; color: var(--text-3); font-size: 14px; line-height: 1.6; }
+.sc-etape { background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; flex-shrink: 0; }
+.sc-hd { display: flex; align-items: center; gap: 10px; width: 100%; padding: 13px 14px; border: none; background: transparent; cursor: pointer; text-align: left; color: var(--black); }
+.sc-num { width: 30px; height: 30px; border-radius: 50%; background: var(--surface-2); color: var(--blue-txt); font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sc-etape.open .sc-num { background: var(--blue); color: var(--on-blue); }
+.sc-t { flex: 1; font-size: 15px; font-weight: 600; }
+.sc-nb { font-size: 11px; color: var(--text-3); }
+.sc-body { padding: 0 14px 14px; display: flex; flex-direction: column; gap: 10px; }
+.sc-but { font-family: var(--font-txt); font-size: 15px; line-height: 1.5; color: var(--black); }
+.sc-q { margin: 0; padding: 0 0 0 12px; border-left: 3px solid var(--red); list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.sc-q li { font-family: var(--font-txt); font-style: italic; font-size: 15px; line-height: 1.45; color: var(--black); }
+.sc-sec { font-size: 12px; font-weight: 600; color: var(--text-2); margin-top: 4px; }
+.sc-champ { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; color: var(--text-2); padding: 7px 10px; background: var(--paper); border: 1px dashed var(--line-2); border-radius: 8px; }
+.sc-champ span:last-child { color: var(--text-3); font-size: 11px; flex-shrink: 0; }
+.sc-note { font-size: 12px; line-height: 1.5; color: var(--yellow-txt); background: var(--note-bg); border-radius: 8px; padding: 8px 10px; }
+.or-item { display: flex; flex-direction: column; gap: 6px; padding: 10px 0; border-top: 1px solid var(--line); }
+.or-item:first-child { border-top: none; }
+.or-sit { font-size: 14px; color: var(--black); }
+.or-ids { display: flex; flex-wrap: wrap; gap: 5px; }
+.or-ids button { border: 1px solid var(--line-2); border-radius: 999px; background: var(--paper); color: var(--blue-txt); font-size: 12px; font-weight: 600; padding: 3px 9px; cursor: pointer; }
+.sp-modes { display: flex; gap: 6px; padding: 8px 12px; background: var(--white); border-bottom: 1px solid var(--line); flex-shrink: 0; }
+.sp-modes button { flex: 1; border: 1px solid var(--line-2); border-radius: 999px; background: transparent; color: var(--text-2); font-size: 13px; font-weight: 500; padding: 7px; cursor: pointer; }
+.sp-modes button.on { background: var(--black); border-color: var(--black); color: var(--white); }
+.sp-type { font-size: 11px; font-weight: 500; margin-bottom: 2px; }
+.s-action .sp-type { color: var(--blue-txt); }
+.s-instruction .sp-type { color: var(--green-txt); }
+.s-question .sp-type { color: var(--red-txt); }
+.s-question .et-section-text, .s-question .swipe-sec-txt { font-style: italic; }
+.nr-box { margin: 4px 20px 14px; display: flex; flex-direction: column; gap: 4px; }
+.nr-box textarea { width: 100%; min-height: 70px; font-family: var(--font-txt); font-size: 15px; padding: 8px 10px; border: 1px solid var(--line-2); border-radius: 10px; background: var(--paper); color: var(--black); resize: vertical; outline: none; }
+.nr-box textarea:focus { border-color: var(--yellow); }
+.nr-aide { font-size: 11px; color: var(--text-3); }
+.sp-retour { margin: 0 20px 14px; border: 1px solid var(--line-2); border-radius: 12px; background: transparent; color: var(--blue-txt); font-size: 14px; font-weight: 500; padding: 11px; cursor: pointer; }
+
+/* ═══════════════ v62 : administration du module santé ═══════════════ */
+.adm-tabs { display: flex; gap: 6px; padding: 10px 12px; background: var(--white); border-bottom: 1px solid var(--line); overflow-x: auto; }
+.adm-tabs button { flex-shrink: 0; border: 1px solid var(--line-2); border-radius: 999px; background: transparent; color: var(--text-2); font-size: 13px; font-weight: 500; padding: 6px 12px; cursor: pointer; }
+.adm-tabs button.on { background: var(--blue); border-color: var(--blue); color: var(--on-blue); }
+.adm-item { display: flex; align-items: center; gap: 10px; padding: 11px 14px; background: var(--card); border-bottom: 1px solid var(--line); cursor: pointer; }
+.adm-item:active { background: var(--surface-2); }
+.adm-id { font-size: 12px; font-weight: 600; color: var(--blue-txt); min-width: 38px; }
+.adm-main { flex: 1; min-width: 0; }
+.adm-t { font-size: 14px; font-weight: 500; color: var(--black); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.adm-s { font-size: 12px; color: var(--text-3); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.adm-grp { padding: 14px 14px 6px; font-size: 12px; font-weight: 600; color: var(--text-2); background: var(--paper); }
+.se-row { display: flex; flex-direction: column; gap: 6px; padding: 10px; border: 1px solid var(--line); border-left-width: 4px; border-radius: 10px; background: var(--paper); }
+.se-row.t-action { border-left-color: var(--blue); }
+.se-row.t-instruction { border-left-color: var(--green); }
+.se-row.t-question { border-left-color: var(--red); }
+.se-hd { display: flex; align-items: center; gap: 6px; }
+.se-num { font-weight: 600; font-size: 14px; color: var(--text-2); min-width: 22px; }
+.se-hd select { flex: 1; min-width: 0; border: 1px solid var(--line-2); border-radius: 8px; background: var(--card); color: var(--black); font-size: 13px; padding: 6px 8px; }
+.se-btn { border: 1px solid var(--line-2); border-radius: 8px; background: var(--card); color: var(--text-2); width: 32px; height: 32px; cursor: pointer; font-size: 13px; flex-shrink: 0; }
+.se-btn:disabled { opacity: .35; cursor: default; }
+.se-row textarea { width: 100%; min-height: 64px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--card); color: var(--black); font-family: var(--font-txt); font-size: 15px; padding: 8px; resize: vertical; outline: none; }
+.btn-danger { width: 100%; border: 1px solid var(--red); border-radius: 12px; background: transparent; color: var(--red-txt); font-size: 14px; padding: 11px; cursor: pointer; margin-top: 8px; }
+.tpl-vars { font-size: 12px; line-height: 1.7; color: var(--text-3); }
+.tpl-vars code { background: var(--surface-2); color: var(--text-2); border-radius: 4px; padding: 1px 4px; font-size: 11px; }
+.tpl-area { min-height: 300px !important; font-family: ui-monospace, Menlo, Consolas, monospace !important; font-size: 13px !important; line-height: 1.5; }
+.doc-apercu { border: 1px solid var(--line); border-radius: 10px; background: var(--white); padding: 16px; font-family: var(--font-txt); font-size: 14px; line-height: 1.55; color: var(--black); max-height: 55dvh; overflow-y: auto; }
+.doc-apercu h1 { font-family: var(--font-ui); font-size: 16px; font-weight: 600; text-align: center; margin: 0 0 12px; }
+.doc-apercu h2 { font-family: var(--font-ui); font-size: 14px; font-weight: 600; margin: 14px 0 6px; }
+.doc-apercu p { margin: 0 0 8px; }
+.doc-apercu ul { margin: 0 0 8px 18px; }
+.doc-apercu .var-vide { background: var(--note-bg); color: var(--note-txt); border-radius: 3px; padding: 0 3px; font-family: var(--font-ui); font-size: 12px; }
+
+/* ═══════════════ v63 : Gestion en trois espaces ═══════════════ */
+.gtabs.g3 { height: auto; overflow: visible; }
+.gtabs.g3 .gtab { flex: 1; justify-content: center; text-align: center; white-space: normal; line-height: 1.25; padding: 10px 6px; min-height: 52px; font-size: 13px; }
+.gsub { display: flex; gap: 5px; padding: 10px 10px; background: var(--white); border-bottom: 1px solid var(--line); overflow-x: auto; -webkit-overflow-scrolling: touch; flex-shrink: 0; }
+.gsub button { flex-shrink: 0; display: flex; align-items: center; gap: 6px; border: 1px solid var(--line-2); border-radius: 999px; background: transparent; color: var(--text-2); font-size: 12.5px; font-weight: 500; padding: 6px 9px; cursor: pointer; }
+.gsub button.on { background: var(--blue); border-color: var(--blue); color: var(--on-blue); }
+.gsub .gbadge { font-size: 10.5px; padding: 0 5px; }
+.gsub button { gap: 4px; flex: 1 1 auto; justify-content: center; padding-left: 6px; padding-right: 6px; }
+.gsub button.on .gbadge { background: color-mix(in srgb, var(--on-blue) 25%, transparent); color: var(--on-blue); }
 </style>
 
 </head>
@@ -1569,7 +1665,7 @@ button, input, select, textarea { font-family: var(--font-ui); }
   <nav class="topnav">
     <div class="tnav-logo-wrap" onclick="openAbout()" role="button" style="cursor:pointer">
       <div class="tnav-logo">PNL<span class="dot b"></span><span class="dot y"></span><span class="dot r"></span></div>
-      <div class="tnav-subtitle">Assistant de séance PNL · v60 ⓘ</div>
+      <div class="tnav-subtitle">Assistant de séance PNL · v63 ⓘ</div>
     </div>
     <div class="tnav-actions">
       <button class="tnav-btn" id="nav-search-toggle" onclick="toggleSearch()" style="display:none">🔍</button>
@@ -1660,14 +1756,12 @@ button, input, select, textarea { font-family: var(--font-ui); }
 
   <!-- VUE GESTION -->
   <div class="view" id="view-gestion">
-    <div class="gtabs">
-      <button class="gtab gr" id="gtab-p" onclick="switchGTab('p')">◈ Protocoles <span class="gbadge" id="gb-p">0</span></button>
-      <button class="gtab" id="gtab-po" onclick="switchGTab('po')">◇ Postulats <span class="gbadge" id="gb-po">0</span></button>
-      <button class="gtab" id="gtab-b" onclick="switchGTab('b')">◫ Briques <span class="gbadge" id="gb-b">0</span></button>
-      <button class="gtab" id="gtab-f" onclick="switchGTab('f')">▦ Critères <span class="gbadge" id="gb-f">0</span></button>
-      <button class="gtab" id="gtab-c" onclick="switchGTab('c')">◎ Comptes</button>
-      <button class="gtab" id="gtab-pin" onclick="switchGTab('pin')">⚿ Compte</button>
+    <div class="gtabs g3" role="tablist">
+      <button class="gtab gr" id="gesp-protocoles" onclick="switchGEspace('protocoles')">Gestion des protocoles</button>
+      <button class="gtab" id="gesp-compte" onclick="switchGEspace('compte')">Mon compte</button>
+      <button class="gtab" id="gesp-sante" onclick="switchGEspace('sante')">Gestion santé</button>
     </div>
+    <div class="gsub" id="gsub"></div>
     <div class="gcontent" id="gcontent"></div>
   </div>
 
@@ -1729,6 +1823,23 @@ button, input, select, textarea { font-family: var(--font-ui); }
     <button class="btn-reset" onclick="resetFilters()">Réinitialiser</button>
   </div>
   <div class="fsheet-body" id="fsheet-body"></div>
+</div>
+
+<!-- VOLET PROTOCOLE SANTE (v61) -->
+<div class="detail-sheet" id="sante-sheet">
+  <div class="dsh-nav">
+    <div class="dsh-bar r"></div>
+    <button class="btn-back" onclick="fermerProtoSante()" aria-label="Retour">←</button>
+    <div class="dsh-title">
+      <div class="dsh-nom" id="ss-nom">Protocole</div>
+      <div class="dsh-meta" id="ss-meta"></div>
+    </div>
+  </div>
+  <div class="sp-modes">
+    <button id="ss-m-jouer" onclick="modeProtoSante('jouer')">Jouer</button>
+    <button id="ss-m-fiche" onclick="modeProtoSante('fiche')">Fiche</button>
+  </div>
+  <div class="dsh-body" id="ss-body"></div>
 </div>
 
 <!-- DETAIL SHEET -->
@@ -1804,7 +1915,7 @@ button, input, select, textarea { font-family: var(--font-ui); }
 // réseau est faible. La clé ci-dessous est publique par conception : les
 // droits sont appliqués par la base (Row Level Security).
 // ═══════════════════════════════════════
-var APP_VERSION = 'v60';
+var APP_VERSION = 'v63';
 var SB_URL = 'https://tavilnkwkgovcwxrnzfq.supabase.co';
 var SB_KEY = 'sb_publishable_FRipvkrteuUpNGWSS_fE3g_dBAGfaUF';
 var sb = (window.supabase && window.supabase.createClient)
@@ -1822,6 +1933,7 @@ var USER = null;            // {id, email}
 var IS_ADMIN = false;
 var HAS_SANTE = false;      // v60 : accès au module Coaching de santé
 var PROFIL_COACH = null;    // v60 : profil professionnel du coach connecté
+var SANTE = null;           // v61 : contenus santé {protocoles, score, orientation}
 var MES_NOTES = [];         // notes privées de l'utilisateur
 var MES_FAVORIS = [];       // favoris personnels
 var DERNIERES_DONNEES = null;
@@ -1924,6 +2036,8 @@ function appliquerDonnees(d) {
   IS_ADMIN = d.role === 'admin';
   HAS_SANTE = d.sante === true;
   PROFIL_COACH = HAS_SANTE ? (d.profil_coach || null) : null;
+  SANTE = HAS_SANTE ? preparerSante(d.sante_contenu) : null;
+  if (d.sante === false) lsDel(NOTES_RAPIDES_KEY);  // accès retiré : on vide le cache local du module
   appliquerFavoris();
 }
 
@@ -1959,6 +2073,8 @@ function chargerDepuisServeur() {
     };
     return chargerSante().then(function(s) {
       d.sante = s.sante; d.profil_coach = s.profil;
+      // Hors ligne ou script absent : on garde les contenus de la copie précédente
+      d.sante_contenu = s.sante ? (s.contenu || (DERNIERES_DONNEES && DERNIERES_DONNEES.sante_contenu) || null) : null;
       return d;
     });
   });
@@ -1970,12 +2086,32 @@ function chargerDepuisServeur() {
 function chargerSante() {
   return sb.rpc('a_module', { m: 'sante' }).abortSignal(T()).then(function(r) {
     if (r.error || r.data !== true) return { sante: false, profil: null };
-    return sb.from('profils_coach').select('*').eq('user_id', USER.id).abortSignal(T()).maybeSingle()
-      .then(function(rp) { return { sante: true, profil: rp.error ? null : rp.data }; });
+    return Promise.all([
+      sb.from('profils_coach').select('*').eq('user_id', USER.id).abortSignal(T()).maybeSingle(),
+      chargerContenusSante()
+    ]).then(function(rr) { return { sante: true, profil: rr[0].error ? null : rr[0].data, contenu: rr[1] }; });
   }).catch(function(err) {
     if (estErreurSession(err)) throw err;
     return { sante: false, profil: null };
   });
+}
+
+// v61 : protocoles, étapes SCORE et orientation. Si le script du lot 2 n'est
+// pas encore installé, le module reste utilisable pour le profil.
+function chargerContenusSante() {
+  return Promise.all([
+    sb.from('sante_protocols').select('*, sante_protocol_steps(ordre, type, texte)').abortSignal(T()),
+    sb.from('sante_score_steps').select('*').abortSignal(T()),
+    sb.from('sante_orientation').select('*').abortSignal(T())
+  ]).then(function(r) {
+    for (var i = 0; i < r.length; i++) if (r[i].error) return null;
+    var contenu = { protocoles: r[0].data || [], score: r[1].data || [], orientation: r[2].data || [], modeles: [] };
+    // v62 : modèles de documents, facultatifs tant que le lot 2 n'est pas installé
+    return sb.from('sante_templates').select('*').abortSignal(T()).then(function(rt) {
+      contenu.modeles = rt.error ? [] : (rt.data || []);
+      return contenu;
+    }, function() { return contenu; });
+  }).catch(function() { return null; });
 }
 
 function messageErreur(err) {
@@ -2017,6 +2153,7 @@ function rafraichirAffichage() {
   var ts = document.getElementById('tabbtn-s');
   if (ts) ts.style.display = HAS_SANTE ? '' : 'none';
   if (!HAS_SANTE && currentView === 'sante') _rawSwitchView('protocoles');
+  if (!HAS_SANTE && PS.id) fermerProtoSante();
   if (HAS_SANTE && currentView === 'sante') renderSante();
   buildFilters();
   buildCriteriaCards();
@@ -2136,7 +2273,7 @@ function ouvrirSession(user) {
 }
 
 function reinitialiserSession() {
-  USER = null; IS_ADMIN = false; HAS_SANTE = false; PROFIL_COACH = null; COMPTES = null; DERNIERES_DONNEES = null; DONNEES_PRETES = false; HORS_LIGNE = false;
+  USER = null; IS_ADMIN = false; HAS_SANTE = false; PROFIL_COACH = null; SANTE = null; COMPTES = null; DERNIERES_DONNEES = null; DONNEES_PRETES = false; HORS_LIGNE = false;
   PROTOCOLES = []; POSTULATS = []; BRIQUES = []; FILTRES = {}; FILTRES_ORDER = [];
   MES_NOTES = []; MES_FAVORIS = [];
   if (selectedId) closeDetail();
@@ -2512,19 +2649,18 @@ function profilComplet(pc) {
   return CHAMPS_PROFIL.every(function(f) { return !f[2] || String(pc[f[0]] || '').trim(); });
 }
 
-function renderSante() {
-  var el = document.getElementById('sante-content'); if (!el) return;
+function renderSanteProfil(el) {
   var pc = PROFIL_COACH || {};
   var cd = pc.contrat_defauts || {};
   var complet = profilComplet(PROFIL_COACH);
   var champs = CHAMPS_PROFIL.map(function(f) {
     return fld(f[1] + (f[2] ? '' : ' (facultatif)'), 'sp-' + f[0], esc(pc[f[0]] || ''));
   }).join('');
-  el.innerHTML =
+  el.innerHTML = ongletsSante() +
     '<div class="sante-hero">' +
-      '<div class="sante-titre"><span class="lvl lvl-r"></span>Coaching de santé</div>' +
-      '<div class="sante-sous">Votre profil professionnel alimente le contrat signé avec chaque client. ' +
-        'Tant qu’il est incomplet, la génération de contrat restera bloquée.</div>' +
+      '<div class="sante-titre"><span class="lvl lvl-r"></span>Mon profil</div>' +
+      '<div class="sante-sous">Vos informations de prestataire alimentent le contrat signé avec chaque client. ' +
+        'Tant qu’elles sont incomplètes, la génération de contrat restera bloquée.</div>' +
       '<div class="sante-etat">' +
         '<span class="cpt-badge ' + (complet ? 'ok' : 'ko') + '">Profil ' + (complet ? 'complet' : 'incomplet') + '</span>' +
         (IS_ADMIN ? '<span class="cpt-badge admin">Administrateur</span>' : '<span class="cpt-badge">Coach</span>') +
@@ -2532,13 +2668,16 @@ function renderSante() {
       '</div>' +
     '</div>' +
     '<div class="sante-carte">' +
-      fsep('Identité et mentions légales', 'b') + champs +
+      fsep('Mes informations de prestataire', 'b') +
+      '<div class="sante-aide">Ces informations figurent sur vos contrats. Les coordonnées du client se saisissent à chaque contrat et ne sont pas conservées.</div>' +
+      champs +
     '</div>' +
     '<div class="sante-carte">' +
       fsep('Valeurs par défaut du contrat', 'y') +
       fld2(fld('Nombre de séances', 'sp-nb', esc(nz(cd.nb_seances))), fld('Fréquence', 'sp-freq', esc(nz(cd.frequence)))) +
       fld2(fld('Durée d’une séance', 'sp-duree', esc(nz(cd.duree))), fld('Tarif', 'sp-tarif', esc(nz(cd.tarif)))) +
       fld('Modalités de paiement', 'sp-paiement', esc(nz(cd.modalites_paiement))) +
+      fld2(fld('Durée du contrat', 'sp-dureec', esc(nz(cd.duree_contrat))), fld('Ville de signature', 'sp-ville', esc(nz(cd.ville)))) +
       fld('Lieu', 'sp-lieu', nz(cd.lieu), 'select', LIEUX) +
       '<div class="sante-aide">Ces valeurs seront proposées à chaque nouveau contrat et resteront modifiables.</div>' +
     '</div>' +
@@ -2546,7 +2685,7 @@ function renderSante() {
       fsep('Mail d’envoi au client', 'r') +
       fld('Objet', 'sp-mobjet', esc(pc.mail_objet || '')) +
       '<div class="frow"><div class="flabel">Corps du mail</div><textarea class="ftextarea" id="sp-mcorps">' + esc(pc.mail_corps || '') + '</textarea></div>' +
-      '<div class="sante-aide">Variables possibles : {client_nom}, {coach_nom}, {date}, {nb_seances}, {tarif}.</div>' +
+      '<div class="sante-aide">Laissez vide pour utiliser le mail par défaut. Variables possibles : {client_nom}, {coach_nom}, {date}, {nb_seances}, {tarif}.</div>' +
     '</div>' +
     '<div class="sante-msg" id="sp-msg"></div>' +
     '<button class="btn-sante" id="sp-save" onclick="enregistrerProfilCoach()"' + (HORS_LIGNE ? ' disabled' : '') + '>' +
@@ -2555,7 +2694,7 @@ function renderSante() {
       fsep('Prochaines étapes du module', 'b') +
       '<ul class="sante-avenir">' +
         '<li><span class="lvl lvl-y"></span>Signature du coach, tracée à l’écran</li>' +
-        '<li><span class="lvl lvl-b"></span>Catalogue des 51 protocoles et parcours SCORE</li>' +
+        '<li><span class="lvl lvl-b"></span>Saisie de séance dans le parcours SCORE, audit, synthèse et export</li>' +
         '<li><span class="lvl lvl-r"></span>Contrat client signé, PDF avec page de preuve, envoi par mail</li>' +
       '</ul>' +
     '</div>';
@@ -2569,7 +2708,8 @@ function enregistrerProfilCoach() {
   CHAMPS_PROFIL.forEach(function(f) { ligne[f[0]] = fval('sp-' + f[0]) || null; });
   ligne.contrat_defauts = {
     nb_seances: fval('sp-nb'), frequence: fval('sp-freq'), duree: fval('sp-duree'),
-    tarif: fval('sp-tarif'), modalites_paiement: fval('sp-paiement'), lieu: fval('sp-lieu')
+    tarif: fval('sp-tarif'), modalites_paiement: fval('sp-paiement'), lieu: fval('sp-lieu'),
+    duree_contrat: fval('sp-dureec'), ville: fval('sp-ville')
   };
   ligne.mail_objet = fval('sp-mobjet') || null;
   var corps = document.getElementById('sp-mcorps');
@@ -2590,6 +2730,543 @@ function enregistrerProfilCoach() {
       msg.textContent = 'Profil non enregistré : ' + messageErreur(err) + '. Vos saisies restent à l’écran.';
     });
 }
+
+
+// ═══════════════════════════════════════
+// v61 : MODULE SANTE, NAVIGATION ET CONTENUS
+// ═══════════════════════════════════════
+var SANTE_TAB = 'protocoles';             // protocoles | score | profil
+var SANTE_FILTRE = { etape: null, q: '' };
+var SCORE_OUVERTE = 0;
+var NOTES_RAPIDES_KEY = 'pnl_sante_notes_rapides';
+var PS = { id: null, mode: 'jouer', slide: 0, depuis: null };   // protocole santé ouvert
+var ETAPES_NOMS = ['Cadre', 'Symptôme', 'Causes', 'Objectif', 'Effets', 'Ressources', 'Technique', 'SCORE dansant', 'Test'];
+var TYPES_ETAPE = { action: 'Action', instruction: 'Instruction', question: 'Question' };
+
+function preparerSante(c) {
+  if (!c) return null;
+  var protos = (c.protocoles || []).filter(function(p) { return p.actif !== false || IS_ADMIN; })
+    .map(function(p) {
+      var s = (p.sante_protocol_steps || []).slice().sort(byOrdre);
+      return Object.assign({}, p, { steps: s });
+    }).sort(function(a, b) { return a.etape - b.etape || a.ordre - b.ordre; });
+  var parId = {}; protos.forEach(function(p) { parId[p.id] = p; });
+  return {
+    protocoles: protos, parId: parId,
+    score: (c.score || []).slice().sort(function(a, b) { return a.etape - b.etape; }),
+    orientation: (c.orientation || []).slice().sort(byOrdre),
+    modeles: c.modeles || []
+  };
+}
+
+function ongletsSante() {
+  function b(k, l) { return '<button class="' + (SANTE_TAB === k ? 'on' : '') + '" data-t="' + k + '" onclick="ongletSante(this.dataset.t)">' + l + '</button>'; }
+  return '<div class="s-tabs" role="tablist">' + b('protocoles', 'Protocoles') + b('score', 'Parcours SCORE') + b('profil', 'Mon profil') + '</div>';
+}
+function ongletSante(t) {
+  SANTE_TAB = t;
+  renderSante();
+  var el = document.getElementById('sante-content'); if (el) el.scrollTop = 0;
+}
+
+function renderSante() {
+  var el = document.getElementById('sante-content'); if (!el) return;
+  if (SANTE_TAB === 'profil') return renderSanteProfil(el);
+  if (!SANTE) {
+    el.innerHTML = ongletsSante() + '<div class="s-vide">' +
+      (IS_ADMIN
+        ? 'Les contenus santé ne sont pas encore installés. Exécutez le script « sante-lot2-contenus.sql » dans Supabase, puis rechargez les données (Gestion, Compte).'
+        : 'Les contenus santé ne sont pas encore disponibles. Votre profil reste accessible dans l’onglet Mon profil.') +
+      '</div>';
+    return;
+  }
+  if (SANTE_TAB === 'score') return renderSanteScore(el);
+  renderSanteCatalogue(el);
+}
+
+// ── Catalogue ──
+function carteProtoSante(p, depuis) {
+  return '<button class="s-card' + (p.actif === false ? ' s-inactif' : '') + '" data-id="' + esc(p.id) + '" data-depuis="' + (depuis || '') + '" onclick="ouvrirProtoSante(this.dataset.id, this.dataset.depuis)">' +
+    '<div class="s-card-hd"><span class="s-id">' + esc(p.id) + '</span><span class="s-titre">' + esc(p.titre) + '</span></div>' +
+    (p.choisir_quand ? '<div class="s-lbl">Le choisir quand</div><div class="s-txt">' + esc(p.choisir_quand) + '</div>' : '') +
+    (p.apporte ? '<div class="s-lbl">Ce qu’il apporte</div><div class="s-txt">' + esc(p.apporte) + '</div>' : '') +
+    '<div class="s-foot">Étape ' + p.etape + ' · ' + esc(p.famille) + ' · ' + p.steps.length + ' étape' + (p.steps.length > 1 ? 's' : '') +
+      (p.actif === false ? ' · masqué' : '') + '</div>' +
+  '</button>';
+}
+
+function protosFiltres() {
+  var q = SANTE_FILTRE.q.toLowerCase().trim();
+  return SANTE.protocoles.filter(function(p) {
+    if (SANTE_FILTRE.etape !== null && p.etape !== SANTE_FILTRE.etape) return false;
+    if (!q) return true;
+    return [p.id, p.titre, p.choisir_quand, p.apporte, p.indication].join(' ').toLowerCase().indexOf(q) >= 0;
+  });
+}
+
+function renderSanteCatalogue(el) {
+  var chips = '<button class="s-chip' + (SANTE_FILTRE.etape === null ? ' on' : '') + '" data-e="" onclick="filtreEtapeSante(this.dataset.e)">Toutes</button>';
+  for (var i = 0; i <= 8; i++) {
+    if (!SANTE.protocoles.some(function(p) { return p.etape === i; })) continue;
+    chips += '<button class="s-chip' + (SANTE_FILTRE.etape === i ? ' on' : '') + '" data-e="' + i + '" onclick="filtreEtapeSante(this.dataset.e)">' + i + ' · ' + ETAPES_NOMS[i] + '</button>';
+  }
+  el.innerHTML = ongletsSante() +
+    '<div class="s-search"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.5"/><line x1="9.5" y1="9.5" x2="13" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>' +
+      '<input type="search" id="s-q" placeholder="Rechercher un protocole…" value="' + esc(SANTE_FILTRE.q) + '" oninput="rechercheSante(this.value)" autocomplete="off"></div>' +
+    '<div class="s-chips">' + chips + '</div>' +
+    '<div id="s-liste" style="display:flex;flex-direction:column;gap:10px"></div>';
+  listeSante();
+}
+function listeSante() {
+  var box = document.getElementById('s-liste'); if (!box) return;
+  var l = protosFiltres();
+  box.innerHTML = '<div class="s-count">' + l.length + ' protocole' + (l.length > 1 ? 's' : '') + '</div>' +
+    (l.length ? l.map(function(p) { return carteProtoSante(p, 'catalogue'); }).join('') : '<div class="s-vide">Aucun protocole ne correspond.</div>');
+}
+function rechercheSante(v) { SANTE_FILTRE.q = v; listeSante(); }
+function filtreEtapeSante(e) {
+  SANTE_FILTRE.etape = e === '' ? null : parseInt(e, 10);
+  renderSante();
+}
+
+// ── Parcours SCORE ──
+var TYPES_CHAMP = { echelle10: 'de 1 à 10', ancrage: 'mot, image, geste', audit: 'tête, cœur, ventre', date: 'date' };
+function renderSanteScore(el) {
+  var html = ongletsSante() +
+    '<div class="sante-aide" style="padding:0 4px">On avance de 0 à 8, mais le client peut entrer par le Symptôme ou par l’Objectif. Touchez un protocole pour le jouer : la fin du protocole ramène à l’étape.</div>';
+  SANTE.score.forEach(function(e) {
+    var protos = SANTE.protocoles.filter(function(p) { return p.etape === e.etape; });
+    var open = SCORE_OUVERTE === e.etape;
+    html += '<div class="sc-etape' + (open ? ' open' : '') + '" id="sc-' + e.etape + '">' +
+      '<button class="sc-hd" data-e="' + e.etape + '" onclick="ouvrirEtapeScore(this.dataset.e)" aria-expanded="' + open + '">' +
+        '<span class="sc-num">' + e.etape + '</span><span class="sc-t">' + esc(capitaliser(e.titre)) + '</span>' +
+        '<span class="sc-nb">' + (protos.length ? protos.length + ' protocole' + (protos.length > 1 ? 's' : '') : '') + '</span>' +
+      '</button>';
+    if (open) {
+      html += '<div class="sc-body">';
+      if (e.but) html += '<div class="sc-but"><strong style="font-family:var(--font-ui);font-size:13px">But.</strong> ' + esc(capitaliser(e.but)) + '</div>';
+      if (e.questions && e.questions.length) {
+        html += '<div class="sc-sec">Questions clés</div><ul class="sc-q">' + e.questions.map(function(q) { return '<li>' + esc(q) + '</li>'; }).join('') + '</ul>';
+      }
+      if (e.champs && e.champs.length) {
+        html += '<div class="sc-sec">À noter pendant la séance</div>' + e.champs.map(function(f) {
+          var t = TYPES_CHAMP[f.type] || (String(f.type).indexOf('choix:') === 0 ? f.type.slice(6).replace(/\|/g, ' ou ') : '');
+          return '<div class="sc-champ"><span>' + esc(f.libelle) + '</span><span>' + esc(t) + '</span></div>';
+        }).join('') + '<div class="sante-aide">La saisie de ces champs arrive dans une prochaine version.</div>';
+      }
+      (e.notes || []).forEach(function(n) { html += '<div class="sc-note">' + esc(n) + '</div>'; });
+      if (e.etape === 6 && SANTE.orientation.length) {
+        html += '<div class="sc-sec">Orientation selon le diagnostic</div><div>' + SANTE.orientation.map(function(o) {
+          return '<div class="or-item"><div class="or-sit">' + esc(o.situation) + '</div><div class="or-ids">' +
+            (o.protocol_ids || []).filter(function(id) { return SANTE.parId[id]; }).map(function(id) {
+              return '<button data-id="' + esc(id) + '" onclick="ouvrirProtoSante(this.dataset.id, \'score\')" title="' + esc(SANTE.parId[id].titre) + '">' + esc(id) + '</button>';
+            }).join('') + '</div></div>';
+        }).join('') + '</div>';
+      }
+      if (protos.length) html += '<div class="sc-sec">Protocoles de l’étape</div>' + protos.map(function(p) { return carteProtoSante(p, 'score'); }).join('');
+      html += '</div>';
+    }
+    html += '</div>';
+  });
+  el.innerHTML = html;
+}
+function capitaliser(s) { s = String(s || ''); return s.charAt(0).toUpperCase() + s.slice(1); }
+function ouvrirEtapeScore(e) {
+  e = parseInt(e, 10);
+  SCORE_OUVERTE = SCORE_OUVERTE === e ? -1 : e;
+  renderSante();
+  var b = document.getElementById('sc-' + e);
+  if (b && SCORE_OUVERTE === e) defilerVers(b, document.getElementById('sante-content'));
+}
+
+// ── Protocole santé : fiche et mode joué ──
+function ouvrirProtoSante(id, depuis) {
+  if (!SANTE || !SANTE.parId[id]) return;
+  PS = { id: id, mode: 'jouer', slide: 0, depuis: depuis || 'catalogue' };
+  renderProtoSante();
+  document.getElementById('sante-sheet').classList.add('open');
+}
+function fermerProtoSante() {
+  document.getElementById('sante-sheet').classList.remove('open');
+  PS.id = null;
+  if (currentView === 'sante') renderSante();
+}
+function modeProtoSante(m) { PS.mode = m; PS.slide = 0; renderProtoSante(); }
+
+function lireNotesRapides() { try { return JSON.parse(lsGet(NOTES_RAPIDES_KEY) || '{}'); } catch (e) { return {}; } }
+function noteRapide(pid, ordre) { var n = lireNotesRapides(); return (n[pid] && n[pid][ordre]) || ''; }
+function saisirNoteRapide(t) {
+  var n = lireNotesRapides(), pid = t.dataset.pid, o = t.dataset.o, v = t.value;
+  n[pid] = n[pid] || {};
+  if (v.trim()) n[pid][o] = v; else delete n[pid][o];
+  if (!Object.keys(n[pid]).length) delete n[pid];
+  lsSet(NOTES_RAPIDES_KEY, JSON.stringify(n));
+}
+
+function blocEtapeSante(s, grand) {
+  var cls = grand ? 'swipe-section' : 'et-section';
+  var txt = grand ? 'swipe-sec-txt' : 'et-section-text';
+  return '<div class="' + cls + ' s-' + s.type + '"><div class="sp-type">' + TYPES_ETAPE[s.type] + '</div>' +
+    '<div class="' + txt + '" style="white-space:pre-line">' + esc(s.texte) + '</div></div>';
+}
+
+function renderProtoSante() {
+  var p = SANTE && SANTE.parId[PS.id]; if (!p) return;
+  document.getElementById('ss-nom').textContent = p.id + ' · ' + p.titre;
+  document.getElementById('ss-meta').textContent = 'Étape ' + p.etape + ' · ' + p.famille + ' · ' + p.steps.length + ' étapes';
+  document.getElementById('ss-m-jouer').className = PS.mode === 'jouer' ? 'on' : '';
+  document.getElementById('ss-m-fiche').className = PS.mode === 'fiche' ? 'on' : '';
+  var body = document.getElementById('ss-body');
+  function carte(t, v, a) {
+    if (!v) return '';
+    return '<div class="dc"><div class="dc-head"><div class="dc-accent ' + (a || 'k') + '"></div><div class="dc-title">' + t + '</div></div><div class="dc-body">' + esc(v) + '</div></div>';
+  }
+  if (PS.mode === 'fiche') {
+    body.innerHTML =
+      carte('Le choisir quand', p.choisir_quand, 'b') + carte('Ce qu’il apporte', p.apporte, 'y') +
+      carte('Indication', capitaliser(p.indication)) + carte('Précautions', capitaliser(p.precautions), 'r') +
+      carte('Principe', p.principe) +
+      '<div class="et-card"><div class="et-header"><div class="et-titre">Déroulé en ' + p.steps.length + ' étapes</div></div>' +
+        p.steps.map(function(s) { return '<div style="display:flex;gap:8px;padding:0 0 0 14px"><div class="et-num" style="font-size:15px;min-width:18px">' + s.ordre + '</div><div style="flex:1">' + blocEtapeSante(s, false) + '</div></div>'; }).join('') +
+      '</div>' +
+      carte('Source', p.source);
+    body.scrollTop = 0;
+    return;
+  }
+  // Mode joué : un écran par étape du protocole
+  var tot = p.steps.length;
+  var i = Math.max(0, Math.min(PS.slide, tot - 1)), s = p.steps[i];
+  if (!s) { body.innerHTML = '<div class="s-vide">Ce protocole n’a pas encore d’étapes.</div>'; return; }
+  var seg = ''; for (var k = 0; k < tot; k++) seg += '<span class="' + (k < i ? 'done' : k === i ? 'cur' : '') + '"></span>';
+  var fin = i === tot - 1;
+  var retour = PS.depuis === 'score' ? 'Retour à l’étape ' + p.etape + ' du SCORE' : 'Retour au catalogue';
+  body.innerHTML =
+    '<div class="swipe-wrap" id="ss-swipe"><div class="swipe-slide active">' +
+      '<div class="swipe-step-num">' + (i + 1) + ' <span class="swipe-step-tot">sur ' + tot + '</span></div>' +
+      '<div class="seg-bar">' + seg + '</div>' +
+      (i === 0 && p.precautions ? '<div class="sc-note" style="margin:0 20px 14px">Précaution : ' + esc(p.precautions) + '</div>' : '') +
+      blocEtapeSante(s, true) +
+      '<div class="nr-box"><textarea data-pid="' + esc(p.id) + '" data-o="' + s.ordre + '" oninput="saisirNoteRapide(this)" maxlength="1000" placeholder="Note rapide sur cette étape">' + esc(noteRapide(p.id, s.ordre)) + '</textarea>' +
+        '<div class="nr-aide">Reste sur cet appareil. Pas de nom de client.</div></div>' +
+      (fin ? '<button class="sp-retour" onclick="fermerProtoSante()">Protocole terminé · ' + retour + '</button>' : '') +
+      '<div class="swipe-nav">' +
+        '<button class="swipe-prev" onclick="etapeProtoSante(-1)"' + (i === 0 ? ' disabled style="opacity:.4"' : '') + ' aria-label="Étape précédente">←</button>' +
+        '<span class="swipe-counter">' + (i + 1) + ' / ' + tot + '</span>' +
+        (fin ? '<button class="swipe-next" onclick="fermerProtoSante()">Terminer</button>'
+             : '<button class="swipe-next" onclick="etapeProtoSante(1)" aria-label="Étape suivante">→</button>') +
+      '</div>' +
+    '</div></div>';
+  body.scrollTop = 0;
+}
+function etapeProtoSante(d) {
+  var p = SANTE && SANTE.parId[PS.id]; if (!p) return;
+  var n = PS.slide + d;
+  if (n < 0 || n >= p.steps.length) return;
+  PS.slide = n;
+  renderProtoSante();
+}
+// Balayage horizontal pour avancer ou reculer en mode joué
+(function() {
+  var x0 = null, y0 = null;
+  document.addEventListener('touchstart', function(e) {
+    if (!e.target.closest || !e.target.closest('#ss-swipe') || e.target.closest('textarea')) { x0 = null; return; }
+    x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', function(e) {
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+    x0 = null;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > 1.5 * Math.abs(dy)) etapeProtoSante(dx < 0 ? 1 : -1);
+  }, { passive: true });
+})();
+
+
+// ═══════════════════════════════════════
+// v62 : ADMINISTRATION DU MODULE SANTE
+// Tout le contenu du module se modifie ici, sans nouvelle version de l'appli.
+// La base n'accepte ces écritures que d'un administrateur (RLS).
+// ═══════════════════════════════════════
+var ADM_TAB = 'protocoles';     // protocoles | score | orientation | modeles
+var _sEtapes = [];              // étapes en cours d'édition
+var MODELES_NOMS = { contrat: 'Contrat de coaching', deontologie: 'Code de déontologie', mail: 'Mail au client', preuve: 'Page de preuve' };
+var VARIABLES_MODELE = ['coach_nom', 'coach_statut', 'coach_raison_sociale', 'coach_siret', 'coach_adresse', 'coach_email',
+  'coach_telephone', 'coach_rc_pro', 'coach_mediateur', 'coach_certification', 'client_nom', 'client_email', 'nb_seances',
+  'frequence', 'duree', 'tarif', 'modalites_paiement', 'lieu', 'duree_contrat', 'date', 'ville',
+  'horodatage', 'consentement_contrat', 'consentement_deontologie', 'consentement_medical',
+  'version_contrat', 'version_deontologie', 'appareil', 'empreinte'];
+
+function ongletsAdm() {
+  function b(k, l) { return '<button class="' + (ADM_TAB === k ? 'on' : '') + '" data-t="' + k + '" onclick="ongletAdm(this.dataset.t)">' + l + '</button>'; }
+  return '<div class="adm-tabs">' + b('protocoles', 'Protocoles') + b('score', 'Parcours SCORE') + b('orientation', 'Orientation') + b('modeles', 'Modèles') + '</div>';
+}
+function ongletAdm(t) { switchGTab(t === 'protocoles' ? 's' : 's:' + t); }
+
+function renderGSante() {
+  var el = document.getElementById('gcontent');
+  if (!SANTE) {
+    el.innerHTML = '<div class="load-st">Les contenus santé ne sont pas installés. Exécutez « sante-lot2-contenus.sql » puis « sante-lot3-administration-modeles.sql » dans Supabase, puis rechargez les données.</div>';
+    return;
+  }
+  var html = '';
+  if (ADM_TAB === 'protocoles') {
+    html += '<div class="gtoolbar"><div class="gsearch"><span style="color:var(--text-3);font-size:12px">🔍</span>' +
+      '<input type="text" placeholder="Rechercher…" oninput="filtrerAdm(this.value)" autocomplete="off"></div>' +
+      '<button class="btn-add" onclick="ouvrirAdmProto(null)">+ Nouveau</button></div><div id="adm-list">';
+    var cur = -1;
+    SANTE.protocoles.forEach(function(p) {
+      if (p.etape !== cur) { cur = p.etape; html += '<div class="adm-grp">Étape ' + cur + ' · ' + esc(ETAPES_NOMS[cur] || '') + '</div>'; }
+      html += '<div class="adm-item' + (p.actif === false ? ' s-inactif' : '') + '" data-id="' + esc(p.id) + '" onclick="ouvrirAdmProto(this.dataset.id)">' +
+        '<span class="adm-id">' + esc(p.id) + '</span><div class="adm-main"><div class="adm-t">' + esc(p.titre) + '</div>' +
+        '<div class="adm-s">' + p.steps.length + ' étapes' + (p.actif === false ? ' · masqué aux coachs' : '') + '</div></div><span class="gli-chevron">›</span></div>';
+    });
+    html += '</div>';
+  } else if (ADM_TAB === 'score') {
+    SANTE.score.forEach(function(e) {
+      html += '<div class="adm-item" data-e="' + e.etape + '" onclick="ouvrirAdmScore(this.dataset.e)"><span class="adm-id">' + e.etape + '</span>' +
+        '<div class="adm-main"><div class="adm-t">' + esc(capitaliser(e.titre)) + '</div><div class="adm-s">' +
+        (e.questions || []).length + ' questions · ' + (e.champs || []).length + ' champs</div></div><span class="gli-chevron">›</span></div>';
+    });
+  } else if (ADM_TAB === 'orientation') {
+    html += '<div class="gtoolbar"><div class="gsearch" style="border-right:none"><span style="font-size:12px;color:var(--text-3)">' + SANTE.orientation.length + ' situations</span></div>' +
+      '<button class="btn-add" onclick="ouvrirAdmOrient(null)">+ Nouvelle</button></div>';
+    SANTE.orientation.forEach(function(o) {
+      html += '<div class="adm-item" data-id="' + esc(o.id) + '" onclick="ouvrirAdmOrient(this.dataset.id)"><span class="adm-id">' + (o.ordre || '') + '</span>' +
+        '<div class="adm-main"><div class="adm-t">' + esc(o.situation) + '</div><div class="adm-s">' + esc((o.protocol_ids || []).join(', ')) + '</div></div><span class="gli-chevron">›</span></div>';
+    });
+  } else {
+    if (!SANTE.modeles.length) html += '<div class="load-st">Les modèles ne sont pas encore installés : exécutez « sante-lot3-administration-modeles.sql ».</div>';
+    ['contrat', 'deontologie', 'mail', 'preuve'].forEach(function(k) {
+      var m = modele(k); if (!m) return;
+      html += '<div class="adm-item" data-k="' + k + '" onclick="ouvrirAdmModele(this.dataset.k)"><span class="adm-id">v' + m.version + '</span>' +
+        '<div class="adm-main"><div class="adm-t">' + MODELES_NOMS[k] + '</div><div class="adm-s">' +
+        (m.contenu ? m.contenu.length + ' caractères · modifié le ' + new Date(m.updated_at).toLocaleDateString('fr-FR') : 'vide') +
+        '</div></div><span class="gli-chevron">›</span></div>';
+    });
+  }
+  el.innerHTML = html;
+}
+function filtrerAdm(q) {
+  q = String(q || '').toLowerCase();
+  document.querySelectorAll('#adm-list .adm-item').forEach(function(it) {
+    it.style.display = it.textContent.toLowerCase().indexOf(q) >= 0 ? '' : 'none';
+  });
+}
+function modele(k) {
+  if (!SANTE) return null;
+  for (var i = 0; i < SANTE.modeles.length; i++) if (SANTE.modeles[i].cle === k) return SANTE.modeles[i];
+  return null;
+}
+
+// ── Protocole ──
+function ouvrirAdmProto(id) {
+  var p = id ? SANTE.parId[id] : null;
+  var etapes = []; for (var i = 0; i <= 8; i++) etapes.push(String(i));
+  var body =
+    fsep('Identification') +
+    fld2(fld('Repère (ex. P2.15)' + (p ? ', non modifiable' : ''), 'sa-id', esc(p ? p.id : '')),
+         fld('Étape du SCORE', 'sa-etape', p ? String(p.etape) : '1', 'select', etapes)) +
+    fld('Titre', 'sa-titre', esc(p ? p.titre : '')) +
+    fld('Ordre d’affichage', 'sa-ordre', p ? String(p.ordre) : String(SANTE.protocoles.length + 1)) +
+    '<div class="frow"><label style="display:flex;align-items:center;gap:10px;padding:6px 0;cursor:pointer">' +
+      '<input type="checkbox" id="sa-actif" style="width:20px;height:20px;accent-color:var(--blue)"' + (!p || p.actif !== false ? ' checked' : '') + '>' +
+      '<span style="font-size:14px">Visible par les coachs</span></label></div>' +
+    fsep('Choix du protocole', 'b') +
+    fld('Le choisir quand', 'sa-quand', esc(p ? nz(p.choisir_quand) : ''), 'textarea') +
+    fld('Ce qu’il apporte', 'sa-apporte', esc(p ? nz(p.apporte) : ''), 'textarea') +
+    fld('Indication', 'sa-indic', esc(p ? nz(p.indication) : ''), 'textarea') +
+    fld('Précautions', 'sa-prec', esc(p ? nz(p.precautions) : ''), 'textarea') +
+    fld('Principe (facultatif)', 'sa-princ', esc(p ? nz(p.principe) : ''), 'textarea') +
+    fld('Source', 'sa-source', esc(p ? nz(p.source) : '')) +
+    fsep('Déroulé', 'y') +
+    '<div id="se-wrap" style="display:flex;flex-direction:column;gap:8px"></div>' +
+    '<button class="btn-dynadd" onclick="ajouterEtapeSante()">+ Ajouter une étape</button>' +
+    (p ? '<button class="btn-danger" data-id="' + esc(p.id) + '" onclick="supprimerAdmProto(this.dataset.id)">Supprimer ce protocole</button>' : '');
+  openModal('r', p ? 'Protocole santé ' + p.id : 'Nouveau protocole santé', p ? p.titre : '', body, { type: 'sp', id: id });
+  if (p) { var inp = document.getElementById('sa-id'); inp.readOnly = true; inp.style.opacity = '.6'; }
+  _sEtapes = p ? p.steps.map(function(s) { return { type: s.type, texte: s.texte }; }) : [{ type: 'action', texte: '' }];
+  dessinerEtapesSante();
+}
+function dessinerEtapesSante() {
+  var w = document.getElementById('se-wrap'); if (!w) return;
+  w.innerHTML = _sEtapes.map(function(s, i) {
+    var opts = ['action', 'instruction', 'question'].map(function(t) {
+      return '<option value="' + t + '"' + (s.type === t ? ' selected' : '') + '>' + TYPES_ETAPE[t] + '</option>';
+    }).join('');
+    return '<div class="se-row t-' + s.type + '"><div class="se-hd"><span class="se-num">' + (i + 1) + '</span>' +
+      '<select data-i="' + i + '" onchange="typeEtapeSante(this)" aria-label="Type de l’étape ' + (i + 1) + '">' + opts + '</select>' +
+      '<button class="se-btn" data-i="' + i + '" data-d="-1" onclick="deplacerEtapeSante(this)"' + (i === 0 ? ' disabled' : '') + ' aria-label="Monter">↑</button>' +
+      '<button class="se-btn" data-i="' + i + '" data-d="1" onclick="deplacerEtapeSante(this)"' + (i === _sEtapes.length - 1 ? ' disabled' : '') + ' aria-label="Descendre">↓</button>' +
+      '<button class="se-btn" data-i="' + i + '" onclick="retirerEtapeSante(this)" aria-label="Supprimer l’étape">✕</button></div>' +
+      '<textarea data-i="' + i + '" oninput="_sEtapes[this.dataset.i].texte=this.value" placeholder="Texte de l’étape">' + esc(s.texte) + '</textarea></div>';
+  }).join('');
+}
+function typeEtapeSante(sel) { _sEtapes[sel.dataset.i].type = sel.value; dessinerEtapesSante(); }
+function deplacerEtapeSante(b) {
+  var i = +b.dataset.i, j = i + (+b.dataset.d);
+  if (j < 0 || j >= _sEtapes.length) return;
+  var t = _sEtapes[i]; _sEtapes[i] = _sEtapes[j]; _sEtapes[j] = t;
+  dessinerEtapesSante();
+}
+function retirerEtapeSante(b) {
+  var i = +b.dataset.i;
+  if (_sEtapes[i].texte.trim() && !confirm('Supprimer l’étape ' + (i + 1) + ' ?')) return;
+  _sEtapes.splice(i, 1); dessinerEtapesSante();
+}
+function ajouterEtapeSante() {
+  _sEtapes.push({ type: 'action', texte: '' }); dessinerEtapesSante();
+  var t = document.querySelectorAll('#se-wrap textarea'); if (t.length) t[t.length - 1].focus();
+}
+function enregistrerAdmProto(btn) {
+  var id = fval('sa-id'), titre = fval('sa-titre'), etape = parseInt(fval('sa-etape'), 10);
+  if (!id || !titre) { alert('Le repère et le titre sont obligatoires.'); return; }
+  if (!modalCtx.id && SANTE.parId[id]) { alert('Le repère ' + id + ' existe déjà.'); return; }
+  var steps = _sEtapes.filter(function(s) { return s.texte.trim(); }).map(function(s) { return { type: s.type, texte: s.texte.trim() }; });
+  if (!steps.length && !confirm('Ce protocole n’a aucune étape. Enregistrer quand même ?')) return;
+  executerEcriture(sb.rpc('sante_enregistrer_protocole', { p: {
+    id: id, etape: etape, famille: ETAPES_NOMS[etape] || '', titre: titre,
+    indication: fval('sa-indic'), choisir_quand: fval('sa-quand'), apporte: fval('sa-apporte'),
+    precautions: fval('sa-prec'), source: fval('sa-source'), principe: fval('sa-princ'),
+    ordre: parseInt(fval('sa-ordre'), 10) || 0, actif: document.getElementById('sa-actif').checked, steps: steps
+  } }).abortSignal(T()), function() { closeModal(); }, btn);
+}
+function supprimerAdmProto(id) {
+  if (!confirm('Supprimer définitivement le protocole ' + id + ' et toutes ses étapes ? Pour le retirer sans le perdre, décochez plutôt « Visible par les coachs ».')) return;
+  executerEcriture(sb.from('sante_protocols').delete().eq('id', id), function() { closeModal(); });
+}
+
+// ── Étape du parcours SCORE ──
+function lignesChamps(champs) {
+  return (champs || []).map(function(f) { return f.libelle + ' | ' + f.type + (f.aide ? ' | ' + f.aide : ''); }).join('\n');
+}
+function ouvrirAdmScore(e) {
+  e = +e; var s = null; SANTE.score.forEach(function(x) { if (x.etape === e) s = x; });
+  if (!s) return;
+  var body =
+    fld('Titre', 'sc-titre', esc(s.titre)) +
+    fld('But', 'sc-but', esc(nz(s.but)), 'textarea') +
+    fld('Questions clés (une par ligne)', 'sc-q', esc((s.questions || []).join('\n')), 'textarea') +
+    fld('Champs à noter (une ligne par champ : libellé | type | aide)', 'sc-ch', esc(lignesChamps(s.champs)), 'textarea') +
+    '<div class="sante-aide">Types possibles : texte, echelle10, ancrage, audit, date, choix:A|B (par exemple choix:EP|ED).</div>' +
+    fld('Repères de lecture (un par ligne)', 'sc-n', esc((s.notes || []).join('\n')), 'textarea');
+  openModal('b', 'Parcours SCORE · étape ' + e, capitaliser(s.titre), body, { type: 'ss', id: e });
+}
+function lignes(id) {
+  var t = document.getElementById(id);
+  return t ? t.value.split('\n').map(function(x) { return x.trim(); }).filter(Boolean) : [];
+}
+function enregistrerAdmScore(btn) {
+  if (!fval('sc-titre')) { alert('Le titre est obligatoire.'); return; }
+  var champs = lignes('sc-ch').map(function(l) {
+    var p = l.split('|').map(function(x) { return x.trim(); });
+    return { libelle: p[0], type: p[1] || 'texte', aide: p[2] || '' };
+  });
+  executerEcriture(sb.from('sante_score_steps').update({
+    titre: fval('sc-titre'), but: fval('sc-but'), questions: lignes('sc-q'), champs: champs, notes: lignes('sc-n')
+  }).eq('etape', modalCtx.id), function() { closeModal(); }, btn);
+}
+
+// ── Orientation ──
+function ouvrirAdmOrient(id) {
+  var o = null; if (id) SANTE.orientation.forEach(function(x) { if (x.id === id) o = x; });
+  var body =
+    fld('Ce que montre le diagnostic', 'or-sit', esc(o ? o.situation : ''), 'textarea') +
+    fld('Ordre d’affichage', 'or-ordre', String(o ? o.ordre : SANTE.orientation.length + 1)) +
+    fmcl('or-ids', 'Protocoles indiqués', SANTE.protocoles.map(function(p) { return { code: p.id, label: p.id + ' · ' + esc(p.titre) }; }), o ? (o.protocol_ids || []) : []) +
+    (o ? '<button class="btn-danger" data-id="' + esc(o.id) + '" onclick="supprimerAdmOrient(this.dataset.id)">Supprimer cette situation</button>' : '');
+  openModal('y', o ? 'Orientation' : 'Nouvelle situation', o ? o.situation : '', body, { type: 'so', id: id });
+}
+function enregistrerAdmOrient(btn) {
+  if (!fval('or-sit')) { alert('La situation est obligatoire.'); return; }
+  executerEcriture(sb.from('sante_orientation').upsert({
+    id: modalCtx.id || ('o' + Date.now()), situation: fval('or-sit'),
+    protocol_ids: getMclValues('or-ids'), ordre: parseInt(fval('or-ordre'), 10) || 0
+  }), function() { closeModal(); }, btn);
+}
+function supprimerAdmOrient(id) {
+  if (!confirm('Supprimer cette situation de la grille d’orientation ?')) return;
+  executerEcriture(sb.from('sante_orientation').delete().eq('id', id), function() { closeModal(); });
+}
+
+// ── Modèles de documents ──
+// Mise en forme : « # » titre, « ## » rubrique, « - » puce, ligne vide = paragraphe.
+function valeursExemple() {
+  var pc = PROFIL_COACH || {}, cd = pc.contrat_defauts || {};
+  function v(x, d) { return x && String(x).trim() ? x : d; }
+  var now = new Date();
+  return {
+    coach_nom: v(pc.nom, 'Yann Fréhel'), coach_statut: v(pc.statut, 'Entreprise individuelle'), coach_raison_sociale: v(pc.raison_sociale, ''),
+    coach_siret: v(pc.siret, '000 000 000 00000'), coach_adresse: v(pc.adresse, 'Adresse du coach'), coach_email: v(pc.email_pro, 'coach@exemple.fr'),
+    coach_telephone: v(pc.telephone, '06 00 00 00 00'), coach_rc_pro: v(pc.rc_pro, 'Assureur, contrat n° 000'), coach_mediateur: v(pc.mediateur, 'Médiateur de la consommation'),
+    coach_certification: v(pc.certification, 'Coach de santé certifié'),
+    client_nom: 'Client Exemple', client_email: 'client@exemple.fr',
+    nb_seances: v(cd.nb_seances, '6'), frequence: v(cd.frequence, 'une séance tous les quinze jours'), duree: v(cd.duree, '60 minutes'),
+    tarif: v(cd.tarif, '80 €'), modalites_paiement: v(cd.modalites_paiement, 'à chaque séance'), lieu: v(cd.lieu, 'présentiel'),
+    duree_contrat: v(cd.duree_contrat, '3 mois'), ville: v(cd.ville, 'Lyon'), date: now.toLocaleDateString('fr-FR'),
+    horodatage: now.toLocaleString('fr-FR') + ' (' + Intl.DateTimeFormat().resolvedOptions().timeZone + ')',
+    consentement_contrat: 'oui', consentement_deontologie: 'oui', consentement_medical: 'oui',
+    version_contrat: String((modele('contrat') || {}).version || 1), version_deontologie: String((modele('deontologie') || {}).version || 1),
+    appareil: navigator.userAgent.slice(0, 60), empreinte: '3f8a…(exemple)'
+  };
+}
+function rendreModele(texte, vals) {
+  function remplir(s) {
+    return esc(s).replace(/\{([a-z_]+)\}/g, function(m, k) {
+      // Variable connue mais vide : rien. Variable inconnue : signalée pour corriger le modèle.
+      return vals[k] != null ? esc(vals[k]) : '<span class="var-vide">{' + k + '}</span>';
+    });
+  }
+  var out = '', liste = false;
+  String(texte || '').split('\n').forEach(function(l) {
+    var t = l.trim();
+    if (t.indexOf('- ') === 0) { if (!liste) { out += '<ul>'; liste = true; } out += '<li>' + remplir(t.slice(2)) + '</li>'; return; }
+    if (liste) { out += '</ul>'; liste = false; }
+    if (!t) return;
+    if (t.indexOf('## ') === 0) out += '<h2>' + remplir(t.slice(3)) + '</h2>';
+    else if (t.indexOf('# ') === 0) out += '<h1>' + remplir(t.slice(2)) + '</h1>';
+    else out += '<p>' + remplir(t) + '</p>';
+  });
+  if (liste) out += '</ul>';
+  return out;
+}
+function ouvrirAdmModele(k) {
+  var m = modele(k); if (!m) return;
+  var body =
+    '<div class="sante-aide">Version ' + m.version + '. Chaque enregistrement crée une nouvelle version ; les contrats déjà signés gardent la version utilisée.</div>' +
+    '<div class="frow"><div class="flabel">Texte du modèle</div><textarea class="ftextarea tpl-area" id="tpl-txt">' + esc(m.contenu) + '</textarea></div>' +
+    '<div class="tpl-vars">Mise en forme : « # » titre, « ## » rubrique, « - » puce, ligne vide entre deux paragraphes.<br>Variables : ' +
+      VARIABLES_MODELE.map(function(v) { return '<code>{' + v + '}</code>'; }).join(' ') + '</div>' +
+    '<button class="btn-dynadd" onclick="apercuModele()">Aperçu avec des données fictives</button>' +
+    '<div id="tpl-apercu"></div>';
+  openModal('r', 'Modèle · v' + m.version, MODELES_NOMS[k], body, { type: 'st', id: k });
+}
+function apercuModele() {
+  var t = document.getElementById('tpl-txt'), a = document.getElementById('tpl-apercu');
+  if (!t || !a) return;
+  a.innerHTML = '<div class="doc-apercu">' + rendreModele(t.value, valeursExemple()) + '</div>';
+  defilerVers(a, document.getElementById('modal-body'));
+}
+function enregistrerAdmModele(btn) {
+  var t = document.getElementById('tpl-txt'); if (!t) return;
+  var m = modele(modalCtx.id);
+  if (m && t.value === m.contenu) { closeModal(); return; }
+  if (!t.value.trim()) { alert('Le modèle ne peut pas être vide.'); return; }
+  executerEcriture(sb.from('sante_templates').update({ contenu: t.value }).eq('cle', modalCtx.id), function() { closeModal(); }, btn);
+}
+
+// Fait défiler un seul conteneur, sans déplacer le cadre de l'appli
+function defilerVers(el, conteneur) {
+  if (!el || !conteneur) return;
+  conteneur.scrollTop += el.getBoundingClientRect().top - conteneur.getBoundingClientRect().top - 8;
+}
+
+// Le cadre de l'appli ne doit jamais défiler : seul son contenu défile.
+// (Sur mobile, l'ouverture du clavier ou un focus peut le décaler.)
+(function() {
+  var f = document.getElementById('app-frame');
+  if (f) f.addEventListener('scroll', function() { if (f.scrollTop || f.scrollLeft) { f.scrollTop = 0; f.scrollLeft = 0; } }, { passive: true });
+})();
+
+var ENREGISTREURS_SANTE = { sp: enregistrerAdmProto, ss: enregistrerAdmScore, so: enregistrerAdmOrient, st: enregistrerAdmModele };
 
 // ═══════════════════════════════════════
 // STATE
@@ -3185,21 +3862,51 @@ function switchEx(k) {
 // ═══════════════════════════════════════
 // GESTION
 // ═══════════════════════════════════════
+// v63 : Gestion en trois espaces, chacun avec ses sous-onglets.
+// currentGTab reste l'onglet affiché (p, po, b, f, pin, c, s).
+var G_ESPACES = {
+  protocoles: [['p', 'Protocoles', 'gb-p'], ['po', 'Postulats', 'gb-po'], ['b', 'Briques', 'gb-b'], ['f', 'Critères', 'gb-f']],
+  compte: [['pin', 'Mon compte'], ['c', 'Utilisateurs']],
+  sante: [['s', 'Protocoles'], ['s:score', 'SCORE'], ['s:orientation', 'Orientation'], ['s:modeles', 'Modèles']]
+};
+var G_DERNIER = { protocoles: 'p', compte: 'pin', sante: 's' };
+function espaceDe(tab) { return (tab === 'pin' || tab === 'c') ? 'compte' : tab === 's' ? 'sante' : 'protocoles'; }
+
+function switchGEspace(esp) {
+  var t = G_DERNIER[esp];
+  if (esp === 'sante') { currentGTab = 's'; renderGestion(); return; }
+  switchGTab(t);
+}
 function switchGTab(tab) {
+  if (tab.indexOf('s:') === 0) { ADM_TAB = tab.slice(2); tab = 's'; }
+  else if (tab === 's') ADM_TAB = 'protocoles';
   currentGTab = tab;
-  var map = {p:'gr', po:'gb', b:'gy', f:'gr', c:'gb', pin:'gk'};
-  Object.keys(map).forEach(function(t) {
-    var btn = document.getElementById('gtab-' + t);
-    if (btn) btn.className = 'gtab' + (t === tab ? ' ' + map[t] : '');
-  });
+  G_DERNIER[espaceDe(tab)] = tab;
   renderGestion();
 }
 
+function renderGSub() {
+  var esp = espaceDe(currentGTab);
+  ['protocoles', 'compte', 'sante'].forEach(function(e) {
+    var b = document.getElementById('gesp-' + e);
+    if (b) { b.className = 'gtab' + (e === esp ? ' gr' : ''); b.setAttribute('aria-selected', e === esp); }
+  });
+  var nb = { 'gb-p': PROTOCOLES.length, 'gb-po': POSTULATS.length, 'gb-b': BRIQUES.length,
+    'gb-f': FILTRES_ORDER.reduce(function(a, k) { return a + (FILTRES[k] ? FILTRES[k].valeurs.length : 0); }, 0) };
+  var actif = currentGTab === 's' ? 's' + (ADM_TAB === 'protocoles' ? '' : ':' + ADM_TAB) : currentGTab;
+  document.getElementById('gsub').innerHTML = G_ESPACES[esp].map(function(o) {
+    return '<button class="' + (o[0] === actif ? 'on' : '') + '" data-t="' + o[0] + '" onclick="switchGTab(this.dataset.t)">' + o[1] +
+      (o[2] ? ' <span class="gbadge" id="' + o[2] + '">' + nb[o[2]] + '</span>' : '') + '</button>';
+  }).join('');
+}
+
 function renderGestion() {
+  renderGSub();
   if (currentGTab === 'p')   renderGP();
   if (currentGTab === 'po')  renderGPo();
   if (currentGTab === 'b')   renderGB();
   if (currentGTab === 'f')   renderGF();
+  if (currentGTab === 's')   renderGSante();
   if (currentGTab === 'c')   renderGComptes();
   if (currentGTab === 'pin') renderGCompte();
 }
@@ -3424,6 +4131,7 @@ function openModal(color, sub, name, body, ctx) {
   document.getElementById('modal').classList.add('open');
 }
 function closeModal() {
+  _sEtapes = [];
   document.getElementById('modal').classList.remove('open');
   modalCtx = null; _etapes = []; _declencheurs = [];
 }
@@ -3697,6 +4405,10 @@ function openMdlB(id) {
 
 function saveModal() {
   if (!modalCtx || _ecritureEnCours) return;
+  if (ENREGISTREURS_SANTE[modalCtx.type]) {
+    if (!IS_ADMIN || !sb) { alert('Modification réservée aux administrateurs.'); return; }
+    return ENREGISTREURS_SANTE[modalCtx.type](document.querySelector('#modal .btn-save'));
+  }
   if (!IS_ADMIN || !sb) { alert('Modification réservée aux administrateurs.'); return; }
   var type = modalCtx.type, id = modalCtx.id, op = null;
   var btn = document.querySelector('#modal .btn-save');
