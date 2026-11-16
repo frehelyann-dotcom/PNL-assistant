@@ -6,9 +6,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="PNL Séance">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=64">
-<link rel="manifest" href="manifest.webmanifest?v=64">
-<link rel="icon" type="image/png" href="apple-touch-icon.png?v=64">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=68">
+<link rel="manifest" href="manifest.webmanifest?v=68">
+<link rel="icon" type="image/png" href="apple-touch-icon.png?v=68">
 <meta name="theme-color" content="#F7F3EE">
 <meta name="color-scheme" content="light dark">
 <script>
@@ -86,9 +86,9 @@ body {
 @media (min-width: 560px) {
   body { background: var(--gray2); }
   #app-frame {
-    max-width: 480px;
+    max-width: 720px;
     margin: 0 auto;
-    box-shadow: 0 0 0 2px var(--black), 0 12px 40px rgba(0,0,0,.25);
+    box-shadow: 0 0 0 1px var(--line), 0 12px 40px rgba(0,0,0,.12);
   }
 }
 
@@ -1692,6 +1692,115 @@ button, input, select, textarea { font-family: var(--font-ui); }
 .pj-l { display: flex; flex-wrap: wrap; gap: 5px; }
 .pj-l span { font-size: 12px; border-radius: 999px; background: var(--surface-2); color: var(--text-2); padding: 3px 9px; }
 .tabbtn .pastille { position: absolute; top: 8px; right: calc(50% - 20px); width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+
+/* ═══════════════ v65 : questions du débriefing ajustables en séance ═══════════════ */
+.dq-hd { display: flex; align-items: flex-start; gap: 6px; }
+.dq-hd .sf-l { flex: 1; }
+.dq-act { border: 1px solid var(--line-2); border-radius: 8px; background: transparent; color: var(--text-2); font-size: 12px; padding: 3px 8px; cursor: pointer; flex-shrink: 0; }
+.dq-mod { font-size: 11px; color: var(--yellow-txt); font-style: italic; }
+.dq-add { display: flex; gap: 6px; }
+.dq-add input { flex: 1; min-width: 0; border: 1px dashed var(--line-2); border-radius: 10px; background: var(--paper); color: var(--black); font-size: 14px; padding: 8px 10px; outline: none; }
+
+/* ═══════════════ v66 : coffre chiffré et dossiers clients ═══════════════ */
+.vr-carte { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 16px; display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+.vr-ico { font-size: 28px; text-align: center; }
+.vr-t { font-size: 17px; font-weight: 600; text-align: center; color: var(--black); }
+.vr-s { font-size: 13px; line-height: 1.55; color: var(--text-2); text-align: center; }
+.vr-pin { text-align: center; font-size: 24px !important; letter-spacing: .3em; }
+.vr-pin::placeholder { letter-spacing: normal; font-size: 15px; }
+.vr-err { min-height: 18px; font-size: 13px; color: var(--red-txt); text-align: center; }
+.vr-lien { border: none; background: none; color: var(--text-3); font-size: 12px; text-decoration: underline; cursor: pointer; padding: 4px; }
+.cl-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; cursor: pointer; width: 100%; text-align: left; color: var(--black); flex-shrink: 0; }
+.cl-code { font-size: 16px; font-weight: 600; letter-spacing: .04em; color: var(--blue-txt); min-width: 76px; }
+.cl-main { flex: 1; min-width: 0; font-size: 12px; color: var(--text-3); line-height: 1.5; }
+.cl-vieux { color: var(--yellow-txt); }
+.cl-hd { display: flex; align-items: center; gap: 10px; }
+.cl-hd .cl-code { font-size: 22px; }
+.se-txt { white-space: pre-wrap; font-family: var(--font-txt); font-size: 14px; line-height: 1.55; color: var(--black); background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+.ss-choix { display: flex; flex-direction: column; gap: 8px; }
+.ss-choix select { width: 100%; }
+.ss-ou { font-size: 12px; color: var(--text-3); text-align: center; }
+
+/* ═══════════════ v67 : mise en page pour écran d'ordinateur ═══════════════
+   Téléphone : inchangé. Tablette (560 px et plus) : colonne de 720 px.
+   Ordinateur (1000 px et plus) : l'appli occupe jusqu'à 1280 px, les listes
+   passent en colonnes et les textes longs gardent une largeur de lecture. */
+@media (min-width: 1000px) {
+  body { background: var(--surface-2); }
+  #app-frame { max-width: 1280px; box-shadow: 0 0 0 1px var(--line); }
+  .topnav { padding: 0 12px; }
+  .tnav-logo { font-size: 22px; }
+  /* Accueil et protocoles PNL */
+  .homepage { padding: 24px max(28px, calc((100% - 1100px) / 2)); gap: 18px; }
+  .criteria-cards { display: grid; grid-template-columns: repeat(2, 1fr); align-items: start; }
+  .pgrid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; gap: 16px; padding: 24px max(28px, calc((100% - 1200px) / 2)); }
+  .results-bar { padding: 0 max(0px, calc((100% - 1200px) / 2)); }
+  /* Fiches et protocoles joués : largeur de lecture */
+  .dsh-body { padding: 24px max(24px, calc((100% - 860px) / 2)) 40px; }
+  .read-mode-bar, .sp-modes { padding-left: max(12px, calc((100% - 860px) / 2)); padding-right: max(12px, calc((100% - 860px) / 2)); }
+  .swipe-sec-txt { font-size: 21px; }
+  /* Module santé */
+  .sante-scroll { padding: 24px max(28px, calc((100% - 1100px) / 2)) 40px; gap: 14px; }
+  .s-tabs { max-width: 640px; }
+  #s-liste, #cl-liste { display: grid !important; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px !important; align-items: stretch; }
+  #s-liste > .s-count, #s-liste > .s-vide, #cl-liste > .s-vide { grid-column: 1 / -1; }
+  .s-card { height: 100%; }
+  .s-chips { flex-wrap: wrap; overflow: visible; }
+  .syn-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; align-items: start; }
+  .syn-col h4 { grid-column: 1 / -1; }
+  .sc-body { padding: 4px 22px 20px; }
+  /* Gestion */
+  .gtabs.g3 { padding: 0 max(0px, calc((100% - 1100px) / 2)); }
+  .gsub { padding-left: max(10px, calc((100% - 1100px) / 2)); padding-right: max(10px, calc((100% - 1100px) / 2)); }
+  .gsub button { flex: 0 0 auto; }
+  .gcontent { padding: 0 max(0px, calc((100% - 1100px) / 2)) 40px; }
+  /* Fenêtres d'édition centrées */
+  .modal-ov { align-items: center; }
+  .modal { max-width: 820px; border-radius: 18px; max-height: 90dvh; }
+  .filter-sheet { max-width: 820px; left: 50%; right: auto; width: 100%; margin-left: -410px; }
+  .info-popup { max-width: 560px; left: 50%; right: auto; width: 100%; margin-left: -280px; border-radius: 16px 16px 0 0; }
+}
+@media (min-width: 1400px) {
+  .criteria-cards { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ═══════════════ v68 : contrat signé ═══════════════ */
+.ct-ov { display: none; position: absolute; inset: 0; z-index: 130; background: var(--paper); flex-direction: column; }
+.ct-ov.open { display: flex; }
+.ct-hd { display: flex; align-items: center; gap: 10px; padding: calc(10px + var(--safe-top)) 14px 10px; background: var(--white); border-bottom: 1px solid var(--line); flex-shrink: 0; }
+.ct-hd .ct-t { flex: 1; font-size: 15px; font-weight: 600; color: var(--black); }
+.ct-hd .ct-et { font-size: 12px; color: var(--text-3); }
+.ct-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px 16px 24px; display: flex; flex-direction: column; gap: 12px; }
+.ct-ft { display: flex; gap: 8px; padding: 10px 14px calc(10px + var(--safe-bottom)); background: var(--white); border-top: 1px solid var(--line); flex-shrink: 0; }
+.ct-ft button { flex: 1; }
+.ct-doc { background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 18px 16px; font-family: var(--font-txt); font-size: 18px; line-height: 1.6; color: var(--black); }
+.ct-doc h1 { font-family: var(--font-ui); font-size: 19px; font-weight: 600; text-align: center; margin: 0 0 14px; }
+.ct-doc h2 { font-family: var(--font-ui); font-size: 16px; font-weight: 600; margin: 18px 0 6px; }
+.ct-doc p { margin: 0 0 10px; }
+.ct-doc ul { margin: 0 0 10px 20px; }
+.ct-cases { display: flex; flex-direction: column; gap: 10px; }
+.ct-case { display: flex; gap: 12px; align-items: flex-start; font-size: 17px; line-height: 1.45; color: var(--black); background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px; cursor: pointer; }
+.ct-case input { width: 24px; height: 24px; flex-shrink: 0; accent-color: var(--blue); margin-top: 1px; }
+.ct-case.off { opacity: .5; cursor: default; }
+.ct-info { font-size: 13px; line-height: 1.5; color: var(--text-2); background: var(--note-bg); border-radius: 10px; padding: 10px 12px; }
+.ct-sig { width: 100%; height: 240px; background: #FFFFFF; border: 2px dashed var(--line-2); border-radius: 12px; touch-action: none; cursor: crosshair; display: block; }
+.ct-ment { font-size: 14px; color: var(--text-2); text-align: center; }
+.ct-res { font-size: 13px; color: var(--text-2); line-height: 1.6; word-break: break-all; }
+.ct-trace { font-size: 13px; line-height: 1.5; color: var(--text-2); background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--green); border-radius: 10px; padding: 10px 12px; }
+.ct-trace.manque { border-left-color: var(--yellow); }
+/* ═══════════════ v68 : aide à l'orientation ═══════════════ */
+.or-case { display: flex; gap: 10px; align-items: flex-start; padding: 9px 0; border-top: 1px solid var(--line); font-size: 14px; color: var(--black); cursor: pointer; }
+.or-case:first-child { border-top: none; }
+.or-case input { width: 20px; height: 20px; flex-shrink: 0; accent-color: var(--blue); }
+.or-case .or-ids { margin-top: 4px; }
+.or-sugg { display: flex; flex-direction: column; gap: 8px; }
+.or-p { display: flex; gap: 10px; align-items: flex-start; background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--blue); border-radius: 10px; padding: 10px 12px; cursor: pointer; text-align: left; width: 100%; color: var(--black); }
+.or-p .or-n { font-size: 12px; font-weight: 600; color: var(--on-blue); background: var(--blue); border-radius: 999px; min-width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.or-p .or-r { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+@media (min-width: 1000px) {
+  .ct-body { padding: 24px max(24px, calc((100% - 860px) / 2)); }
+  .ct-ft { padding-left: max(14px, calc((100% - 860px) / 2)); padding-right: max(14px, calc((100% - 860px) / 2)); }
+}
 </style>
 
 </head>
@@ -1703,7 +1812,7 @@ button, input, select, textarea { font-family: var(--font-ui); }
   <nav class="topnav">
     <div class="tnav-logo-wrap" onclick="openAbout()" role="button" style="cursor:pointer">
       <div class="tnav-logo">PNL<span class="dot b"></span><span class="dot y"></span><span class="dot r"></span></div>
-      <div class="tnav-subtitle">Assistant de séance PNL · v64 ⓘ</div>
+      <div class="tnav-subtitle">Assistant de séance PNL · v68 ⓘ</div>
     </div>
     <div class="tnav-actions">
       <button class="tnav-btn" id="nav-search-toggle" onclick="toggleSearch()" style="display:none">🔍</button>
@@ -1863,6 +1972,14 @@ button, input, select, textarea { font-family: var(--font-ui); }
   <div class="fsheet-body" id="fsheet-body"></div>
 </div>
 
+<!-- CONTRAT (v68) : données gardées en mémoire seulement -->
+<div class="ct-ov" id="ct-ov" role="dialog" aria-modal="true" aria-labelledby="ct-titre">
+  <div class="ct-hd"><div class="ct-t" id="ct-titre">Contrat</div><div class="ct-et" id="ct-etape"></div>
+    <button class="ss-btn" onclick="fermerContrat()" aria-label="Fermer le contrat">✕</button></div>
+  <div class="ct-body" id="ct-body"></div>
+  <div class="ct-ft" id="ct-ft"></div>
+</div>
+
 <!-- VOLET PROTOCOLE SANTE (v61) -->
 <div class="detail-sheet" id="sante-sheet">
   <div class="dsh-nav">
@@ -1953,7 +2070,7 @@ button, input, select, textarea { font-family: var(--font-ui); }
 // réseau est faible. La clé ci-dessous est publique par conception : les
 // droits sont appliqués par la base (Row Level Security).
 // ═══════════════════════════════════════
-var APP_VERSION = 'v64';
+var APP_VERSION = 'v68';
 var SB_URL = 'https://tavilnkwkgovcwxrnzfq.supabase.co';
 var SB_KEY = 'sb_publishable_FRipvkrteuUpNGWSS_fE3g_dBAGfaUF';
 var sb = (window.supabase && window.supabase.createClient)
@@ -2075,7 +2192,7 @@ function appliquerDonnees(d) {
   HAS_SANTE = d.sante === true;
   PROFIL_COACH = HAS_SANTE ? (d.profil_coach || null) : null;
   SANTE = HAS_SANTE ? preparerSante(d.sante_contenu) : null;
-  if (d.sante === false) { lsDel(NOTES_RAPIDES_KEY); lsDel(SEANCE_KEY); SEANCE = null; }  // accès retiré : on vide le cache local du module
+  if (d.sante === false) { lsDel(NOTES_RAPIDES_KEY); verrouiller(); }  // accès retiré : notes effacées, dossiers déchargés
   appliquerFavoris();
 }
 
@@ -2147,7 +2264,11 @@ function chargerContenusSante() {
     // v62 : modèles de documents, facultatifs tant que le lot 2 n'est pas installé
     return sb.from('sante_templates').select('*').abortSignal(T()).then(function(rt) {
       contenu.modeles = rt.error ? [] : (rt.data || []);
-      return contenu;
+      // v65 : textes de la grille de synthèse et du débriefing
+      return sb.from('sante_blocs').select('*').abortSignal(T()).then(function(rb) {
+        contenu.blocs = rb.error ? [] : (rb.data || []);
+        return contenu;
+      }, function() { return contenu; });
     }, function() { return contenu; });
   }).catch(function() { return null; });
 }
@@ -2190,6 +2311,7 @@ function rafraichirAffichage() {
   if (!IS_ADMIN && currentView === 'gestion') _rawSwitchView('protocoles');
   var ts = document.getElementById('tabbtn-s');
   if (ts) ts.style.display = HAS_SANTE ? '' : 'none';
+  if (HAS_SANTE) chargerDossiers();
   majPastille();
   if (!HAS_SANTE && currentView === 'sante') _rawSwitchView('protocoles');
   if (!HAS_SANTE && PS.id) fermerProtoSante();
@@ -2312,6 +2434,7 @@ function ouvrirSession(user) {
 }
 
 function reinitialiserSession() {
+  COFFRE = null; SEANCE = null; CLIENT_OUVERT = null;
   USER = null; IS_ADMIN = false; HAS_SANTE = false; PROFIL_COACH = null; SANTE = null; COMPTES = null; DERNIERES_DONNEES = null; DONNEES_PRETES = false; HORS_LIGNE = false;
   PROTOCOLES = []; POSTULATS = []; BRIQUES = []; FILTRES = {}; FILTRES_ORDER = [];
   MES_NOTES = []; MES_FAVORIS = [];
@@ -2323,9 +2446,9 @@ function reinitialiserSession() {
 
 function seDeconnecter() {
   if (!confirm('Se déconnecter ? La copie locale des fiches et de vos notes sera effacée de cet appareil.' +
-    (SEANCE ? ' La séance en cours (' + SEANCE.initiales + ') sera effacée elle aussi : exportez-la avant si besoin.' : ''))) return;
+    ' Vos dossiers clients restent sur cet appareil.')) return;
   lsDel(cacheCle());
-  lsDel(SEANCE_KEY); SEANCE = null; majPastille();
+  verrouiller();
   lsDel(DERNIER_USER_KEY);
   closeAbout();
   if (sb) sb.auth.signOut({ scope: 'local' }); else { reinitialiserSession(); ouvrirConnexion(); }
@@ -2796,13 +2919,14 @@ function preparerSante(c) {
     protocoles: protos, parId: parId,
     score: (c.score || []).slice().sort(function(a, b) { return a.etape - b.etape; }),
     orientation: (c.orientation || []).slice().sort(byOrdre),
-    modeles: c.modeles || []
+    modeles: c.modeles || [],
+    blocs: (function() { var o = {}; (c.blocs || []).forEach(function(b) { o[b.cle] = b; }); return o; })()
   };
 }
 
 function ongletsSante() {
   function b(k, l) { return '<button class="' + (SANTE_TAB === k ? 'on' : '') + '" data-t="' + k + '" onclick="ongletSante(this.dataset.t)">' + l + '</button>'; }
-  return '<div class="s-tabs" role="tablist">' + b('protocoles', 'Protocoles') + b('score', 'Parcours SCORE') + b('profil', 'Mon profil') + '</div>';
+  return '<div class="s-tabs" role="tablist">' + b('protocoles', 'Protocoles') + b('score', 'SCORE') + b('clients', 'Clients') + b('profil', 'Profil') + '</div>';
 }
 function ongletSante(t) {
   SANTE_TAB = t;
@@ -2821,7 +2945,13 @@ function renderSante() {
       '</div>';
     return;
   }
+  // v66 : le parcours SCORE et les dossiers clients s'ouvrent avec le code PIN
+  if (SANTE_TAB === 'score' || SANTE_TAB === 'clients') {
+    chargerDossiers();
+    if (MIGRATION_PIN) return renderMigration(el);
+  }
   if (SANTE_TAB === 'score') return renderSanteScore(el);
+  if (SANTE_TAB === 'clients') return renderSanteClients(el);
   renderSanteCatalogue(el);
 }
 
@@ -2891,7 +3021,9 @@ function renderSanteScore(el) {
       }
       if (e.champs && e.champs.length) html += blocChampsSeance(e);
       (e.notes || []).forEach(function(n) { html += '<div class="sc-note">' + esc(n) + '</div>'; });
-      if (e.etape === 6 && SANTE.orientation.length) {
+      if (e.etape === 6 && SANTE.orientation.length && SEANCE) {
+        html += blocOrientation();
+      } else if (e.etape === 6 && SANTE.orientation.length) {
         html += '<div class="sc-sec">Orientation selon le diagnostic</div><div>' + SANTE.orientation.map(function(o) {
           return '<div class="or-item"><div class="or-sit">' + esc(o.situation) + '</div><div class="or-ids">' +
             (o.protocol_ids || []).filter(function(id) { return SANTE.parId[id]; }).map(function(id) {
@@ -2904,7 +3036,7 @@ function renderSanteScore(el) {
     }
     html += '</div>';
   });
-  if (SEANCE) html += blocSynthese() + blocDebrief();
+  html += blocSynthese() + blocDebrief();
   el.innerHTML = html;
 }
 function capitaliser(s) { s = String(s || ''); return s.charAt(0).toUpperCase() + s.slice(1); }
@@ -3063,6 +3195,13 @@ function renderGSante() {
       html += '<div class="adm-item" data-e="' + e.etape + '" onclick="ouvrirAdmScore(this.dataset.e)"><span class="adm-id">' + e.etape + '</span>' +
         '<div class="adm-main"><div class="adm-t">' + esc(capitaliser(e.titre)) + '</div><div class="adm-s">' +
         (e.questions || []).length + ' questions · ' + (e.champs || []).length + ' champs</div></div><span class="gli-chevron">›</span></div>';
+    });
+    [['synthese', 'Σ'], ['debriefing', '✓']].forEach(function(x) {
+      var b = bloc(x[0]), d = b.donnees, installe = !!(SANTE.blocs && SANTE.blocs[x[0]]);
+      var resume = x[0] === 'synthese' ? (d.colonnes || []).length + ' colonnes · ' + (d.lignes || []).length + ' lignes · ' + (d.questions || []).length + ' questions'
+                                       : (d.client || []).length + ' questions au client · ' + (d.coach || []).length + ' au coach';
+      html += '<div class="adm-item" data-k="' + x[0] + '" onclick="ouvrirAdmBloc(this.dataset.k)"><span class="adm-id">' + x[1] + '</span>' +
+        '<div class="adm-main"><div class="adm-t">' + esc(b.titre) + '</div><div class="adm-s">' + resume + (installe ? '' : ' · script du lot 4 à exécuter') + '</div></div><span class="gli-chevron">›</span></div>';
     });
   } else if (ADM_TAB === 'orientation') {
     html += '<div class="gtoolbar"><div class="gsearch" style="border-right:none"><span style="font-size:12px;color:var(--text-3)">' + SANTE.orientation.length + ' situations</span></div>' +
@@ -3304,7 +3443,32 @@ function defilerVers(el, conteneur) {
   if (f) f.addEventListener('scroll', function() { if (f.scrollTop || f.scrollLeft) { f.scrollTop = 0; f.scrollLeft = 0; } }, { passive: true });
 })();
 
-var ENREGISTREURS_SANTE = { sp: enregistrerAdmProto, ss: enregistrerAdmScore, so: enregistrerAdmOrient, st: enregistrerAdmModele };
+// ── Grille de synthèse et débriefing ──
+function ouvrirAdmBloc(k) {
+  var b = bloc(k), d = b.donnees, body = fld('Titre', 'bl-titre', esc(b.titre)) + fld('Aide affichée en tête', 'bl-aide', esc(b.aide || ''), 'textarea');
+  if (k === 'synthese') {
+    body += fld('Colonnes (une par ligne)', 'bl-col', esc((d.colonnes || []).join('\n')), 'textarea') +
+      fld('Lignes de chaque colonne (une par ligne)', 'bl-lig', esc((d.lignes || []).join('\n')), 'textarea') +
+      fld('Questions de travail (une par ligne)', 'bl-q', esc((d.questions || []).join('\n')), 'textarea');
+  } else {
+    body += fld('Questions au client (une par ligne)', 'bl-cl', esc((d.client || []).join('\n')), 'textarea') +
+      fld('Questions du coach à lui-même (une par ligne)', 'bl-co', esc((d.coach || []).join('\n')), 'textarea') +
+      '<div class="sante-aide">Les deux évaluations sur 10 restent toujours proposées. Pendant une séance, le coach peut aussi reformuler une question ou en ajouter, pour cette séance seulement.</div>';
+  }
+  if (!(SANTE.blocs && SANTE.blocs[k])) body = '<div class="sc-note">Le script « sante-lot4-synthese-debriefing.sql » n’est pas encore exécuté : l’enregistrement sera refusé tant qu’il ne l’est pas.</div>' + body;
+  openModal('b', 'Parcours SCORE', b.titre, body, { type: 'sb', id: k });
+}
+function enregistrerAdmBloc(btn) {
+  var k = modalCtx.id;
+  if (!fval('bl-titre')) { alert('Le titre est obligatoire.'); return; }
+  var donnees = k === 'synthese'
+    ? { colonnes: lignes('bl-col'), lignes: lignes('bl-lig'), questions: lignes('bl-q') }
+    : { client: lignes('bl-cl'), coach: lignes('bl-co') };
+  executerEcriture(sb.from('sante_blocs').upsert({ cle: k, titre: fval('bl-titre'), aide: fval('bl-aide') || null, donnees: donnees }),
+    function() { closeModal(); }, btn);
+}
+
+var ENREGISTREURS_SANTE = { sp: enregistrerAdmProto, ss: enregistrerAdmScore, so: enregistrerAdmOrient, st: enregistrerAdmModele, sb: enregistrerAdmBloc };
 
 
 // ═══════════════════════════════════════
@@ -3313,67 +3477,130 @@ var ENREGISTREURS_SANTE = { sp: enregistrerAdmProto, ss: enregistrerAdmScore, so
 // chaque saisie. Le client n'est désigné que par ses initiales. Rien
 // n'est envoyé à Supabase : la séance part dans l'export, puis s'efface.
 // ═══════════════════════════════════════
-var SEANCE_KEY = 'pnl_sante_seance';
-var SEANCE = lireSeance();
+var SEANCE_KEY = 'pnl_sante_seance';   // stockage en clair des v64-v65, migré dans le coffre
+var COFFRE = null;      // dossiers déchiffrés, en mémoire seulement (null : verrouillé)
+var SEANCE = null;      // séance en cours (dans le coffre)
 
-function lireSeance() { try { var s = JSON.parse(lsGet(SEANCE_KEY) || 'null'); return s && s.initiales ? s : null; } catch (e) { return null; } }
-function ecrireSeance() { if (SEANCE) { SEANCE.maj = new Date().toISOString(); lsSet(SEANCE_KEY, JSON.stringify(SEANCE)); } majPastille(); }
-function majPastille() { var p = document.getElementById('pastille-seance'); if (p) p.hidden = !(SEANCE && HAS_SANTE); }
+function ecrireSeance() {
+  if (COFFRE) {
+    if (SEANCE) SEANCE.maj = new Date().toISOString();
+    COFFRE.seance = SEANCE;
+    if (SEANCE) lsSet(cleSeanceEnCours(), SEANCE.initiales); else lsDel(cleSeanceEnCours());
+    sauverCoffre();
+  }
+  majPastille();
+}
+function majPastille() { var p = document.getElementById('pastille-seance'); if (p) p.hidden = !(HAS_SANTE && (SEANCE || lsGet(cleSeanceEnCours()))); }
 function val(k) { return SEANCE && SEANCE.v[k] != null ? SEANCE.v[k] : ''; }
 function dateFr(iso) { var d = new Date(iso); return d.toLocaleDateString('fr-FR') + ' à ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }); }
 
-// Questions fixes de la grille de synthèse et du débriefing (Fiche de travail SCORE)
-var SYN_COLS = [['C', 'Cause'], ['S', 'Symptôme'], ['O', 'Objectif'], ['E', 'Effets']];
-var SYN_LIGNES = [['contenu', 'Contenu'], ['comport', 'Schémas comportementaux (posture, symétrie, gestes, mimiques, rythme, respiration)'],
-  ['cognit', 'Schémas cognitifs (système de représentation, sous-modalités, métaprogrammes)']];
-var SYN_Q = ['Quelles ressources pourraient faciliter le passage de l’état présent à l’état désiré ?',
-  'À quel lien la ressource s’applique-t-elle (C vers S, S vers O, O vers E) ?',
-  'Quelle technique PNL utiliser pour activer et appliquer ces ressources ?'];
-var DEB_CLIENT = ['Qu’avez-vous appris de cette séance ?', 'Qu’est-ce qui a été le plus aidant et le plus marquant ?',
-  'Qu’ai-je fait pour vous aider à activer et maintenir un état ressource ?', 'De quoi auriez-vous eu besoin en plus ?',
-  'Comment qualifiez-vous la qualité de notre relation, et qu’est-ce qui l’a permise ?'];
-var DEB_COACH = ['Qu’ai-je fait pour établir une relation positive ?', 'Comment était mon propre état ressource tout au long de la séance ?',
-  'Quelles compétences ai-je mises en œuvre avec succès ?', 'Quels obstacles ai-je rencontrés, et comment les ai-je transformés ?',
-  'Que veux-je pratiquer davantage, comment, et avec quel soutien ?', 'Commentaires du superviseur'];
+// Grille de synthèse et débriefing : textes lus dans la base (sante_blocs),
+// modifiables dans Gestion santé > SCORE. Valeurs de la Fiche SCORE si absents.
+var BLOCS_DEFAUT = {"synthese": {"titre": "Grille de synthèse SCORE", "aide": "La grille se remplit en fin de diagnostic : le contenu dit ce que le client exprime, les deux lignes de schémas disent comment il le vit.", "donnees": {"colonnes": ["Cause", "Symptôme", "Objectif", "Effets"], "lignes": ["Contenu", "Schémas comportementaux (posture, symétrie, gestes, mimiques, rythme, respiration)", "Schémas cognitifs (système de représentation, sous-modalités, métaprogrammes)"], "questions": ["Quelles ressources pourraient faciliter le passage de l’état présent à l’état désiré ?", "À quel lien la ressource s’applique-t-elle (C vers S, S vers O, O vers E) ?", "Quelle technique PNL utiliser pour activer et appliquer ces ressources ?"]}}, "debriefing": {"titre": "Débriefing de séance", "aide": "À chaud, en fin de séance pour le client, le jour même pour le coach.", "donnees": {"client": ["Qu’avez-vous appris de cette séance ?", "Qu’est-ce qui a été le plus aidant et le plus marquant ?", "Qu’ai-je fait pour vous aider à activer et maintenir un état ressource ?", "De quoi auriez-vous eu besoin en plus ?", "Comment qualifiez-vous la qualité de notre relation, et qu’est-ce qui l’a permise ?"], "coach": ["Qu’ai-je fait pour établir une relation positive ?", "Comment était mon propre état ressource tout au long de la séance ?", "Quelles compétences ai-je mises en œuvre avec succès ?", "Quels obstacles ai-je rencontrés, et comment les ai-je transformés ?", "Que veux-je pratiquer davantage, comment, et avec quel soutien ?", "Commentaires du superviseur"]}}};
+function bloc(cle) {
+  var b = SANTE && SANTE.blocs && SANTE.blocs[cle];
+  var d = BLOCS_DEFAUT[cle];
+  if (!b) return d;
+  return { titre: b.titre || d.titre, aide: b.aide || '', donnees: Object.assign({}, d.donnees, b.donnees || {}) };
+}
+// Questions du débriefing pour la séance en cours : celles du modèle, reformulées
+// ou complétées pendant la séance. Ces ajustements ne valent que pour la séance.
+function questionsDebrief(cote) {
+  var base = (bloc('debriefing').donnees[cote === 'cl' ? 'client' : 'coach'] || []).map(function(q, i) {
+    var k = 'deb.' + cote + i;
+    var lib = SEANCE && SEANCE.lib && SEANCE.lib[k];
+    return { k: k, q: lib || q, modifiee: !!lib, ajout: false };
+  });
+  var plus = (SEANCE && SEANCE.ajouts && SEANCE.ajouts[cote] || []).map(function(a) {
+    return { k: a.k, q: (SEANCE.lib && SEANCE.lib[a.k]) || a.q, modifiee: false, ajout: true };
+  });
+  return base.concat(plus);
+}
+
 var AUDIT_COLS = [['tete', 'Tête'], ['coeur', 'Cœur'], ['ventre', 'Ventre']];
 
 // ── Démarrer, reprendre, terminer ──
 function carteReprise() {
-  if (!SEANCE) return '';
-  return '<div class="ss-carte active"><div class="ss-t">Séance en cours · ' + esc(SEANCE.initiales) + '</div>' +
-    '<div class="ss-s">Commencée le ' + dateFr(SEANCE.debut) + '. Les saisies sont conservées sur cet appareil.</div>' +
+  var code = SEANCE ? SEANCE.initiales : lsGet(cleSeanceEnCours());
+  if (!code) return '';
+  return '<div class="ss-carte active"><div class="ss-t">Séance en cours · ' + esc(code) + '</div>' +
+    '<div class="ss-s">' + (SEANCE ? 'Commencée le ' + dateFr(SEANCE.debut) + '. ' : '') + 'Les saisies sont conservées sur cet appareil.</div>' +
     '<div class="ss-ligne"><button class="ss-btn prim" onclick="ongletSante(\'score\')">Reprendre la séance</button></div></div>';
 }
 function carteSeance() {
   if (!SEANCE) {
+    var codes = Object.keys(COFFRE.clients).sort();
     return '<div class="ss-carte"><div class="ss-t">Démarrer une séance</div>' +
-      '<div class="ss-s">Le client est désigné par ses initiales. Les saisies restent sur cet appareil jusqu’à l’export, puis sont effacées. N’inscrivez son nom nulle part.</div>' +
-      '<div class="ss-ligne"><input class="finput" id="ss-init" maxlength="8" placeholder="Initiales, ex. MD" autocomplete="off" autocapitalize="characters" onkeydown="if(event.key===\'Enter\') demarrerSeance()">' +
-      '<button class="ss-btn prim" onclick="demarrerSeance()">Démarrer</button></div></div>';
+      '<div class="ss-choix">' +
+        (codes.length ? '<select class="fselect" id="ss-client" aria-label="Client existant"><option value="">Client existant…</option>' +
+          codes.map(function(k) { return '<option value="' + esc(k) + '">' + esc(k) + '</option>'; }).join('') + '</select>' +
+          '<button class="ss-btn prim" onclick="demarrerSeance(false)">Démarrer avec ce client</button><div class="ss-ou">ou nouveau client</div>' : '') +
+        '<div class="ss-ligne"><input class="finput" id="ss-init" maxlength="12" placeholder="Code client" autocomplete="off" autocapitalize="characters" onkeydown="if(event.key===\'Enter\') demarrerSeance(true)">' +
+        '<button class="ss-btn" onclick="proposerCode()">Générer</button></div>' +
+        '<button class="ss-btn' + (codes.length ? '' : ' prim') + '" onclick="demarrerSeance(true)">Créer le client et démarrer</button>' +
+      '</div>' +
+      '<div class="ss-s">Le code, convenu avec le client, est la seule identification du dossier. N’y mettez ni nom ni initiales reconnaissables.</div></div>';
   }
   var n = compterSaisies();
   return '<div class="ss-carte active"><div class="ss-t">Séance en cours · ' + esc(SEANCE.initiales) + '</div>' +
     '<div class="ss-s">Commencée le ' + dateFr(SEANCE.debut) + ' · ' + n.faits + ' champ' + (n.faits > 1 ? 's' : '') + ' rempli' + (n.faits > 1 ? 's' : '') + ' sur ' + n.total +
       (SEANCE.protocoles.length ? ' · ' + SEANCE.protocoles.length + ' protocole' + (SEANCE.protocoles.length > 1 ? 's' : '') + ' utilisé' + (SEANCE.protocoles.length > 1 ? 's' : '') : '') + '</div>' +
     '<div class="ss-prog"><span style="width:' + Math.round(100 * n.faits / Math.max(1, n.total)) + '%"></span></div>' +
-    '<div class="ss-ligne"><button class="ss-btn prim" onclick="exporterSeance()">Exporter la séance</button>' +
-      '<button class="ss-btn" onclick="copierSeance()">Copier le texte</button>' +
-      '<button class="ss-btn dang" onclick="terminerSeance()">Terminer et effacer</button></div></div>';
+    blocContratSeance() +
+    '<div class="ss-ligne"><button class="ss-btn prim" onclick="cloturerSeance()">Clôturer et ranger dans le dossier</button>' +
+      '<button class="ss-btn" onclick="exporterSeance()">Exporter</button>' +
+      '<button class="ss-btn" onclick="copierSeance()">Copier</button>' +
+      '<button class="ss-btn dang" onclick="terminerSeance()">Abandonner</button></div></div>';
 }
-function demarrerSeance() {
-  var i = document.getElementById('ss-init');
-  var init = (i ? i.value : '').trim().toUpperCase().replace(/\s+/g, '');
-  var lettres = init.replace(/[.\-]/g, '');
-  if (!/^[A-ZÀ-Ý.\-]+$/.test(init) || lettres.length < 1 || lettres.length > 3) { alert('Indiquez les initiales du client : 1 à 3 lettres (par exemple MD ou J.-P.D.), sans prénom ni nom.'); return; }
-  SEANCE = { initiales: init, debut: new Date().toISOString(), v: {}, protocoles: [] };
+// Code client : 3 à 12 caractères, lettres, chiffres et tiret, unique sur l'appareil
+var ALPHABET_CODE = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+function normaliserCode(s) { return String(s || '').trim().toUpperCase().replace(/\s+/g, ''); }
+function proposerCode() {
+  var code;
+  do {
+    var a = new Uint8Array(6); crypto.getRandomValues(a);
+    code = Array.prototype.map.call(a, function(x) { return ALPHABET_CODE[x % ALPHABET_CODE.length]; }).join('');
+    code = code.slice(0, 3) + '-' + code.slice(3);
+  } while (COFFRE && COFFRE.clients[code]);
+  var i = document.getElementById('ss-init'); if (i) i.value = code;
+}
+function codeExiste(code) {
+  return Object.keys(COFFRE.clients).some(function(k) { return k.replace(/-/g, '') === code.replace(/-/g, ''); });
+}
+function demarrerSeance(nouveau) {
+  if (!COFFRE) return;
+  var code;
+  if (nouveau) {
+    var i = document.getElementById('ss-init');
+    code = normaliserCode(i ? i.value : '');
+    if (code && codeExiste(code)) { alert('Le code ' + code + ' existe déjà sur cet appareil. Choisissez ce client dans la liste, ou un autre code.'); return; }
+    if (!/^[A-Z0-9][A-Z0-9\-]{2,11}$/.test(code)) { alert('Le code client compte 3 à 12 caractères : lettres, chiffres et tiret. Touchez « Générer » pour en obtenir un.'); return; }
+    COFFRE.clients[code] = { code: code, cree: new Date().toISOString(), seances: [] };
+  } else {
+    var s = document.getElementById('ss-client');
+    code = s ? s.value : '';
+    if (!code || !COFFRE.clients[code]) { alert('Choisissez un client dans la liste.'); return; }
+  }
+  SEANCE = { initiales: code, debut: new Date().toISOString(), v: {}, protocoles: [] };
   SCORE_OUVERTE = 0;
   ecrireSeance();
   renderSante();
 }
+function cloturerSeance(sansConfirmer) {
+  if (!SEANCE || !COFFRE) return;
+  var code = SEANCE.initiales;
+  if (!sansConfirmer && !confirm('Clôturer la séance et la ranger dans le dossier ' + code + ' ? Elle ne sera plus modifiable.')) return;
+  var cl = COFFRE.clients[code] || (COFFRE.clients[code] = { code: code, cree: SEANCE.debut, seances: [] });
+  var s = JSON.parse(JSON.stringify(SEANCE)); s.fin = new Date().toISOString();
+  cl.seances.push(s);
+  SEANCE = null; ecrireSeance();
+  CLIENT_OUVERT = code; SANTE_TAB = 'clients';
+  renderSante();
+}
 function terminerSeance() {
   if (!SEANCE) return;
-  if (!confirm('Effacer la séance ' + SEANCE.initiales + ' de cet appareil ? Pensez à l’exporter avant : cette action est définitive.')) return;
-  lsDel(SEANCE_KEY); SEANCE = null; majPastille();
+  if (!confirm('Abandonner la séance en cours ? Ses saisies seront effacées sans être rangées dans le dossier ' + SEANCE.initiales + '.')) return;
+  SEANCE = null; ecrireSeance();
   renderSante();
 }
 
@@ -3476,25 +3703,88 @@ function blocAccordeon(id, titre, contenu) {
     '<span class="sc-num">' + (id === 'syn' ? 'Σ' : '✓') + '</span><span class="sc-t">' + titre + '</span></button>' +
     (open ? '<div class="sc-body">' + contenu + '</div>' : '') + '</div>';
 }
+function apercuBloc(id, b, lignes) {
+  return blocAccordeon(id, esc(b.titre), (b.aide ? '<div class="sante-aide">' + esc(b.aide) + '</div>' : '') +
+    lignes.map(function(l) { return l.sec ? '<div class="sc-sec">' + esc(l.sec) + '</div>' : '<div class="sc-champ"><span>' + esc(l.t) + '</span><span></span></div>'; }).join('') +
+    '<div class="sante-aide">Démarrez une séance en haut de page pour remplir ce bloc. Les blocs des séances passées se retrouvent dans l’onglet Clients.</div>');
+}
 function blocSynthese() {
-  var h = '<div class="sante-aide">La grille se remplit en fin de diagnostic : le contenu dit ce que le client exprime, les deux lignes de schémas disent comment il le vit.</div>';
-  SYN_COLS.forEach(function(col) {
-    h += '<div class="syn-col"><h4>' + col[1] + '</h4>' + SYN_LIGNES.map(function(l) { return champTexte('syn.' + col[0] + '.' + l[0], l[1], '', true); }).join('') + '</div>';
+  var b = bloc('synthese'), d = b.donnees;
+  if (!SEANCE) {
+    var l = [];
+    (d.colonnes || []).forEach(function(col) { l.push({ sec: col }); (d.lignes || []).forEach(function(x) { l.push({ t: x }); }); });
+    if ((d.questions || []).length) { l.push({ sec: 'Questions de travail' }); d.questions.forEach(function(q) { l.push({ t: q }); }); }
+    return apercuBloc('syn', b, l);
+  }
+  var h = b.aide ? '<div class="sante-aide">' + esc(b.aide) + '</div>' : '';
+  (d.colonnes || []).forEach(function(col, ci) {
+    h += '<div class="syn-col"><h4>' + esc(col) + '</h4>' + (d.lignes || []).map(function(l, li) { return champTexte('syn.' + ci + '.' + li, l, '', true); }).join('') + '</div>';
   });
-  SYN_Q.forEach(function(q, i) { h += champTexte('syn.q' + i, q, '', true); });
+  (d.questions || []).forEach(function(q, i) { h += champTexte('syn.q' + i, q, '', true); });
+  var anciennes = COFFRE && COFFRE.clients[SEANCE.initiales] ? COFFRE.clients[SEANCE.initiales].seances.length : 0;
+  if (anciennes) h += '<button class="ss-btn" data-c="' + esc(SEANCE.initiales) + '" onclick="ouvrirClient(this.dataset.c)">Voir les ' + anciennes + ' séance' + (anciennes > 1 ? 's' : '') + ' précédente' + (anciennes > 1 ? 's' : '') + ' de ' + esc(SEANCE.initiales) + '</button>';
   if (SEANCE.protocoles.length) {
     h += '<div class="sc-sec">Protocoles utilisés pendant la séance</div><div class="pj-l">' +
       SEANCE.protocoles.map(function(id) { var p = SANTE && SANTE.parId[id]; return '<span>' + esc(id) + (p ? ' · ' + esc(p.titre) : '') + '</span>'; }).join('') + '</div>';
   }
-  return blocAccordeon('syn', 'Grille de synthèse SCORE', h);
+  return blocAccordeon('syn', esc(b.titre), h);
+}
+function questionDebrief(x) {
+  return '<div class="sf"><div class="dq-hd"><label class="sf-l" for="f-' + x.k + '">' + esc(x.q) +
+      (x.modifiee ? ' <span class="dq-mod">reformulée pour cette séance</span>' : '') + (x.ajout ? ' <span class="dq-mod">ajoutée pour cette séance</span>' : '') + '</label>' +
+      '<button class="dq-act" data-k="' + x.k + '" onclick="reformulerQuestion(this.dataset.k)" aria-label="Reformuler la question">✎</button>' +
+      (x.ajout ? '<button class="dq-act" data-k="' + x.k + '" onclick="retirerQuestion(this.dataset.k)" aria-label="Retirer la question">✕</button>' : '') + '</div>' +
+    '<textarea id="f-' + x.k + '" data-k="' + x.k + '" oninput="saisir(this)">' + esc(val(x.k)) + '</textarea></div>';
+}
+function ajoutQuestion(cote) {
+  return '<div class="dq-add"><input type="text" id="dq-' + cote + '" placeholder="Ajouter une question pour cette séance…" maxlength="300" onkeydown="if(event.key===\'Enter\') ajouterQuestion(\'' + cote + '\')">' +
+    '<button class="ss-btn" onclick="ajouterQuestion(\'' + cote + '\')">Ajouter</button></div>';
 }
 function blocDebrief() {
-  var h = '<div class="sante-aide">À chaud, en fin de séance pour le client, le jour même pour le coach.</div><div class="sc-sec">Questions au client</div>';
-  DEB_CLIENT.forEach(function(q, i) { h += champTexte('deb.cl' + i, q, '', true); });
-  h += champEchelle('deb.cl.eval', 'Évaluation globale du client, de 1 à 10', 10) + '<div class="sc-sec">Questions du coach à lui-même</div>';
-  DEB_COACH.forEach(function(q, i) { if (i < 5) h += champTexte('deb.co' + i, q, '', true); });
-  h += champEchelle('deb.co.eval', 'Mon évaluation globale, de 1 à 10', 10) + champTexte('deb.co5', DEB_COACH[5], '', true);
-  return blocAccordeon('deb', 'Débriefing de séance', h);
+  var b = bloc('debriefing');
+  if (!SEANCE) {
+    var dd = b.donnees, l = [{ sec: 'Questions au client' }];
+    (dd.client || []).forEach(function(q) { l.push({ t: q }); });
+    l.push({ sec: 'Questions du coach à lui-même' });
+    (dd.coach || []).forEach(function(q) { l.push({ t: q }); });
+    return apercuBloc('deb', b, l);
+  }
+  var h = (b.aide ? '<div class="sante-aide">' + esc(b.aide) + '</div>' : '') + '<div class="sc-sec">Questions au client</div>';
+  questionsDebrief('cl').forEach(function(x) { h += questionDebrief(x); });
+  h += ajoutQuestion('cl') + champEchelle('deb.cl.eval', 'Évaluation globale du client, de 1 à 10', 10) + '<div class="sc-sec">Questions du coach à lui-même</div>';
+  questionsDebrief('co').forEach(function(x) { h += questionDebrief(x); });
+  h += ajoutQuestion('co') + champEchelle('deb.co.eval', 'Mon évaluation globale, de 1 à 10', 10);
+  return blocAccordeon('deb', esc(b.titre), h);
+}
+function ajouterQuestion(cote) {
+  var i = document.getElementById('dq-' + cote), q = i ? i.value.trim() : '';
+  if (!SEANCE || !q) return;
+  SEANCE.ajouts = SEANCE.ajouts || { cl: [], co: [] };
+  SEANCE.ajouts[cote] = SEANCE.ajouts[cote] || [];
+  SEANCE.ajouts[cote].push({ k: 'deb.' + cote + 'x' + Date.now(), q: q });
+  ecrireSeance(); renderSante();
+  var t = document.querySelectorAll('#sc-deb textarea[data-k^="deb.' + cote + 'x"]'); if (t.length) t[t.length - 1].focus();
+}
+function reformulerQuestion(k) {
+  if (!SEANCE) return;
+  var cote = k.slice(4, 6), x = null;
+  questionsDebrief(cote).forEach(function(y) { if (y.k === k) x = y; });
+  if (!x) return;
+  var n = prompt('Formulation pour cette séance (laisser vide pour revenir au texte d’origine) :', x.q);
+  if (n === null) return;
+  SEANCE.lib = SEANCE.lib || {};
+  if (n.trim() && !x.ajout) SEANCE.lib[k] = n.trim();
+  else if (n.trim()) SEANCE.ajouts[cote].forEach(function(a) { if (a.k === k) a.q = n.trim(); });
+  else delete SEANCE.lib[k];
+  ecrireSeance(); renderSante();
+}
+function retirerQuestion(k) {
+  if (!SEANCE || !SEANCE.ajouts) return;
+  var cote = k.slice(4, 6);
+  if (val(k) && !confirm('Retirer cette question et sa réponse ?')) return;
+  SEANCE.ajouts[cote] = (SEANCE.ajouts[cote] || []).filter(function(a) { return a.k !== k; });
+  delete SEANCE.v[k];
+  ecrireSeance(); renderSante();
 }
 
 function noterProtocoleSeance(id) {
@@ -3537,22 +3827,28 @@ function texteSeance() {
         if (a) bloc.push('- ' + f.libelle + ' : ' + a);
       } else if (val(b)) bloc.push('- ' + f.libelle + ' : ' + String(val(b)).trim().replace(/\n/g, '\n  '));
     });
+    if (e.etape === 6) {
+      var sits = SANTE.orientation.filter(function(o) { return val('or.' + o.id); }).map(function(o) { return o.situation; });
+      if (sits.length) bloc.push('- Situations constatées : ' + sits.join(' ; '));
+      var sg = suggestionsOrientation();
+      if (sg.length) bloc.push('- Protocoles proposés : ' + sg.slice(0, 6).map(function(x) { return x.id + ' ' + SANTE.parId[x.id].titre; }).join(' ; '));
+    }
     var pj = SEANCE.protocoles.filter(function(id) { return SANTE.parId[id] && SANTE.parId[id].etape === e.etape; });
     if (pj.length) bloc.push('- Protocoles utilisés : ' + pj.map(function(id) { return id + ' ' + SANTE.parId[id].titre; }).join(' ; '));
     if (bloc.length) { L.push('ÉTAPE ' + e.etape + ' · ' + capitaliser(e.titre).toUpperCase()); L.push.apply(L, bloc); L.push(''); }
   });
-  var syn = [];
-  SYN_COLS.forEach(function(col) {
-    SYN_LIGNES.forEach(function(l) { var v = val('syn.' + col[0] + '.' + l[0]); if (v) syn.push('- ' + col[1] + ', ' + l[1].split(' (')[0].toLowerCase() + ' : ' + v.trim()); });
+  var syn = [], ds = bloc('synthese').donnees;
+  (ds.colonnes || []).forEach(function(col, ci) {
+    (ds.lignes || []).forEach(function(l, li) { var v = val('syn.' + ci + '.' + li); if (v) syn.push('- ' + col + ', ' + l.split(' (')[0].toLowerCase() + ' : ' + v.trim()); });
   });
-  SYN_Q.forEach(function(q, i) { var v = val('syn.q' + i); if (v) syn.push('- ' + q + ' ' + v.trim()); });
+  (ds.questions || []).forEach(function(q, i) { var v = val('syn.q' + i); if (v) syn.push('- ' + q + ' ' + v.trim()); });
   if (syn.length) { L.push('GRILLE DE SYNTHÈSE'); L.push.apply(L, syn); L.push(''); }
   var deb = [];
-  DEB_CLIENT.forEach(function(q, i) { var v = val('deb.cl' + i); if (v) deb.push('- ' + q + ' ' + v.trim()); });
+  questionsDebrief('cl').forEach(function(x) { var v = val(x.k); if (v) deb.push('- ' + x.q + ' ' + v.trim()); });
   if (val('deb.cl.eval')) deb.push('- Évaluation globale du client : ' + val('deb.cl.eval') + ' / 10');
   if (deb.length) { L.push('DÉBRIEFING DU CLIENT'); L.push.apply(L, deb); L.push(''); }
   var dc = [];
-  DEB_COACH.forEach(function(q, i) { var v = val('deb.co' + i); if (v) dc.push('- ' + q + ' ' + v.trim()); });
+  questionsDebrief('co').forEach(function(x) { var v = val(x.k); if (v) dc.push('- ' + x.q + ' ' + v.trim()); });
   if (val('deb.co.eval')) dc.push('- Évaluation globale du coach : ' + val('deb.co.eval') + ' / 10');
   if (dc.length) { L.push('DÉBRIEFING DU COACH'); L.push.apply(L, dc); L.push(''); }
   L.push('Document établi par ' + nomCoach + '. Client désigné par ses initiales. Confidentiel.');
@@ -3568,7 +3864,7 @@ function exporterSeance() {
   try { fichier = new File([texte], nom, { type: 'text/plain' }); } catch (e) {}
   var apres = function() {
     setTimeout(function() {
-      if (SEANCE && confirm('Séance exportée. L’effacer maintenant de cet appareil ?')) { lsDel(SEANCE_KEY); SEANCE = null; majPastille(); renderSante(); }
+      if (SEANCE && confirm('Séance exportée. La clôturer et la ranger dans le dossier ' + SEANCE.initiales + ' ?')) cloturerSeance(true);
     }, 300);
   };
   if (fichier && navigator.canShare && navigator.canShare({ files: [fichier] })) {
@@ -3592,6 +3888,640 @@ function copierSeance() {
   var ok = function() { alert('Texte de la séance copié. Collez-le dans votre mail ou vos notes.'); };
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok, function() { prompt('Copiez le texte :', t); });
   else prompt('Copiez le texte :', t);
+}
+
+
+// ═══════════════════════════════════════
+// v67 : DOSSIERS CLIENTS SUR L'APPAREIL
+// Les dossiers (séances clôturées et séance en cours) sont enregistrés dans
+// le stockage local de l'appareil, par compte, sans code PIN. Ils ne sont
+// jamais envoyés à Supabase. Le client n'y figure que par son code.
+// Les fonctions de déchiffrement servent seulement à reprendre une seule
+// fois les dossiers créés avec la v66, qui étaient chiffrés par un PIN.
+// ═══════════════════════════════════════
+var CLIENT_OUVERT = null;
+var SEANCE_OUVERTE_CL = null;
+var MIGRATION_PIN = false;
+
+function suffixeU() { return USER ? USER.id : 'anonyme'; }
+function cleDossiers() { return 'pnl_sante_dossiers:' + suffixeU(); }
+function cleCoffre() { return 'pnl_sante_coffre:' + suffixeU(); }        // v66, chiffré
+function clePin() { return 'pnl_sante_pin:' + suffixeU(); }              // v66
+function cleSeanceEnCours() { return 'pnl_sante_seance_en_cours:' + suffixeU(); }
+
+function sauverCoffre() {
+  if (!COFFRE) return;
+  try { localStorage.setItem(cleDossiers(), JSON.stringify(COFFRE)); }
+  catch (e) { alert('Enregistrement impossible sur cet appareil (mémoire pleine ?). Exportez la séance pour ne rien perdre.'); }
+}
+// Ancienne séance en clair (v64-v65) : rangée dans les dossiers puis effacée
+function migrerAncienneSeance() {
+  var s = null; try { s = JSON.parse(lsGet(SEANCE_KEY) || 'null'); } catch (e) {}
+  if (s && s.initiales && !COFFRE.seance) {
+    if (!COFFRE.clients[s.initiales]) COFFRE.clients[s.initiales] = { code: s.initiales, cree: s.debut, seances: [] };
+    COFFRE.seance = s;
+  }
+  if (s) { lsDel(SEANCE_KEY); sauverCoffre(); }
+}
+function chargerDossiers() {
+  if (COFFRE || !USER) return;
+  var brut = lsGet(cleDossiers());
+  if (!brut && lsGet(cleCoffre()) && lsGet(clePin())) { MIGRATION_PIN = true; return; }
+  try { COFFRE = brut ? JSON.parse(brut) : null; } catch (e) { COFFRE = null; }
+  if (!COFFRE || typeof COFFRE !== 'object') COFFRE = { v: 2, clients: {}, seance: null };
+  COFFRE.clients = COFFRE.clients || {};
+  MIGRATION_PIN = false;
+  migrerAncienneSeance();
+  SEANCE = COFFRE.seance || null;
+  if (SEANCE) lsSet(cleSeanceEnCours(), SEANCE.initiales); else lsDel(cleSeanceEnCours());
+}
+function verrouiller() {   // décharge les dossiers de la mémoire (déconnexion, accès retiré)
+  COFFRE = null; SEANCE = null;
+  majPastille();
+}
+
+// ── Reprise unique des dossiers v66 chiffrés par PIN ──
+function versB64(buf) { var s = '', b = new Uint8Array(buf); for (var i = 0; i < b.length; i++) s += String.fromCharCode(b[i]); return btoa(s); }
+function deB64(s) { var b = atob(s), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+function deriverCle(pin, sel, iter) {
+  return crypto.subtle.importKey('raw', new TextEncoder().encode(pin), 'PBKDF2', false, ['deriveKey']).then(function(k) {
+    return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: sel, iterations: iter, hash: 'SHA-256' }, k,
+      { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+  });
+}
+function dechiffrer(cle, blob) {
+  return crypto.subtle.decrypt({ name: 'AES-GCM', iv: deB64(blob.iv) }, cle, deB64(blob.d))
+    .then(function(pt) { return JSON.parse(new TextDecoder().decode(pt)); });
+}
+function oublierAncienCoffre() {
+  ['pnl_sante_coffre:', 'pnl_sante_pin:', 'pnl_sante_pin_essais:'].forEach(function(k) { lsDel(k + suffixeU()); });
+}
+function renderMigration(el) {
+  el.innerHTML = ongletsSante() +
+    '<div class="vr-carte"><div class="vr-t">Reprendre vos dossiers</div>' +
+    '<div class="vr-s">Le code PIN est supprimé. Les dossiers créés avec la version précédente sont encore chiffrés : saisissez une dernière fois l’ancien code PIN pour les reprendre.</div>' +
+    '<input class="finput vr-pin" id="vr-pin" type="password" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="Ancien code PIN" aria-label="Ancien code PIN" onkeydown="if(event.key===\'Enter\') reprendreDossiers()">' +
+    '<div class="vr-err" id="vr-err"></div><button class="btn-sante" id="vr-ok" onclick="reprendreDossiers()">Reprendre les dossiers</button>' +
+    '<button class="vr-lien" onclick="abandonnerAncienCoffre()">Je n’ai plus le code : effacer ces anciens dossiers</button></div>';
+}
+function reprendreDossiers() {
+  var i = document.getElementById('vr-pin'), er = document.getElementById('vr-err'), btn = document.getElementById('vr-ok');
+  var info = {}; try { info = JSON.parse(lsGet(clePin()) || '{}'); } catch (e) {}
+  if (!i.value) return;
+  btn.disabled = true; btn.textContent = 'Reprise…';
+  deriverCle(i.value, deB64(info.sel), info.iter || 310000).then(function(cle) {
+    return dechiffrer(cle, JSON.parse(lsGet(cleCoffre())));
+  }).then(function(d) {
+    lsSet(cleDossiers(), JSON.stringify({ v: 2, clients: d.clients || {}, seance: d.seance || null }));
+    oublierAncienCoffre(); MIGRATION_PIN = false; chargerDossiers(); renderSante();
+  }).catch(function() { btn.disabled = false; btn.textContent = 'Reprendre les dossiers'; i.value = ''; er.textContent = 'Code incorrect.'; });
+}
+function abandonnerAncienCoffre() {
+  if (!confirm('Effacer définitivement les dossiers chiffrés de la version précédente ?')) return;
+  oublierAncienCoffre(); MIGRATION_PIN = false; chargerDossiers(); renderSante();
+}
+
+// ── Onglet Clients ──
+function avecSeance(s, fn) { var o = SEANCE; SEANCE = s; try { return fn(); } finally { SEANCE = o; } }
+function intensites(s) {
+  var avant = '', apres = '';
+  if (SANTE) SANTE.score.forEach(function(e) {
+    (e.champs || []).forEach(function(f, i) {
+      if (f.type !== 'echelle10') return;
+      var v = s.v['e' + e.etape + '.' + i];
+      if (v && e.etape <= 2 && !avant) avant = v;
+      if (v && e.etape >= 7) apres = v;
+    });
+  });
+  return { avant: avant, apres: apres };
+}
+function derniereDate(cl) {
+  var d = cl.cree;
+  cl.seances.forEach(function(s) { if ((s.fin || s.debut) > d) d = s.fin || s.debut; });
+  return d;
+}
+function renderSanteClients(el) {
+  if (CLIENT_OUVERT && COFFRE.clients[CLIENT_OUVERT]) return renderClient(el, COFFRE.clients[CLIENT_OUVERT]);
+  CLIENT_OUVERT = null;
+  var codes = Object.keys(COFFRE.clients).sort(function(a, b) { return derniereDate(COFFRE.clients[b]) < derniereDate(COFFRE.clients[a]) ? -1 : 1; });
+  var unAn = Date.now() - 365 * 24 * 3600 * 1000;
+  var html = ongletsSante() + carteReprise() +
+    '<div class="ss-carte active" style="border-left-color:var(--blue)"><div class="ss-t">Dossiers clients · ' + codes.length + '</div>' +
+      '<div class="ss-s">Conservés sur cet appareil et identifiés par leur code. Ils ne sont ni envoyés ni sauvegardés ailleurs.</div></div>';
+  if (codes.length > 4) html += '<div class="s-search"><input type="search" placeholder="Rechercher un code…" oninput="filtrerClients(this.value)" autocomplete="off"></div>';
+  html += '<div id="cl-liste" style="display:flex;flex-direction:column;gap:8px">' + (codes.length ? codes.map(function(k) {
+    var cl = COFFRE.clients[k], d = derniereDate(cl), vieux = new Date(d).getTime() < unAn;
+    var dern = cl.seances.length ? cl.seances[cl.seances.length - 1] : null, it = dern ? intensites(dern) : {};
+    return '<button class="cl-item" data-c="' + esc(k) + '" onclick="ouvrirClient(this.dataset.c)"><span class="cl-code">' + esc(k) + '</span><span class="cl-main">' +
+      cl.seances.length + ' séance' + (cl.seances.length > 1 ? 's' : '') + (dern ? ' · dernière le ' + new Date(dern.debut).toLocaleDateString('fr-FR') : ' · créé le ' + new Date(cl.cree).toLocaleDateString('fr-FR')) +
+      (it.avant || it.apres ? '<br>Intensité ' + (it.avant || '·') + ' → ' + (it.apres || '·') : '') +
+      (SEANCE && SEANCE.initiales === k ? '<br>Séance en cours' : '') +
+      (vieux ? '<br><span class="cl-vieux">Sans séance depuis plus de 12 mois : pensez à supprimer ce dossier.</span>' : '') +
+      '</span><span class="gli-chevron">›</span></button>';
+  }).join('') : '<div class="s-vide">Aucun dossier. Un dossier se crée en démarrant une séance dans l’onglet SCORE.</div>') + '</div>';
+  el.innerHTML = html;
+}
+function filtrerClients(q) {
+  q = normaliserCode(q);
+  document.querySelectorAll('#cl-liste .cl-item').forEach(function(b) { b.style.display = b.dataset.c.indexOf(q) >= 0 ? '' : 'none'; });
+}
+function ouvrirClient(code) {
+  CLIENT_OUVERT = code; SEANCE_OUVERTE_CL = null; SANTE_TAB = 'clients';
+  if (currentView !== 'sante') _rawSwitchView('sante'); else renderSante();
+  var el = document.getElementById('sante-content'); if (el) el.scrollTop = 0;
+}
+function fermerClient() { CLIENT_OUVERT = null; renderSante(); }
+function renderClient(el, cl) {
+  var ss = cl.seances.slice().reverse();
+  var html = ongletsSante() +
+    '<div class="cl-hd"><button class="ss-btn" onclick="fermerClient()" aria-label="Retour à la liste">←</button><span class="cl-code">' + esc(cl.code) + '</span>' +
+      '<span class="cl-main">' + cl.seances.length + ' séance' + (cl.seances.length > 1 ? 's' : '') + ' · dossier créé le ' + new Date(cl.cree).toLocaleDateString('fr-FR') + '</span></div>';
+  if (!SEANCE) html += '<button class="btn-sante" data-c="' + esc(cl.code) + '" onclick="nouvelleSeanceClient(this.dataset.c)">Nouvelle séance avec ' + esc(cl.code) + '</button>';
+  else if (SEANCE.initiales === cl.code) html += carteReprise();
+  if (!ss.length) html += '<div class="s-vide">Aucune séance clôturée pour ce client.</div>';
+  ss.forEach(function(s, i) {
+    var idx = cl.seances.length - 1 - i, open = SEANCE_OUVERTE_CL === idx, it = intensites(s);
+    var nb = cl.seances.length - i;
+    html += '<div class="sc-etape' + (open ? ' open' : '') + '"><button class="sc-hd" data-i="' + idx + '" onclick="basculerSeanceCl(this.dataset.i)" aria-expanded="' + open + '">' +
+      '<span class="sc-num">' + nb + '</span><span class="sc-t">Séance du ' + new Date(s.debut).toLocaleDateString('fr-FR') + '</span>' +
+      '<span class="sc-nb">' + (it.avant || it.apres ? (it.avant || '·') + ' → ' + (it.apres || '·') : '') + '</span></button>';
+    if (open) {
+      html += '<div class="sc-body"><div class="se-txt">' + esc(avecSeance(s, texteSeance)) + '</div>' +
+        '<div class="ss-ligne"><button class="ss-btn" data-i="' + idx + '" onclick="exporterSeanceCl(this.dataset.i)">Exporter cette séance</button>' +
+        '<button class="ss-btn dang" data-i="' + idx + '" onclick="supprimerSeanceCl(this.dataset.i)">Supprimer cette séance</button></div></div>';
+    }
+    html += '</div>';
+  });
+  html += blocContratsDossier(cl);
+  html += '<button class="btn-danger" onclick="supprimerClient()">Supprimer le client ' + esc(cl.code) + ' et toutes ses séances</button>';
+  el.innerHTML = html;
+}
+function basculerSeanceCl(i) { i = +i; SEANCE_OUVERTE_CL = SEANCE_OUVERTE_CL === i ? null : i; renderSante(); }
+function nouvelleSeanceClient(code) {
+  if (SEANCE || !COFFRE.clients[code]) return;
+  SEANCE = { initiales: code, debut: new Date().toISOString(), v: {}, protocoles: [] };
+  SCORE_OUVERTE = 0; ecrireSeance();
+  CLIENT_OUVERT = null; ongletSante('score');
+}
+function exporterSeanceCl(i) {
+  var s = COFFRE.clients[CLIENT_OUVERT].seances[+i]; if (!s) return;
+  var texte = avecSeance(s, texteSeance), nom = avecSeance(s, nomFichierSeance), f = null;
+  try { f = new File([texte], nom, { type: 'text/plain' }); } catch (e) {}
+  if (f && navigator.canShare && navigator.canShare({ files: [f] })) {
+    navigator.share({ files: [f], title: nom }).catch(function(err) { if (!err || err.name !== 'AbortError') telecharger(texte, nom); });
+  } else telecharger(texte, nom);
+}
+function supprimerSeanceCl(i) {
+  var cl = COFFRE.clients[CLIENT_OUVERT]; if (!cl) return;
+  if (!confirm('Supprimer définitivement la séance du ' + new Date(cl.seances[+i].debut).toLocaleDateString('fr-FR') + ' ?')) return;
+  cl.seances.splice(+i, 1); SEANCE_OUVERTE_CL = null;
+  sauverCoffre(); renderSante();
+}
+function supprimerClient() {
+  var code = CLIENT_OUVERT, cl = COFFRE.clients[code]; if (!cl) return;
+  var r = prompt('Pour supprimer définitivement le client ' + code + ' et ses ' + cl.seances.length + ' séance(s)' +
+    (SEANCE && SEANCE.initiales === code ? ', y compris la séance en cours' : '') + ', saisissez son code :');
+  if (r === null) return;
+  if (normaliserCode(r) !== code) { alert('Le code saisi ne correspond pas : rien n’a été supprimé.'); return; }
+  delete COFFRE.clients[code];
+  if (SEANCE && SEANCE.initiales === code) SEANCE = null;
+  CLIENT_OUVERT = null; ecrireSeance(); renderSante();
+}
+
+
+// ═══════════════════════════════════════
+// v68 : AIDE A L'ORIENTATION (étape 6)
+// Situations cochées + lecture de l'audit des croyances (étape 5)
+// → protocoles classés par nombre d'indications.
+// ═══════════════════════════════════════
+function lignesAudit() {
+  var res = [];
+  if (!SANTE || !SEANCE) return res;
+  SANTE.score.forEach(function(e) {
+    (e.champs || []).forEach(function(f, i) {
+      if (f.type !== 'audit') return;
+      var m = 6;
+      AUDIT_COLS.forEach(function(c) { var v = +val('e' + e.etape + '.' + i + '.' + c[0]); if (v) m = Math.min(m, v); });
+      res.push({ libelle: f.libelle, min: m === 6 ? null : m });
+    });
+  });
+  return res;
+}
+function suggestionsOrientation() {
+  var sc = {};
+  function ajouter(id, poids, raison) {
+    if (!SANTE.parId[id]) return;
+    var s = sc[id] || (sc[id] = { id: id, n: 0, raisons: [] });
+    s.n += poids; if (s.raisons.indexOf(raison) < 0) s.raisons.push(raison);
+  }
+  SANTE.orientation.forEach(function(o) {
+    if (val('or.' + o.id)) (o.protocol_ids || []).forEach(function(id) { ajouter(id, 1, o.situation); });
+  });
+  var au = lignesAudit();
+  var bas = au.filter(function(l) { return l.min !== null && l.min <= 2; }).length;
+  var doutes = au.filter(function(l) { return l.min === 3; }).length;
+  if (bas) { ajouter('P2.1', 2, 'note de 1 ou 2 à l’audit des croyances'); ajouter('P2.4', 2, 'note de 1 ou 2 à l’audit des croyances'); }
+  else if (doutes === 1) ajouter('P5.2', 2, 'doute isolé à l’audit des croyances');
+  else if (doutes > 1) ajouter('P5.3', 2, 'doutes sur plusieurs croyances à l’audit');
+  return Object.keys(sc).map(function(k) { return sc[k]; }).sort(function(a, b) {
+    return b.n - a.n || (SANTE.parId[a.id].ordre || 0) - (SANTE.parId[b.id].ordre || 0);
+  });
+}
+function rendreSuggestions() {
+  var sg = suggestionsOrientation();
+  if (!sg.length) return '<div class="sante-aide">Cochez les situations constatées, ou notez l’audit des croyances à l’étape 5 : les protocoles indiqués s’affichent ici.</div>';
+  return sg.slice(0, 8).map(function(x) {
+    var p = SANTE.parId[x.id];
+    return '<button class="or-p" data-id="' + esc(x.id) + '" onclick="ouvrirProtoSante(this.dataset.id, \'score\')"><span class="or-n">' + x.n + '</span>' +
+      '<span><span class="s-id">' + esc(x.id) + '</span> <strong>' + esc(p.titre) + '</strong><div class="or-r">' + x.raisons.map(esc).join(' · ') + '</div></span></button>';
+  }).join('');
+}
+function blocOrientation() {
+  return '<div class="sc-sec">Protocoles proposés</div><div class="or-sugg" id="or-sugg">' + rendreSuggestions() + '</div>' +
+    '<div class="sc-sec">Ce que montre le diagnostic</div><div>' + SANTE.orientation.map(function(o) {
+      return '<label class="or-case"><input type="checkbox" data-k="or.' + esc(o.id) + '" onchange="cocherSituation(this)"' + (val('or.' + o.id) ? ' checked' : '') + '>' +
+        '<span><span class="or-sit">' + esc(o.situation) + '</span><div class="or-ids">' +
+        (o.protocol_ids || []).filter(function(id) { return SANTE.parId[id]; }).map(function(id) { return '<span class="s-id">' + esc(id) + '</span>'; }).join(' ') +
+        '</div></span></label>';
+    }).join('') + '</div>';
+}
+function cocherSituation(cb) {
+  if (!SEANCE) return;
+  if (cb.checked) SEANCE.v[cb.dataset.k] = '1'; else delete SEANCE.v[cb.dataset.k];
+  ecrireSeance();
+  var s = document.getElementById('or-sugg'); if (s) s.innerHTML = rendreSuggestions();
+}
+
+// ═══════════════════════════════════════
+// v68 : CONTRAT SIGNE
+// Préparation par le coach, lecture et consentements par le client,
+// signature du client puis du coach, PDF (contrat, annexe, page de preuve),
+// envoi par mail. Le nom, le mail, les signatures et le PDF restent en
+// mémoire le temps du contrat puis sont effacés : le dossier du client ne
+// garde qu'une trace (dates, versions, empreintes), sans nom.
+// ═══════════════════════════════════════
+var CT = null;
+var PDFLIB_URL = 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js';
+var _pdfLib = null;
+function chargerPdfLib() {
+  if (window.PDFLib) return Promise.resolve(window.PDFLib);
+  if (_pdfLib) return _pdfLib;
+  _pdfLib = new Promise(function(ok, ko) {
+    var s = document.createElement('script'); s.src = PDFLIB_URL; s.async = true;
+    s.onload = function() { window.PDFLib ? ok(window.PDFLib) : ko(new Error('pdf-lib')); };
+    s.onerror = function() { _pdfLib = null; ko(new Error('réseau')); };
+    document.head.appendChild(s);
+  });
+  return _pdfLib;
+}
+
+function blocContratSeance() {
+  var cl = COFFRE && COFFRE.clients[SEANCE.initiales];
+  var n = cl && cl.contrats ? cl.contrats.length : 0;
+  return '<div class="ss-ligne"><button class="ss-btn' + (n ? '' : ' prim') + '" data-c="' + esc(SEANCE.initiales) + '" onclick="ouvrirContrat(this.dataset.c)">' +
+    (n ? 'Nouveau contrat' : 'Faire signer le contrat') + '</button><span class="ss-s">' + (n ? 'Contrat signé le ' + new Date(cl.contrats[n - 1].signe_le).toLocaleDateString('fr-FR') : 'Aucun contrat signé pour ce client') + '</span></div>';
+}
+function blocContratsDossier(cl) {
+  var h = '<div class="sc-sec">Contrats</div>';
+  var l = cl.contrats || [];
+  if (!l.length) h += '<div class="ct-trace manque">Aucun contrat signé pour ce client.</div>';
+  l.slice().reverse().forEach(function(t) {
+    h += '<div class="ct-trace">Contrat signé le ' + dateFr(t.signe_le) + (t.envoye_le ? ', envoyé le ' + dateFr(t.envoye_le) : ', envoi non confirmé') +
+      '<br>Contrat v' + t.version_contrat + ' · code de déontologie v' + t.version_deontologie + ' · ' + t.pages + ' pages' +
+      '<br>Empreinte du fichier : ' + esc(t.empreinte_fichier.slice(0, 16)) + '…</div>';
+  });
+  h += '<div class="ss-ligne"><button class="ss-btn" data-c="' + esc(cl.code) + '" onclick="ouvrirContrat(this.dataset.c)">' + (l.length ? 'Nouveau contrat' : 'Faire signer le contrat') + '</button>' +
+    (l.length ? '<label class="ss-btn" style="display:inline-flex;align-items:center">Vérifier un PDF<input type="file" accept="application/pdf,.pdf" style="display:none" data-c="' + esc(cl.code) + '" onchange="verifierPdf(this)"></label>' : '') + '</div>';
+  return h;
+}
+
+function ouvrirContrat(code) {
+  if (!HAS_SANTE || !COFFRE) return;
+  if (!profilComplet(PROFIL_COACH)) { alert('Votre profil de prestataire est incomplet : complétez-le avant de faire signer un contrat.'); SANTE_TAB = 'profil'; renderSante(); return; }
+  var mc = modele('contrat'), md = modele('deontologie');
+  if (!mc || !mc.contenu || !md || !md.contenu) { alert('Les modèles du contrat et du code de déontologie ne sont pas installés.'); return; }
+  var cd = (PROFIL_COACH && PROFIL_COACH.contrat_defauts) || {};
+  CT = { etape: 'prep', code: code, lu: false, annexe: false, cases: [false, false, false],
+    vals: { client_nom: '', client_email: '', nb_seances: nz(cd.nb_seances), frequence: nz(cd.frequence), duree: nz(cd.duree),
+      tarif: nz(cd.tarif), modalites_paiement: nz(cd.modalites_paiement), lieu: nz(cd.lieu), duree_contrat: nz(cd.duree_contrat), ville: nz(cd.ville) },
+    modeles: { contrat: mc, deontologie: md, preuve: modele('preuve') } };
+  chargerPdfLib().catch(function() {});
+  document.getElementById('ct-ov').classList.add('open');
+  renderContrat();
+}
+function fermerContrat(force) {
+  if (!CT) { document.getElementById('ct-ov').classList.remove('open'); return; }
+  if (!force && CT.etape !== 'fin' && !confirm(CT.etape === 'envoi' && !CT.envoye
+      ? 'Le contrat n’est pas marqué comme envoyé. Fermer quand même ? Le PDF et les signatures seront effacés.'
+      : 'Abandonner ce contrat ? Les saisies et signatures seront effacées.')) return;
+  CT = null;   // efface nom, mail, signatures et PDF de la mémoire
+  document.getElementById('ct-ov').classList.remove('open');
+  document.getElementById('ct-body').innerHTML = '';
+  if (currentView === 'sante') renderSante();
+}
+function valeursContrat() {
+  var pc = PROFIL_COACH || {}, now = CT.horodatage ? new Date(CT.horodatage) : new Date();
+  var v = {
+    coach_nom: nz(pc.nom), coach_statut: nz(pc.statut), coach_raison_sociale: nz(pc.raison_sociale), coach_siret: nz(pc.siret),
+    coach_adresse: nz(pc.adresse), coach_email: nz(pc.email_pro), coach_telephone: nz(pc.telephone), coach_rc_pro: nz(pc.rc_pro),
+    coach_mediateur: nz(pc.mediateur), coach_certification: nz(pc.certification),
+    date: now.toLocaleDateString('fr-FR')
+  };
+  Object.keys(CT.vals).forEach(function(k) { v[k] = CT.vals[k]; });
+  return v;
+}
+function remplirTexte(t, vals) { return String(t || '').replace(/\{([a-z_]+)\}/g, function(m, k) { return vals[k] != null ? String(vals[k]) : m; }).replace(/ +([,.])/g, '$1').replace(/ {2,}/g, ' '); }
+
+var CT_ETAPES = { prep: '1/5 · Préparation', lecture: '2/5 · Lecture par le client', sigcl: '3/5 · Signature du client', sigco: '4/5 · Signature du coach', envoi: '5/5 · Envoi' };
+function renderContrat() {
+  if (!CT) return;
+  var b = document.getElementById('ct-body'), f = document.getElementById('ct-ft');
+  document.getElementById('ct-titre').textContent = 'Contrat · ' + CT.code;
+  document.getElementById('ct-etape').textContent = CT_ETAPES[CT.etape] || '';
+  b.scrollTop = 0;
+  if (CT.etape === 'prep') {
+    var v = CT.vals;
+    function ch(k, l, t) { return '<div class="frow"><label class="flabel" for="ct-' + k + '">' + l + '</label><input class="finput" id="ct-' + k + '" ' + (t ? 'type="' + t + '" ' : '') + 'value="' + esc(v[k]) + '" oninput="CT.vals[\'' + k + '\']=this.value" autocomplete="off"></div>'; }
+    b.innerHTML = '<div class="ct-info">Le nom et l’adresse mail du client servent uniquement à ce contrat. Ils sont effacés de l’appli dès l’envoi. Le dossier ' + esc(CT.code) + ' n’en garde aucune trace.</div>' +
+      ch('client_nom', 'Nom et prénom du client') + ch('client_email', 'Adresse mail du client', 'email') +
+      fsep('Conditions', 'y') +
+      fld2(ch('nb_seances', 'Nombre de séances'), ch('frequence', 'Fréquence')) +
+      fld2(ch('duree', 'Durée d’une séance'), ch('tarif', 'Tarif')) +
+      ch('modalites_paiement', 'Modalités de paiement') +
+      fld2(ch('duree_contrat', 'Durée du contrat'), ch('ville', 'Ville de signature')) +
+      '<div class="frow"><label class="flabel" for="ct-lieu">Lieu</label><select class="fselect" id="ct-lieu" onchange="CT.vals.lieu=this.value">' +
+        LIEUX.map(function(o) { return '<option value="' + o + '"' + (o === v.lieu ? ' selected' : '') + '>' + (o || '·') + '</option>'; }).join('') + '</select></div>';
+    f.innerHTML = '<button class="btn-sante" onclick="versLecture()">Passer l’appareil au client</button>';
+    return;
+  }
+  if (CT.etape === 'lecture') {
+    var vals = valeursContrat();
+    b.innerHTML = '<div class="ct-doc">' + rendreModele(remplirTexte(CT.modeles.contrat.contenu, vals), vals) + '</div>' +
+      '<button class="ss-btn" onclick="CT.annexe=!CT.annexe; renderContrat()">' + (CT.annexe ? 'Masquer le code de déontologie' : 'Lire le code de déontologie (annexe)') + '</button>' +
+      (CT.annexe ? '<div class="ct-doc">' + rendreModele(CT.modeles.deontologie.contenu, vals) + '</div>' : '') +
+      '<div class="ct-cases" id="ct-cases">' + ['J’ai lu et j’accepte le contrat.', 'J’ai reçu le code de déontologie.',
+        'Je suis suivi médicalement et je sais que le coaching ne remplace pas ce suivi.'].map(function(t, i) {
+        return '<label class="ct-case' + (CT.lu ? '' : ' off') + '"><input type="checkbox" data-i="' + i + '" onchange="CT.cases[this.dataset.i]=this.checked; majBoutonSigner()"' +
+          (CT.cases[i] ? ' checked' : '') + (CT.lu ? '' : ' disabled') + '><span>' + t + '</span></label>';
+      }).join('') + '</div>' +
+      (CT.lu ? '' : '<div class="ct-ment" id="ct-lire">Faites défiler le contrat jusqu’en bas pour pouvoir cocher les cases.</div>');
+    f.innerHTML = '<button class="btn-cancel" onclick="CT.etape=\'prep\'; renderContrat()">Retour au coach</button><button class="btn-sante" id="ct-signer" onclick="CT.etape=\'sigcl\'; renderContrat()" disabled>Signer le contrat</button>';
+    b.onscroll = function() { if (!CT.lu && b.scrollTop + b.clientHeight >= b.scrollHeight - 40) { CT.lu = true; var st = b.scrollTop; renderContrat(); b.scrollTop = st; } };
+    if (!CT.lu && b.scrollHeight <= b.clientHeight + 40) { CT.lu = true; return renderContrat(); }
+    majBoutonSigner();
+    return;
+  }
+  b.onscroll = null;
+  if (CT.etape === 'sigcl' || CT.etape === 'sigco') {
+    var qui = CT.etape === 'sigcl' ? 'client' : 'coach', nom = qui === 'client' ? CT.vals.client_nom : nz(PROFIL_COACH.nom);
+    b.innerHTML = (qui === 'coach' ? '<div class="ct-info">Le client a signé. Reprenez l’appareil pour signer à votre tour.</div>' : '') +
+      '<div class="ss-t">Signature ' + (qui === 'client' ? 'du client' : 'du coach') + ' · ' + esc(nom) + '</div>' +
+      '<div class="ct-ment">Lu et approuvé, le ' + new Date().toLocaleDateString('fr-FR') + '</div>' +
+      '<canvas class="ct-sig" id="ct-sig" aria-label="Zone de signature"></canvas>' +
+      '<div class="ct-ment">Signez au doigt, au stylet ou à la souris.</div>';
+    f.innerHTML = '<button class="btn-cancel" onclick="effacerSignature()">Effacer</button><button class="btn-sante" onclick="validerSignature()">Valider la signature</button>';
+    initSignature(document.getElementById('ct-sig'));
+    return;
+  }
+  if (CT.etape === 'generation') {
+    b.innerHTML = '<div class="s-vide">Génération du PDF…</div>'; f.innerHTML = '';
+    return;
+  }
+  if (CT.etape === 'envoi') {
+    b.innerHTML = '<div class="ct-info">Le contrat est signé par les deux parties. Envoyez-le au client : le PDF part depuis votre messagerie, et vous vous mettez en copie cachée pour l’archiver.</div>' +
+      '<div class="ct-res"><strong>' + esc(CT.nomFichier) + '</strong><br>' + CT.pages + ' pages · contrat v' + CT.modeles.contrat.version + ' · code de déontologie v' + CT.modeles.deontologie.version +
+      '<br>Empreinte du fichier (SHA-256) : ' + esc(CT.empreinteFichier) + '</div>' +
+      '<button class="btn-sante" onclick="envoyerContrat()">Envoyer par mail</button>' +
+      '<button class="ss-btn" onclick="telechargerContrat()">Télécharger le PDF</button>' +
+      (CT.tentative ? '<div class="ct-info">Une fois le mail envoyé, confirmez ci-dessous : l’appli range la trace dans le dossier ' + esc(CT.code) + ' et efface le nom, le mail, les signatures et le PDF.</div>' : '');
+    f.innerHTML = '<button class="btn-sante" onclick="confirmerEnvoi()"' + (CT.tentative ? '' : ' disabled') + '>J’ai envoyé le contrat</button>';
+  }
+}
+function versLecture() {
+  var v = CT.vals;
+  ['client_nom', 'client_email'].forEach(function(k) { v[k] = String(v[k] || '').trim(); });
+  if (!v.client_nom) { alert('Indiquez le nom du client.'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.client_email)) { alert('Indiquez une adresse mail valide pour le client.'); return; }
+  var manque = ['nb_seances', 'frequence', 'duree', 'tarif', 'modalites_paiement', 'lieu', 'duree_contrat', 'ville'].filter(function(k) { return !String(v[k] || '').trim(); });
+  if (manque.length && !confirm('Certaines conditions sont vides (' + manque.length + '). Elles apparaîtront vides dans le contrat. Continuer ?')) return;
+  CT.etape = 'lecture'; CT.lu = false; renderContrat();
+}
+function majBoutonSigner() {
+  var b = document.getElementById('ct-signer');
+  if (b) b.disabled = !(CT && CT.lu && CT.cases.every(Boolean));
+}
+
+// ── Zone de signature (Pointer Events, sans bibliothèque) ──
+function initSignature(cv) {
+  var r = cv.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+  cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
+  var g = cv.getContext('2d');
+  g.scale(dpr, dpr); g.lineWidth = 2.4; g.lineCap = 'round'; g.lineJoin = 'round'; g.strokeStyle = '#1B2A44';
+  g.fillStyle = '#FFFFFF'; g.fillRect(0, 0, r.width, r.height);
+  cv._vide = true; var bas = false, last = null;
+  function pt(e) { var b = cv.getBoundingClientRect(); return { x: e.clientX - b.left, y: e.clientY - b.top }; }
+  cv.addEventListener('pointerdown', function(e) { bas = true; last = pt(e); cv.setPointerCapture(e.pointerId); g.beginPath(); g.arc(last.x, last.y, 1.2, 0, 7); g.fillStyle = '#1B2A44'; g.fill(); cv._vide = false; e.preventDefault(); });
+  cv.addEventListener('pointermove', function(e) { if (!bas) return; var p = pt(e); g.beginPath(); g.moveTo(last.x, last.y); g.lineTo(p.x, p.y); g.stroke(); last = p; cv._vide = false; e.preventDefault(); });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(function(t) { cv.addEventListener(t, function() { bas = false; }); });
+}
+function effacerSignature() { var cv = document.getElementById('ct-sig'); if (cv) initSignature(cv); }
+function validerSignature() {
+  var cv = document.getElementById('ct-sig');
+  if (!cv || cv._vide) { alert('La zone de signature est vide.'); return; }
+  var img = cv.toDataURL('image/png');
+  if (CT.etape === 'sigcl') { CT.sigClient = img; CT.etape = 'sigco'; renderContrat(); return; }
+  CT.sigCoach = img; CT.horodatage = new Date().toISOString(); CT.etape = 'generation'; renderContrat();
+  genererPdfContrat().then(function() { CT.etape = 'envoi'; renderContrat(); }).catch(function(err) {
+    alert('Le PDF n’a pas pu être généré (' + (err && err.message || 'erreur') + '). Vérifiez la connexion internet : la première génération charge l’outil PDF.');
+    CT.etape = 'sigco'; renderContrat();
+  });
+}
+
+// ── PDF ──
+function sha256Hex(bytes) {
+  return crypto.subtle.digest('SHA-256', bytes).then(function(h) {
+    return Array.prototype.map.call(new Uint8Array(h), function(x) { return ('0' + x.toString(16)).slice(-2); }).join('');
+  });
+}
+function decrireAppareil() {
+  var u = navigator.userAgent, os = /iPhone|iPad/.test(u) ? 'iPhone ou iPad' : /Android/.test(u) ? 'Android' : /Windows/.test(u) ? 'Windows' : /Mac/.test(u) ? 'Mac' : 'autre';
+  var nav = /Edg\//.test(u) ? 'Edge' : /Chrome\//.test(u) ? 'Chrome' : /Safari\//.test(u) ? 'Safari' : /Firefox\//.test(u) ? 'Firefox' : 'navigateur';
+  return os + ', ' + nav + (estInstallee() ? ' (appli installée)' : '');
+}
+function nomFichierContrat() {
+  var n = CT.vals.client_nom.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return 'Contrat-coaching-sante_' + (n || 'client') + '_' + CT.horodatage.slice(0, 10) + '.pdf';
+}
+function genererPdfContrat() {
+  return chargerPdfLib().then(function(L) {
+    var A4 = [595.28, 841.89], M = 56, LARG = A4[0] - 2 * M;
+    var doc, fR, fB, fI, page, y, cacheCar = {};
+    var vals = valeursContrat();
+    function propre(t, font) {
+      // Les polices standard du PDF ne connaissent pas tous les caractères : on remplace ceux qu'elles ignorent
+      return Array.from(String(t || '').replace(/[  ]/g, ' ')).map(function(ch) {
+        var k = font.name + ch;
+        if (cacheCar[k] === undefined) { try { font.encodeText(ch); cacheCar[k] = ch; } catch (e) { cacheCar[k] = ({ '→': '->', '≤': '<=', '≥': '>=', '✓': 'x', '…': '...' })[ch] || '?'; } }
+        return cacheCar[k];
+      }).join('');
+    }
+    function nouvellePage() { page = doc.addPage(A4); y = A4[1] - M; }
+    function place(h) { if (y - h < M + 20) nouvellePage(); }
+    function lignes(t, font, taille, largeur) {
+      var mots = propre(t, font).split(/\s+/), out = [], cur = '';
+      mots.forEach(function(m) {
+        var essai = cur ? cur + ' ' + m : m;
+        if (font.widthOfTextAtSize(essai, taille) > largeur && cur) { out.push(cur); cur = m; } else cur = essai;
+      });
+      if (cur) out.push(cur);
+      return out;
+    }
+    function ecrire(t, o) {
+      o = o || {};
+      var font = o.font || fR, taille = o.taille || 10.5, ih = taille * 1.38, ind = o.indent || 0;
+      var ls = lignes(t, font, taille, LARG - ind);
+      ls.forEach(function(l, i) {
+        place(ih);
+        var x = M + ind;
+        if (o.centre) x = (A4[0] - font.widthOfTextAtSize(l, taille)) / 2;
+        if (o.puce && i === 0) page.drawText('•', { x: M + ind - 10, y: y - taille, size: taille, font: fR, color: L.rgb(0.1, 0.16, 0.27) });
+        page.drawText(l, { x: x, y: y - taille, size: taille, font: font, color: L.rgb(0.1, 0.16, 0.27) });
+        y -= ih;
+      });
+      y -= (o.apres != null ? o.apres : 5);
+    }
+    function document_(texte) {
+      String(texte || '').split('\n').forEach(function(l) {
+        var t = remplirTexte(l.trim(), vals);
+        if (!t) return;
+        if (t.indexOf('## ') === 0) { place(40); y -= 6; ecrire(t.slice(3), { font: fB, taille: 11.5, apres: 3 }); }
+        else if (t.indexOf('# ') === 0) ecrire(t.slice(2), { font: fB, taille: 15, centre: true, apres: 12 });
+        else if (t.indexOf('- ') === 0) ecrire(t.slice(2), { indent: 14, puce: true, apres: 3 });
+        else ecrire(t);
+      });
+    }
+    return L.PDFDocument.create().then(function(d) {
+      doc = d;
+      doc.setTitle('Contrat de coaching de santé'); doc.setAuthor(vals.coach_nom); doc.setCreator('Appli PNL · ' + APP_VERSION);
+      doc.setCreationDate(new Date(CT.horodatage));
+      return Promise.all([doc.embedFont(L.StandardFonts.Helvetica), doc.embedFont(L.StandardFonts.HelveticaBold), doc.embedFont(L.StandardFonts.HelveticaOblique),
+        doc.embedPng(CT.sigClient), doc.embedPng(CT.sigCoach)]);
+    }).then(function(r) {
+      fR = r[0]; fB = r[1]; fI = r[2];
+      var sigCl = r[3], sigCo = r[4];
+      nouvellePage();
+      document_(CT.modeles.contrat.contenu);
+      // Bloc des signatures
+      var h = 150; place(h + 20); y -= 10;
+      var col = (LARG - 20) / 2, quand = new Date(CT.horodatage);
+      [[0, 'Le coach', vals.coach_nom, sigCo], [1, 'Le client', vals.client_nom, sigCl]].forEach(function(s) {
+        var x = M + s[0] * (col + 20);
+        page.drawText(propre(s[1], fB), { x: x, y: y - 11, size: 10.5, font: fB });
+        page.drawText(propre(s[2], fR), { x: x, y: y - 25, size: 10, font: fR });
+        page.drawText(propre('Lu et approuvé, signé électroniquement le ' + quand.toLocaleDateString('fr-FR') + ' à ' + quand.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }), fI), { x: x, y: y - 38, size: 8, font: fI });
+        var dim = s[3].scaleToFit(col, 90);
+        page.drawImage(s[3], { x: x, y: y - 44 - dim.height, width: dim.width, height: dim.height });
+      });
+      y -= h;
+      // Annexe
+      nouvellePage();
+      ecrire('ANNEXE AU CONTRAT', { font: fB, taille: 9, centre: true, apres: 4 });
+      document_(CT.modeles.deontologie.contenu);
+      var n = doc.getPageCount();
+      doc.getPages().forEach(function(pg, i) {
+        pg.drawText(propre('Contrat de coaching de santé · page ' + (i + 1) + ' sur ' + (n + 1), fR), { x: M, y: 28, size: 8, font: fR, color: L.rgb(0.45, 0.47, 0.53) });
+      });
+      return doc.save();
+    }).then(function(octets) {
+      return sha256Hex(octets);
+    }).then(function(empreinteContenu) {
+      CT.empreinteContenu = empreinteContenu;
+      var quand = new Date(CT.horodatage);
+      var vp = Object.assign({}, vals, {
+        horodatage: quand.toLocaleDateString('fr-FR') + ' à ' + quand.toLocaleTimeString('fr-FR') + ' (' + Intl.DateTimeFormat().resolvedOptions().timeZone + ')',
+        consentement_contrat: 'oui', consentement_deontologie: 'oui', consentement_medical: 'oui',
+        version_contrat: String(CT.modeles.contrat.version), version_deontologie: String(CT.modeles.deontologie.version),
+        appareil: decrireAppareil(), empreinte: empreinteContenu
+      });
+      nouvellePage();
+      var preuve = CT.modeles.preuve && CT.modeles.preuve.contenu ? CT.modeles.preuve.contenu :
+        '# PAGE DE PREUVE DE SIGNATURE\n- Date et heure : {horodatage}\n- Empreinte : {empreinte}';
+      vals = vp;
+      document_(preuve);
+      var n = doc.getPageCount();
+      doc.getPages()[n - 1].drawText(propre('Contrat de coaching de santé · page ' + n + ' sur ' + n, fR), { x: M, y: 28, size: 8, font: fR, color: L.rgb(0.45, 0.47, 0.53) });
+      CT.pages = n;
+      return doc.save();
+    }).then(function(final) {
+      CT.pdf = final;
+      CT.nomFichier = nomFichierContrat();
+      return sha256Hex(final);
+    }).then(function(h) { CT.empreinteFichier = h; });
+  });
+}
+
+// ── Envoi ──
+function mailContrat() {
+  var pc = PROFIL_COACH || {}, vals = valeursContrat(), objet = '', corps = '';
+  if (pc.mail_objet || pc.mail_corps) { objet = pc.mail_objet || 'Votre contrat de coaching de santé'; corps = pc.mail_corps || ''; }
+  else {
+    var m = (modele('mail') || {}).contenu || '', ls = m.split('\n');
+    if (/^objet\s*:/i.test(ls[0] || '')) { objet = ls[0].replace(/^objet\s*:\s*/i, ''); ls.shift(); }
+    corps = ls.join('\n').trim();
+  }
+  return { a: CT.vals.client_email, objet: remplirTexte(objet || 'Votre contrat de coaching de santé', vals), corps: remplirTexte(corps, vals) };
+}
+function fichierContrat() { try { return new File([CT.pdf], CT.nomFichier, { type: 'application/pdf' }); } catch (e) { return null; } }
+function telechargerContrat() {
+  var url = URL.createObjectURL(new Blob([CT.pdf], { type: 'application/pdf' }));
+  var a = document.createElement('a'); a.href = url; a.download = CT.nomFichier;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function() { URL.revokeObjectURL(url); }, 2000);
+  CT.tentative = true; renderContrat();
+}
+function envoyerContrat() {
+  var m = mailContrat(), f = fichierContrat();
+  if (f && navigator.canShare && navigator.canShare({ files: [f] })) {
+    // Téléphone : feuille de partage (Mail, Gmail…). L'adresse et le texte sont aussi copiés si l'appli ne les reprend pas.
+    if (navigator.clipboard) navigator.clipboard.writeText(m.a + '\n\n' + m.objet + '\n\n' + m.corps).catch(function() {});
+    navigator.share({ files: [f], title: m.objet, text: m.corps }).then(function() { CT.tentative = true; renderContrat(); })
+      .catch(function(err) { if (!err || err.name !== 'AbortError') { telechargerContrat(); ouvrirMailto(m); } });
+    return;
+  }
+  // Ordinateur : téléchargement du PDF puis mail pré-rempli
+  telechargerContrat();
+  ouvrirMailto(m);
+}
+function ouvrirMailto(m) {
+  alert('Le PDF est téléchargé. Votre logiciel de mail va s’ouvrir : glissez-y le PDF téléchargé, et mettez-vous en copie cachée.');
+  var url = 'mailto:' + encodeURIComponent(m.a) + '?subject=' + encodeURIComponent(m.objet) + '&body=' + encodeURIComponent(m.corps);
+  var a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  CT.tentative = true; renderContrat();
+}
+function confirmerEnvoi() {
+  if (!CT || !CT.pdf) return;
+  chargerDossiers();
+  var cl = COFFRE.clients[CT.code] || (COFFRE.clients[CT.code] = { code: CT.code, cree: new Date().toISOString(), seances: [] });
+  cl.contrats = cl.contrats || [];
+  cl.contrats.push({ signe_le: CT.horodatage, envoye_le: new Date().toISOString(), version_contrat: CT.modeles.contrat.version,
+    version_deontologie: CT.modeles.deontologie.version, pages: CT.pages, empreinte_fichier: CT.empreinteFichier, empreinte_contenu: CT.empreinteContenu });
+  sauverCoffre();
+  var code = CT.code;
+  CT.etape = 'fin';
+  fermerContrat(true);
+  alert('Contrat rangé dans le dossier ' + code + '. Le nom, le mail, les signatures et le PDF ont été effacés de l’appli.');
+  ouvrirClient(code);
+}
+function verifierPdf(input) {
+  var f = input.files && input.files[0], cl = COFFRE && COFFRE.clients[input.dataset.c];
+  if (!f || !cl) return;
+  f.arrayBuffer().then(sha256Hex).then(function(h) {
+    var t = (cl.contrats || []).filter(function(x) { return x.empreinte_fichier === h; })[0];
+    alert(t ? 'Ce PDF est bien le contrat signé le ' + dateFr(t.signe_le) + ', sans aucune modification.'
+            : 'Ce PDF ne correspond à aucun contrat enregistré pour ' + cl.code + ' : ce n’est pas le même fichier, ou il a été modifié.');
+    input.value = '';
+  });
 }
 
 // ═══════════════════════════════════════
