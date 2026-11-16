@@ -6,9 +6,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="PNL Séance">
-<link rel="apple-touch-icon" href="apple-touch-icon.png?v=59">
-<link rel="manifest" href="manifest.webmanifest?v=59">
-<link rel="icon" type="image/png" href="apple-touch-icon.png?v=59">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=60">
+<link rel="manifest" href="manifest.webmanifest?v=60">
+<link rel="icon" type="image/png" href="apple-touch-icon.png?v=60">
 <meta name="theme-color" content="#F7F3EE">
 <meta name="color-scheme" content="light dark">
 <script>
@@ -1518,6 +1518,46 @@ button, input, select, textarea { font-family: var(--font-ui); }
 .pin-overlay .install-hint { color: #FFFDF9; background: rgba(255,253,249,.08); border: 1px solid rgba(255,253,249,.2); border-radius: 12px; padding: 10px 12px; margin-top: 4px; width: 100%; }
 .about-popup .install-hint { margin-top: 12px; padding: 10px 12px; border-radius: 10px; background: var(--note-bg); color: var(--note-txt); }
 .install-btn { width: 100%; border: none; border-radius: 10px; padding: 10px; font-family: var(--font-ui); font-size: 14px; font-weight: 600; cursor: pointer; background: #EFB222; color: #1B2A44; }
+
+/* ═══════════════ v60 : comptes et module Coaching de santé ═══════════════ */
+.cpt-aide { padding: 12px 14px; font-size: 13px; line-height: 1.55; color: var(--text-2); background: var(--white); border-bottom: 1px solid var(--line); }
+.cpt-item { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: var(--card); border-bottom: 1px solid var(--line); }
+.cpt-main { flex: 1; min-width: 0; }
+.cpt-mail { font-size: 14px; font-weight: 500; color: var(--black); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cpt-sub { font-size: 12px; color: var(--text-3); margin-top: 3px; display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+.cpt-badge { font-size: 11px; font-weight: 500; border-radius: 999px; padding: 1px 8px; background: var(--surface-2); color: var(--text-2); }
+.cpt-badge.admin { background: color-mix(in srgb, var(--blue) 14%, transparent); color: var(--blue-txt); }
+.cpt-badge.perm { background: color-mix(in srgb, var(--yellow) 22%, transparent); color: var(--yellow-txt); }
+.cpt-badge.ok { background: color-mix(in srgb, var(--green) 16%, transparent); color: var(--green-txt); }
+.cpt-badge.ko { background: color-mix(in srgb, var(--red) 12%, transparent); color: var(--red-txt); }
+.cpt-acts { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+.cpt-role { border: 1px solid var(--line-2); border-radius: 8px; background: transparent; color: var(--text-2); font-size: 11px; padding: 3px 8px; cursor: pointer; }
+.cpt-role:disabled { opacity: .45; cursor: default; }
+.sw { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--text-3); cursor: pointer; user-select: none; }
+.sw input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.sw-track { position: relative; width: 40px; height: 24px; border-radius: 12px; background: var(--line-2); transition: background .15s; flex-shrink: 0; }
+.sw-track::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: var(--card); transition: transform .15s; }
+.sw input:checked + .sw-track { background: var(--green); }
+.sw input:checked + .sw-track::after { transform: translateX(16px); }
+.sw input:focus-visible + .sw-track { outline: 2px solid var(--blue); outline-offset: 2px; }
+.sw input:disabled + .sw-track { opacity: .5; }
+.sw.is-disabled { cursor: default; }
+.sante-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; padding: 12px 12px calc(24px + var(--safe-bottom)); display: flex; flex-direction: column; gap: 12px; background: var(--paper); }
+.sante-hero { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+.sante-titre { font-size: 18px; font-weight: 600; color: var(--black); display: flex; align-items: center; gap: 8px; }
+.sante-sous { font-family: var(--font-txt); font-size: 15px; line-height: 1.5; color: var(--text-2); margin-top: 6px; }
+.sante-etat { margin-top: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
+.sante-carte { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 4px 14px 14px; display: flex; flex-direction: column; gap: 10px; }
+.sante-carte .fsep { margin-bottom: 0; }
+.sante-aide { font-size: 12px; line-height: 1.5; color: var(--text-3); }
+.sante-msg { font-size: 13px; min-height: 18px; }
+.sante-msg.ok { color: var(--green-txt); }
+.sante-msg.err { color: var(--red-txt); }
+.sante-avenir { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.sante-avenir li { display: flex; gap: 10px; align-items: baseline; font-size: 14px; color: var(--text-2); }
+.sante-avenir li .lvl { margin-top: 2px; }
+.btn-sante { width: 100%; border: none; border-radius: 12px; padding: 13px; background: var(--blue); color: var(--on-blue); font-size: 14px; font-weight: 500; cursor: pointer; }
+.btn-sante:disabled { background: var(--line-2); color: var(--text-3); cursor: default; }
 </style>
 
 </head>
@@ -1529,7 +1569,7 @@ button, input, select, textarea { font-family: var(--font-ui); }
   <nav class="topnav">
     <div class="tnav-logo-wrap" onclick="openAbout()" role="button" style="cursor:pointer">
       <div class="tnav-logo">PNL<span class="dot b"></span><span class="dot y"></span><span class="dot r"></span></div>
-      <div class="tnav-subtitle">Assistant de séance PNL · v59 ⓘ</div>
+      <div class="tnav-subtitle">Assistant de séance PNL · v60 ⓘ</div>
     </div>
     <div class="tnav-actions">
       <button class="tnav-btn" id="nav-search-toggle" onclick="toggleSearch()" style="display:none">🔍</button>
@@ -1625,9 +1665,15 @@ button, input, select, textarea { font-family: var(--font-ui); }
       <button class="gtab" id="gtab-po" onclick="switchGTab('po')">◇ Postulats <span class="gbadge" id="gb-po">0</span></button>
       <button class="gtab" id="gtab-b" onclick="switchGTab('b')">◫ Briques <span class="gbadge" id="gb-b">0</span></button>
       <button class="gtab" id="gtab-f" onclick="switchGTab('f')">▦ Critères <span class="gbadge" id="gb-f">0</span></button>
+      <button class="gtab" id="gtab-c" onclick="switchGTab('c')">◎ Comptes</button>
       <button class="gtab" id="gtab-pin" onclick="switchGTab('pin')">⚿ Compte</button>
     </div>
     <div class="gcontent" id="gcontent"></div>
+  </div>
+
+  <!-- VUE COACHING DE SANTE (v60) : visible si le compte a l'autorisation -->
+  <div class="view" id="view-sante">
+    <div class="sante-scroll" id="sante-content"></div>
   </div>
 
   <!-- BOTTOM TAB BAR -->
@@ -1635,6 +1681,10 @@ button, input, select, textarea { font-family: var(--font-ui); }
     <button class="tabbtn act-r" id="tabbtn-p" onclick="switchView('protocoles')">
       <span class="tabbtn-icon">◈</span>
       Protocoles
+    </button>
+    <button class="tabbtn" id="tabbtn-s" onclick="switchView('sante')" style="display:none">
+      <span class="tabbtn-icon">✚</span>
+      Santé
     </button>
     <button class="tabbtn" id="tabbtn-g" onclick="requestGestionAccess()">
       <span class="tabbtn-icon">⊞</span>
@@ -1754,7 +1804,7 @@ button, input, select, textarea { font-family: var(--font-ui); }
 // réseau est faible. La clé ci-dessous est publique par conception : les
 // droits sont appliqués par la base (Row Level Security).
 // ═══════════════════════════════════════
-var APP_VERSION = 'v59';
+var APP_VERSION = 'v60';
 var SB_URL = 'https://tavilnkwkgovcwxrnzfq.supabase.co';
 var SB_KEY = 'sb_publishable_FRipvkrteuUpNGWSS_fE3g_dBAGfaUF';
 var sb = (window.supabase && window.supabase.createClient)
@@ -1770,6 +1820,8 @@ var VALEURS_PAR_ID = {};
 
 var USER = null;            // {id, email}
 var IS_ADMIN = false;
+var HAS_SANTE = false;      // v60 : accès au module Coaching de santé
+var PROFIL_COACH = null;    // v60 : profil professionnel du coach connecté
 var MES_NOTES = [];         // notes privées de l'utilisateur
 var MES_FAVORIS = [];       // favoris personnels
 var DERNIERES_DONNEES = null;
@@ -1870,6 +1922,8 @@ function appliquerDonnees(d) {
   MES_NOTES = (d.notes || []).slice();
   MES_FAVORIS = (d.favoris || []).slice();
   IS_ADMIN = d.role === 'admin';
+  HAS_SANTE = d.sante === true;
+  PROFIL_COACH = HAS_SANTE ? (d.profil_coach || null) : null;
   appliquerFavoris();
 }
 
@@ -1897,12 +1951,30 @@ function chargerDepuisServeur() {
   ];
   return Promise.all(requetes).then(function(r) {
     for (var i = 0; i < r.length; i++) if (r[i].error) throw r[i].error;
-    return {
+    var d = {
       groupes: r[0].data, valeurs: r[1].data, postulats: r[2].data, briques: r[3].data,
       protocoles: r[4].data, notes: r[5].data, favoris: r[6].data,
       role: r[7].data ? r[7].data.role : 'utilisateur',
       charge_le: new Date().toISOString()
     };
+    return chargerSante().then(function(s) {
+      d.sante = s.sante; d.profil_coach = s.profil;
+      return d;
+    });
+  });
+}
+
+// v60 : droit au module santé et profil du coach.
+// Ce volet ne doit jamais bloquer l'appli PNL : si le script SQL du module
+// n'est pas encore installé, ou si la requête échoue, le module reste masqué.
+function chargerSante() {
+  return sb.rpc('a_module', { m: 'sante' }).abortSignal(T()).then(function(r) {
+    if (r.error || r.data !== true) return { sante: false, profil: null };
+    return sb.from('profils_coach').select('*').eq('user_id', USER.id).abortSignal(T()).maybeSingle()
+      .then(function(rp) { return { sante: true, profil: rp.error ? null : rp.data }; });
+  }).catch(function(err) {
+    if (estErreurSession(err)) throw err;
+    return { sante: false, profil: null };
   });
 }
 
@@ -1942,6 +2014,10 @@ function rafraichirAffichage() {
   var tg = document.getElementById('tabbtn-g');
   if (tg) tg.style.display = IS_ADMIN ? '' : 'none';
   if (!IS_ADMIN && currentView === 'gestion') _rawSwitchView('protocoles');
+  var ts = document.getElementById('tabbtn-s');
+  if (ts) ts.style.display = HAS_SANTE ? '' : 'none';
+  if (!HAS_SANTE && currentView === 'sante') _rawSwitchView('protocoles');
+  if (HAS_SANTE && currentView === 'sante') renderSante();
   buildFilters();
   buildCriteriaCards();
   renderProtocols();
@@ -2060,7 +2136,7 @@ function ouvrirSession(user) {
 }
 
 function reinitialiserSession() {
-  USER = null; IS_ADMIN = false; DERNIERES_DONNEES = null; DONNEES_PRETES = false; HORS_LIGNE = false;
+  USER = null; IS_ADMIN = false; HAS_SANTE = false; PROFIL_COACH = null; COMPTES = null; DERNIERES_DONNEES = null; DONNEES_PRETES = false; HORS_LIGNE = false;
   PROTOCOLES = []; POSTULATS = []; BRIQUES = []; FILTRES = {}; FILTRES_ORDER = [];
   MES_NOTES = []; MES_FAVORIS = [];
   if (selectedId) closeDetail();
@@ -2296,6 +2372,225 @@ function majBoutonsDetail(p) {
   if (bn) bn.classList.toggle('on-note', MODE_NOTE);
 }
 
+
+// ═══════════════════════════════════════
+// v60 : GESTION DES COMPTES (administrateurs)
+// La liste et les changements passent par des fonctions de la base
+// réservées aux administrateurs : l'écran n'est qu'une commodité.
+// ═══════════════════════════════════════
+var COMPTES = null;
+var COMPTES_ERREUR = '';
+
+function scriptSanteAbsent(err) {
+  var m = String((err && err.message) || '');
+  return (err && (err.code === 'PGRST202' || err.code === '42883')) || /could not find the function|does not exist/i.test(m);
+}
+
+function chargerComptes() {
+  if (!sb || !IS_ADMIN) return Promise.resolve();
+  return sb.rpc('admin_lister_comptes').abortSignal(T()).then(function(r) {
+    if (r.error) throw r.error;
+    COMPTES = r.data || []; COMPTES_ERREUR = '';
+  }).catch(function(err) {
+    COMPTES = null;
+    COMPTES_ERREUR = scriptSanteAbsent(err)
+      ? 'Le script « sante-lot1-autorisations.sql » n’est pas encore exécuté dans Supabase. Collez-le dans SQL Editor, cliquez sur Run, puis revenez ici.'
+      : 'Liste indisponible : ' + messageErreur(err);
+  });
+}
+
+function renderGComptes() {
+  var el = document.getElementById('gcontent');
+  if (COMPTES === null && !COMPTES_ERREUR) {
+    el.innerHTML = '<div class="load-st">Chargement des comptes…</div>';
+    chargerComptes().then(function() { if (currentView === 'gestion' && currentGTab === 'c') renderGComptes(); });
+    return;
+  }
+  var aide = '<div class="cpt-aide">Activez ou retirez l’accès au module Coaching de santé compte par compte. ' +
+    'Un administrateur y a toujours accès. Les nouveaux comptes se créent dans Supabase (Authentication, Add user).</div>';
+  if (COMPTES_ERREUR) {
+    el.innerHTML = aide + '<div class="load-st">' + esc(COMPTES_ERREUR) + '</div>' +
+      '<div style="padding:0 14px"><button class="btn-sante" onclick="rafraichirComptes()">Réessayer</button></div>';
+    return;
+  }
+  var rows = COMPTES.map(function(u) {
+    var estAdmin = u.role === 'admin';
+    var moi = USER && u.user_id === USER.id;
+    var badges = '<span class="cpt-badge' + (estAdmin ? ' admin' : '') + '">' + (estAdmin ? 'Administrateur' : 'Utilisateur') + '</span>';
+    if (u.permanent) badges += '<span class="cpt-badge perm">Permanent</span>';
+    if (u.sante && !estAdmin) badges += '<span class="cpt-badge ' + (u.profil_complet ? 'ok' : 'ko') + '">Profil ' + (u.profil_complet ? 'complet' : 'incomplet') + '</span>';
+    var depuis = (u.sante && !estAdmin && u.sante_depuis) ? 'Santé depuis le ' + new Date(u.sante_depuis).toLocaleDateString('fr-FR') : '';
+    var connexion = u.derniere_connexion ? 'Vu le ' + new Date(u.derniere_connexion).toLocaleDateString('fr-FR') : 'Jamais connecté';
+    var sw = '<label class="sw' + (estAdmin ? ' is-disabled' : '') + '">' +
+      '<span>' + (estAdmin ? 'Inclus' : 'Santé') + '</span>' +
+      '<input type="checkbox" data-uid="' + esc(u.user_id) + '" onchange="basculerAccesSante(this)"' +
+        (u.sante ? ' checked' : '') + (estAdmin ? ' disabled' : '') + ' aria-label="Accès coaching de santé pour ' + esc(u.email) + '">' +
+      '<span class="sw-track"></span></label>';
+    var roleBtn = '<button class="cpt-role" data-uid="' + esc(u.user_id) + '" data-role="' + (estAdmin ? 'utilisateur' : 'admin') + '"' +
+      ' data-mail="' + esc(u.email) + '" onclick="changerRoleCompte(this)"' + ((u.permanent || moi) ? ' disabled' : '') + '>' +
+      (estAdmin ? 'Retirer admin' : 'Passer admin') + '</button>';
+    return '<div class="cpt-item"><div class="cpt-main">' +
+      '<div class="cpt-mail">' + esc(u.email) + (moi ? ' (vous)' : '') + '</div>' +
+      '<div class="cpt-sub">' + badges + '</div>' +
+      '<div class="cpt-sub">' + esc(connexion) + (depuis ? ' · ' + esc(depuis) : '') + '</div>' +
+      '</div><div class="cpt-acts">' + sw + roleBtn + '</div></div>';
+  }).join('');
+  el.innerHTML = '<div class="gtoolbar"><div class="gsearch"><span style="color:var(--text-3);font-size:12px">🔍</span>' +
+    '<input type="text" placeholder="Rechercher un compte…" oninput="filtrerComptes(this.value)" autocomplete="off"></div>' +
+    '<button class="btn-add" onclick="rafraichirComptes()" title="Actualiser la liste" aria-label="Actualiser la liste" style="font-size:16px">↻</button></div>' +
+    aide + '<div id="cpt-list">' + (rows || '<div class="load-st">Aucun compte</div>') + '</div>';
+}
+
+function filtrerComptes(q) {
+  q = String(q || '').toLowerCase();
+  document.querySelectorAll('#cpt-list .cpt-item').forEach(function(it) {
+    it.style.display = it.textContent.toLowerCase().indexOf(q) >= 0 ? '' : 'none';
+  });
+}
+
+function rafraichirComptes() {
+  COMPTES = null; COMPTES_ERREUR = '';
+  renderGComptes();
+}
+
+function basculerAccesSante(cb) {
+  if (!IS_ADMIN || !sb) return;
+  var actif = cb.checked;
+  cb.disabled = true;
+  sb.rpc('admin_definir_autorisation', { p_user: cb.dataset.uid, p_module: 'sante', p_actif: actif }).abortSignal(T())
+    .then(function(r) {
+      if (r.error) throw r.error;
+      return chargerComptes();
+    }).catch(function(err) {
+      cb.checked = !actif;
+      alert('Changement non enregistré : ' + messageErreur(err));
+    }).then(function() {
+      if (currentView === 'gestion' && currentGTab === 'c') renderGComptes();
+    });
+}
+
+function changerRoleCompte(btn) {
+  if (!IS_ADMIN || !sb) return;
+  var role = btn.dataset.role;
+  var q = role === 'admin'
+    ? 'Donner le rôle administrateur à ' + btn.dataset.mail + ' ? Ce compte pourra modifier les fiches, les comptes et les accès.'
+    : 'Retirer le rôle administrateur à ' + btn.dataset.mail + ' ?';
+  if (!confirm(q)) return;
+  btn.disabled = true;
+  sb.rpc('admin_definir_role', { p_user: btn.dataset.uid, p_role: role }).abortSignal(T())
+    .then(function(r) {
+      if (r.error) throw r.error;
+      return chargerComptes();
+    }).catch(function(err) {
+      alert('Rôle non modifié : ' + messageErreur(err));
+    }).then(function() {
+      if (currentView === 'gestion' && currentGTab === 'c') renderGComptes();
+    });
+}
+
+// ═══════════════════════════════════════
+// v60 : MODULE COACHING DE SANTE
+// Premier écran : profil professionnel du coach, qui alimente le contrat.
+// Aucune donnée client n'est saisie ni envoyée ici.
+// ═══════════════════════════════════════
+var CHAMPS_PROFIL = [
+  ['nom', 'Nom et prénom', true],
+  ['statut', 'Statut (EI, micro-entreprise, SASU…)', true],
+  ['raison_sociale', 'Raison sociale', false],
+  ['siret', 'SIRET', true],
+  ['adresse', 'Adresse professionnelle', true],
+  ['telephone', 'Téléphone', true],
+  ['email_pro', 'Mail professionnel', true],
+  ['rc_pro', 'Assurance RC Pro (assureur et numéro)', true],
+  ['mediateur', 'Médiateur de la consommation', true],
+  ['certification', 'Certification', false]
+];
+var LIEUX = ['', 'présentiel', 'distanciel', 'mixte'];
+
+function profilComplet(pc) {
+  if (!pc) return false;
+  return CHAMPS_PROFIL.every(function(f) { return !f[2] || String(pc[f[0]] || '').trim(); });
+}
+
+function renderSante() {
+  var el = document.getElementById('sante-content'); if (!el) return;
+  var pc = PROFIL_COACH || {};
+  var cd = pc.contrat_defauts || {};
+  var complet = profilComplet(PROFIL_COACH);
+  var champs = CHAMPS_PROFIL.map(function(f) {
+    return fld(f[1] + (f[2] ? '' : ' (facultatif)'), 'sp-' + f[0], esc(pc[f[0]] || ''));
+  }).join('');
+  el.innerHTML =
+    '<div class="sante-hero">' +
+      '<div class="sante-titre"><span class="lvl lvl-r"></span>Coaching de santé</div>' +
+      '<div class="sante-sous">Votre profil professionnel alimente le contrat signé avec chaque client. ' +
+        'Tant qu’il est incomplet, la génération de contrat restera bloquée.</div>' +
+      '<div class="sante-etat">' +
+        '<span class="cpt-badge ' + (complet ? 'ok' : 'ko') + '">Profil ' + (complet ? 'complet' : 'incomplet') + '</span>' +
+        (IS_ADMIN ? '<span class="cpt-badge admin">Administrateur</span>' : '<span class="cpt-badge">Coach</span>') +
+        (HORS_LIGNE ? '<span class="cpt-badge perm">Hors ligne</span>' : '') +
+      '</div>' +
+    '</div>' +
+    '<div class="sante-carte">' +
+      fsep('Identité et mentions légales', 'b') + champs +
+    '</div>' +
+    '<div class="sante-carte">' +
+      fsep('Valeurs par défaut du contrat', 'y') +
+      fld2(fld('Nombre de séances', 'sp-nb', esc(nz(cd.nb_seances))), fld('Fréquence', 'sp-freq', esc(nz(cd.frequence)))) +
+      fld2(fld('Durée d’une séance', 'sp-duree', esc(nz(cd.duree))), fld('Tarif', 'sp-tarif', esc(nz(cd.tarif)))) +
+      fld('Modalités de paiement', 'sp-paiement', esc(nz(cd.modalites_paiement))) +
+      fld('Lieu', 'sp-lieu', nz(cd.lieu), 'select', LIEUX) +
+      '<div class="sante-aide">Ces valeurs seront proposées à chaque nouveau contrat et resteront modifiables.</div>' +
+    '</div>' +
+    '<div class="sante-carte">' +
+      fsep('Mail d’envoi au client', 'r') +
+      fld('Objet', 'sp-mobjet', esc(pc.mail_objet || '')) +
+      '<div class="frow"><div class="flabel">Corps du mail</div><textarea class="ftextarea" id="sp-mcorps">' + esc(pc.mail_corps || '') + '</textarea></div>' +
+      '<div class="sante-aide">Variables possibles : {client_nom}, {coach_nom}, {date}, {nb_seances}, {tarif}.</div>' +
+    '</div>' +
+    '<div class="sante-msg" id="sp-msg"></div>' +
+    '<button class="btn-sante" id="sp-save" onclick="enregistrerProfilCoach()"' + (HORS_LIGNE ? ' disabled' : '') + '>' +
+      (HORS_LIGNE ? 'Enregistrement impossible hors ligne' : 'Enregistrer mon profil') + '</button>' +
+    '<div class="sante-carte">' +
+      fsep('Prochaines étapes du module', 'b') +
+      '<ul class="sante-avenir">' +
+        '<li><span class="lvl lvl-y"></span>Signature du coach, tracée à l’écran</li>' +
+        '<li><span class="lvl lvl-b"></span>Catalogue des 51 protocoles et parcours SCORE</li>' +
+        '<li><span class="lvl lvl-r"></span>Contrat client signé, PDF avec page de preuve, envoi par mail</li>' +
+      '</ul>' +
+    '</div>';
+}
+
+function enregistrerProfilCoach() {
+  if (!HAS_SANTE || !sb || !USER) return;
+  var btn = document.getElementById('sp-save');
+  var msg = document.getElementById('sp-msg');
+  var ligne = { user_id: USER.id };
+  CHAMPS_PROFIL.forEach(function(f) { ligne[f[0]] = fval('sp-' + f[0]) || null; });
+  ligne.contrat_defauts = {
+    nb_seances: fval('sp-nb'), frequence: fval('sp-freq'), duree: fval('sp-duree'),
+    tarif: fval('sp-tarif'), modalites_paiement: fval('sp-paiement'), lieu: fval('sp-lieu')
+  };
+  ligne.mail_objet = fval('sp-mobjet') || null;
+  var corps = document.getElementById('sp-mcorps');
+  ligne.mail_corps = corps && corps.value.trim() ? corps.value.trim() : null;
+  btn.disabled = true; btn.textContent = 'Enregistrement…';
+  msg.className = 'sante-msg'; msg.textContent = '';
+  sb.from('profils_coach').upsert(ligne, { onConflict: 'user_id' }).select().abortSignal(T()).single()
+    .then(function(r) {
+      if (r.error) throw r.error;
+      PROFIL_COACH = r.data;
+      if (DERNIERES_DONNEES) { DERNIERES_DONNEES.profil_coach = r.data; ecrireCache(DERNIERES_DONNEES); }
+      renderSante();
+      var m = document.getElementById('sp-msg');
+      if (m) { m.className = 'sante-msg ok'; m.textContent = profilComplet(PROFIL_COACH) ? 'Profil enregistré et complet.' : 'Profil enregistré. Il reste des champs obligatoires à remplir.'; }
+    }).catch(function(err) {
+      btn.disabled = false; btn.textContent = 'Enregistrer mon profil';
+      msg.className = 'sante-msg err';
+      msg.textContent = 'Profil non enregistré : ' + messageErreur(err) + '. Vos saisies restent à l’écran.';
+    });
+}
+
 // ═══════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════
@@ -2320,7 +2615,9 @@ function _rawSwitchView(v) {
   document.getElementById('view-' + v).classList.add('active');
   document.getElementById('tabbtn-p').className = 'tabbtn' + (v === 'protocoles' ? ' act-r' : '');
   document.getElementById('tabbtn-g').className = 'tabbtn' + (v === 'gestion' ? ' act-b' : '');
+  document.getElementById('tabbtn-s').className = 'tabbtn' + (v === 'sante' ? ' act-b' : '');
   if (v === 'gestion') renderGestion();
+  if (v === 'sante') renderSante();
 }
 
 // ═══════════════════════════════════════
@@ -2330,6 +2627,7 @@ function _rawSwitchView(v) {
 // ═══════════════════════════════════════
 function switchView(v) {
   if (v === 'gestion' && !IS_ADMIN) return;
+  if (v === 'sante' && !HAS_SANTE) return;
   _rawSwitchView(v);
 }
 function requestGestionAccess() { switchView('gestion'); }
@@ -2889,7 +3187,7 @@ function switchEx(k) {
 // ═══════════════════════════════════════
 function switchGTab(tab) {
   currentGTab = tab;
-  var map = {p:'gr', po:'gb', b:'gy', f:'gr', pin:'gk'};
+  var map = {p:'gr', po:'gb', b:'gy', f:'gr', c:'gb', pin:'gk'};
   Object.keys(map).forEach(function(t) {
     var btn = document.getElementById('gtab-' + t);
     if (btn) btn.className = 'gtab' + (t === tab ? ' ' + map[t] : '');
@@ -2902,6 +3200,7 @@ function renderGestion() {
   if (currentGTab === 'po')  renderGPo();
   if (currentGTab === 'b')   renderGB();
   if (currentGTab === 'f')   renderGF();
+  if (currentGTab === 'c')   renderGComptes();
   if (currentGTab === 'pin') renderGCompte();
 }
 
